@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tablero del Evaluador</title>
+<title>Tablero del proyecto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
 <style>
@@ -152,15 +152,20 @@
   .grid-2.mt { margin-top: 12px; }
   ol.pasos { margin: 8px 0 0; padding-left: 20px; font-size: .92rem; color: var(--ink-2); }
   ol.pasos li { margin: 6px 0; }
+  .tabla-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-3); font-weight: 600; padding: 6px 12px 8px 0; border-bottom: 1px solid var(--line-2); }
+  td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
+  td.fecha { white-space: nowrap; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 
   /* Técnica */
   .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
   .badge { font-size: .85rem; font-weight: 500; padding: 5px 13px; border-radius: 999px; background: var(--bg-3); border: 1px solid var(--line); }
   .modelo { display: flex; align-items: stretch; flex-wrap: wrap; gap: 0; }
-  .entidad { flex: 1 1 180px; border: 1px solid var(--line-2); border-radius: 10px; overflow: hidden; background: var(--bg); }
+  .entidad { flex: 1 1 160px; border: 1px solid var(--line-2); border-radius: 10px; overflow: hidden; background: var(--bg); }
   .entidad header { background: var(--primary); color: #fff; font-family: var(--font-display); font-weight: 600; padding: 7px 12px; font-size: .9rem; }
   .entidad ul { margin: 0; padding: 8px 12px 10px 26px; font-size: .85rem; color: var(--ink-2); }
-  .vinculo { align-self: center; padding: 0 12px; color: var(--ink-3); font-size: .78rem; text-align: center; line-height: 1.3; }
+  .vinculo { align-self: center; padding: 0 10px; color: var(--ink-3); font-size: .74rem; text-align: center; line-height: 1.3; }
   .flujo { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; }
   .paso { font-size: .83rem; padding: 6px 12px; border: 1px solid var(--line-2); border-radius: 999px; background: var(--bg); }
   .paso.hecho { border-color: var(--green); color: var(--green); }
@@ -182,11 +187,6 @@
   .rol { padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
   .rol b { font-family: var(--font-display); font-weight: 600; display: block; margin-bottom: 2px; }
   .rol span { font-size: .84rem; color: var(--ink-2); }
-  .tabla-scroll { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
-  th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-3); font-weight: 600; padding: 6px 12px 8px 0; border-bottom: 1px solid var(--line-2); }
-  td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-2); }
-  td.fecha { white-space: nowrap; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 
   /* Avisos */
   .avisos { display: flex; flex-direction: column; gap: 10px; }
@@ -203,12 +203,11 @@
 <main>
   <header>
     <p class="eyebrow">Tablero del proyecto · Novolabs</p>
-    <h1>Novolabs — Evaluador de Ideas con IA</h1>
-    <p class="sub">Web app donde un emprendedor carga su idea y recibe una evaluación honesta:
-    puntaje, fortalezas, riesgos y el próximo paso concreto para validarla.
-    <strong>El MVP está terminado y en producción.</strong> Foto tomada el
-    18 de agosto de 2026, 17:45 (Buenos Aires).</p>
-    <p class="nota" style="margin-top:8px;">En vivo: <span class="mono">https://curso-ai-app-demo.vercel.app</span></p>
+    <h1>ReleaseView</h1>
+    <p class="sub">Panel interno que centraliza, cliente por cliente, qué versión y qué features
+    tiene activos cada instalación de un producto SaaS o agente de IA.
+    <strong>Documentación completa — todavía no se escribió código.</strong>
+    Foto tomada el 21 de septiembre de 2026.</p>
   </header>
 
   <div class="tabs" role="tablist" aria-label="Secciones del tablero">
@@ -223,77 +222,73 @@
   <!-- ================= RESUMEN ================= -->
   <section class="panel activa" id="p-resumen" role="tabpanel" aria-labelledby="tab-resumen">
     <div class="panel-head">
-      <h2>El MVP está terminado y online</h2>
-      <p class="sub">Los tres milestones cerrados y verificados. La app está publicada y un desconocido puede completar el recorrido entero —de cargar la idea a releer su informe— desde su teléfono, sin ayuda.</p>
+      <h2>Los cimientos están firmes; construir todavía no arrancó</h2>
+      <p class="sub">Ya se definió para quién es (ICP), qué se vende (Solución), qué se construye primero (PRD) y con qué (Arquitectura). Falta partir el primer milestone en piezas chicas y empezar a programar.</p>
     </div>
     <div class="kpis">
-      <div class="card kpi verde"><div class="num">3 <small>de 3</small></div><div class="label">Milestones terminados — el recorrido completo corre en producción</div></div>
-      <div class="card kpi"><div class="num">13/13</div><div class="label">Piezas de trabajo terminadas y verificadas (M1: 5 · M2: 4 · M3: 4)</div></div>
-      <div class="card kpi verde"><div class="num">160/160</div><div class="label">Tests en verde en la última verificación completa (tests, lint y build)</div></div>
-      <div class="card kpi acento"><div class="num">En vivo</div><div class="label">Publicada en <span class="mono">curso-ai-app-demo.vercel.app</span> y probada de punta a punta</div></div>
+      <div class="card kpi"><div class="num">4 <small>de 8</small></div><div class="label">Pasos del método completos — ICP, Solución, PRD y Arquitectura</div></div>
+      <div class="card kpi"><div class="num">0 <small>de 0</small></div><div class="label">Piezas construidas — el plan de M1 todavía no existe (falta /roadmap)</div></div>
+      <div class="card kpi"><div class="num">—</div><div class="label">Tests en verde — no aplica todavía, no hay código escrito</div></div>
+      <div class="card kpi acento"><div class="num">A definir</div><div class="label">Estimado a cierre de M1 — /roadmap da una fecha una vez armado el plan</div></div>
     </div>
     <div class="hoy">
       <div class="card paso-sig">
         <p class="eyebrow">El único paso siguiente</p>
-        <h3 style="margin-top:10px;">Compartilo con un emprendedor real</h3>
-        <p class="nota">Para esto se construyó: validar los supuestos del ICP con gente de verdad. Cada informe que vea un emprendedor real es una prueba de si la evaluación se lee con criterio y no «genérica como ChatGPT» (el riesgo #1 del producto).</p>
-        <span class="cmd">curso-ai-app-demo.vercel.app</span>
+        <h3 style="margin-top:10px;">Armar el plan de M1</h3>
+        <p class="nota">Partir "Carga y consulta por cliente" en piezas chicas y ordenadas que el Programador pueda construir una por vez, con tests primero.</p>
+        <span class="cmd">/roadmap</span>
       </div>
       <div class="card">
         <p class="eyebrow">Lo que te espera a vos</p>
         <ul class="checks" style="margin-top:10px;">
-          <li><span class="estado"></span><span>Rotar la clave de Claude (<span class="mono">ANTHROPIC_API_KEY</span>) — quedó expuesta en un log de sesión</span></li>
-          <li><span class="estado"></span><span>Mirar los primeros informes reales: ¿distinguen una idea floja de una fuerte?, ¿el emprendedor ejecuta el próximo paso?</span></li>
-          <li><span class="estado"></span><span>Opcional: subir el costo estimado por evaluación para que el freno del código —y no solo el tope de la consola— respete los USD 25</span></li>
+          <li><span class="estado"></span><span>Confirmar el orden de piezas que proponga /roadmap</span></li>
+          <li><span class="estado"></span><span>Revisar la paleta y el tono de <span class="mono">marca.md</span> antes de que se usen en pantallas reales — es una propuesta, todavía no la validaste</span></li>
+          <li><span class="estado"></span><span>Nada para probar en la app todavía — eso arranca con la primera pieza construida (M1-01)</span></li>
         </ul>
       </div>
     </div>
-    <div class="siguiente"><button class="btn primario" data-ir="progreso">Ver el progreso pieza por pieza →</button></div>
+    <div class="siguiente"><button class="btn primario" data-ir="progreso">Ver el progreso de los milestones →</button></div>
   </section>
 
   <!-- ================= PROGRESO ================= -->
   <section class="panel" id="p-progreso" role="tabpanel" aria-labelledby="tab-progreso">
     <div class="panel-head">
-      <h2>Tres milestones, los tres cerrados</h2>
-      <p class="sub">El MVP era un solo recorrido de valor: cargar la idea → recibir el informe → volver a leerlo. Corre entero en producción. Cada milestone se cerró solo cuando vos lo probaste con tus ojos.</p>
+      <h2>Tres milestones definidos, ninguno partido en piezas todavía</h2>
+      <p class="sub">El MVP es un solo recorrido: cargar un cliente → consultarlo por cliente o por feature → armar la lista de "qué cliente recibe qué" para el próximo release.</p>
     </div>
     <div class="milestones">
       <div class="card">
-        <span class="pill pill-ok">Terminado</span>
-        <h3 style="margin-top:12px;">M1 · La evaluación existe</h3>
-        <div class="barra"><span class="b-ok" style="width:100%"></span></div>
-        <p class="nota">5 de 5 piezas. Una idea cargada produce un informe con puntaje, fortalezas, riesgos y próximo paso — y las 3 ideas de prueba (floja/regular/fuerte) sacaron puntajes distintos.</p>
+        <span class="pill pill-pend">Sin empezar</span>
+        <h3 style="margin-top:12px;">M1 · Carga y consulta por cliente</h3>
+        <div class="barra"><span class="b-curso" style="width:0%"></span></div>
+        <p class="nota">Dar de alta un cliente con su versión y features, editarlo, verlo de un vistazo, y guardar el historial de versión con fecha desde la primera carga.</p>
       </div>
       <div class="card">
-        <span class="pill pill-ok">Terminado</span>
-        <h3 style="margin-top:12px;">M2 · El informe tiene dueño</h3>
-        <div class="barra"><span class="b-ok" style="width:100%"></span></div>
-        <p class="nota">4 de 4 piezas. Cuentas con email, cada uno ve solo lo suyo (probado con dos cuentas reales) y relee sus informes al volver a entrar.</p>
+        <span class="pill pill-pend">Sin empezar</span>
+        <h3 style="margin-top:12px;">M2 · Consulta por feature</h3>
+        <div class="barra"><span class="b-curso" style="width:0%"></span></div>
+        <p class="nota">Responder "¿qué clientes todavía no tienen el feature X?" — usa los mismos datos de M1 desde el otro ángulo.</p>
       </div>
       <div class="card">
-        <span class="pill pill-ok">Terminado</span>
-        <h3 style="margin-top:12px;">M3 · Listo para el primer emprendedor real</h3>
-        <div class="barra"><span class="b-ok" style="width:100%"></span></div>
-        <p class="nota">4 de 4 piezas. Online, con los estados incómodos resueltos, el pulido anti-prototipo aplicado y el deploy real hecho con tu OK.</p>
+        <span class="pill pill-pend">Sin empezar</span>
+        <h3 style="margin-top:12px;">M3 · Lista de despliegue para un release</h3>
+        <div class="barra"><span class="b-curso" style="width:0%"></span></div>
+        <p class="nota">Armar y exportar en minutos la lista de "qué cliente recibe qué" antes de un release real.</p>
       </div>
     </div>
 
-    <h3 style="margin-top:30px;">Las 4 piezas de M3 (el último milestone)</h3>
-    <div class="spec-lista">
-      <div class="spec"><span class="spec-id">M3-01</span><span>Landing pública: puerta de entrada para un desconocido (dolor del ICP, promesa, CTA «Evaluá tu idea gratis»)</span><span class="pill pill-ok">Terminada</span></div>
-      <div class="spec"><span class="spec-id">M3-02</span><span>Red anti-pantalla-blanca: ningún camino termina en blanco (errores, sesión expirada, aviso de sin conexión)</span><span class="pill pill-ok">Terminada</span></div>
-      <div class="spec"><span class="spec-id">M3-03</span><span>Pulido presentable: nombre del producto, favicon propio, títulos por pantalla — que no parezca hecho por IA</span><span class="pill pill-ok">Terminada</span></div>
-      <div class="spec"><span class="spec-id">M3-04</span><span>Producción + deploy: Supabase de producción con RLS, claves en Vercel, techo de gasto y deploy real con tu OK</span><span class="pill pill-ok">Terminada</span></div>
+    <h3 style="margin-top:30px;">Las piezas de M1</h3>
+    <div class="card">
+      <p class="nota">El plan todavía no existe. Corré <span class="mono">/roadmap</span> para partir M1 en piezas chicas y ordenadas — ahí van a aparecer acá, una por una, con su estado.</p>
     </div>
-    <p class="nota" style="margin-top:10px;">M1 (5 piezas) y M2 (4 piezas) también están todas ✅. Sus planes y fichas viven en <span class="mono">docs/sdd/…/archive/</span>.</p>
 
     <div class="card" style="margin-top:14px;">
-      <h3>Qué tenía que pasar para dar M3 por terminado</h3>
+      <h3>Qué tiene que pasar para dar M1 por terminado</h3>
       <ul class="checks">
-        <li><span class="estado hecho"></span><span>La app deployada en una URL pública, con el recorrido completo corriendo en producción</span></li>
-        <li><span class="estado hecho"></span><span>Estados incómodos cubiertos: «evaluando…», error con reintento, nada en pantalla blanca</span></li>
-        <li><span class="estado hecho"></span><span>Una persona ajena completa el recorrido sin ayuda (probado de punta a punta en prod)</span></li>
-        <li><span class="estado hecho"></span><span>Vos lo probaste con tus ojos y confirmaste que está bien</span></li>
+        <li><span class="estado"></span><span>Se puede dar de alta un cliente con su versión activa y la lista de features habilitados</span></li>
+        <li><span class="estado"></span><span>Se puede editar esos datos cuando cambian</span></li>
+        <li><span class="estado"></span><span>Se puede ver, para un cliente elegido, su versión activa y sus features de un vistazo</span></li>
+        <li><span class="estado"></span><span>Cada cambio de versión (incluida la primera carga) queda guardado con fecha, y se puede ver ese historial</span></li>
       </ul>
     </div>
     <div class="siguiente"><button class="btn" data-ir="ritmo">Ver el ritmo y los números →</button></div>
@@ -302,63 +297,47 @@
   <!-- ================= RITMO ================= -->
   <section class="panel" id="p-ritmo" role="tabpanel" aria-labelledby="tab-ritmo">
     <div class="panel-head">
-      <h2>De la idea a producción en un día</h2>
-      <p class="sub">Todo el proyecto —método completo, 13 piezas construidas y el deploy— se hizo el 18 de agosto. Estos números salen de los registros reales de tus sesiones de Claude Code.</p>
+      <h2>Cuatro etapas del método, 5 días activos, una pausa larga en el medio</h2>
+      <p class="sub">Estos datos salen de los registros reales de tus sesiones de Claude Code. Todavía no hay piezas de código construidas — esta foto es de las etapas de documentación.</p>
     </div>
 
     <div class="card">
       <h3>El método, etapa por etapa</h3>
-      <div class="fila-barra"><span class="nombre mono">/icp</span><div class="pista"><div class="valor" style="width:27%"></div></div><span class="cifra">6 min</span></div>
-      <div class="fila-barra"><span class="nombre mono">/solucion</span><div class="pista"><div class="valor" style="width:41%"></div></div><span class="cifra">9 min</span></div>
-      <div class="fila-barra"><span class="nombre mono">/prd</span><div class="pista"><div class="valor" style="width:9%"></div></div><span class="cifra">2 min</span></div>
-      <div class="fila-barra"><span class="nombre mono">/arquitectura</span><div class="pista"><div class="valor" style="width:100%"></div></div><span class="cifra">22 min</span></div>
-      <div class="fila-barra"><span class="nombre mono">/roadmap</span><div class="pista"><div class="valor" style="width:27%"></div></div><span class="cifra">6 min</span></div>
-      <div class="fila-barra"><span class="nombre mono">/specs</span><div class="pista"><div class="valor" style="width:27%"></div></div><span class="cifra">6 min</span></div>
-      <p class="nota" style="margin-top:10px;">/arquitectura fue la etapa más larga y buena parte fue espera de tus respuestas, no trabajo de la máquina. Las fichas de trabajo (/specs) se escribieron en paralelo, en 80–140 segundos cada una.</p>
+      <div class="tabla-scroll"><table>
+        <tr><th>Etapa</th><th>Cuándo</th><th>Nota</th></tr>
+        <tr><td class="mono">/icp</td><td class="fecha">8 sep</td><td>ICP-01 definido, núcleo completo</td></tr>
+        <tr><td class="mono">/solucion</td><td class="fecha">8 sep</td><td>SaaS interno, integración híbrida (para más adelante)</td></tr>
+        <tr><td class="mono">/prd</td><td class="fecha">9 sep</td><td>MVP + 3 milestones + riesgos</td></tr>
+        <tr><td>— pausa —</td><td class="fecha">9→14 sep</td><td>5 días sin actividad en el proyecto</td></tr>
+        <tr><td class="mono">/arquitectura</td><td class="fecha">14–15 sep</td><td>Multi-tenant (14) + 6 documentos técnicos y de diseño (15)</td></tr>
+        <tr><td>Ajuste de PRD</td><td class="fecha">16 sep</td><td>Se cierran las 2 preguntas abiertas, se suma historial de versión</td></tr>
+        <tr><td class="mono">/dashboard</td><td class="fecha">21 sep</td><td>Este tablero</td></tr>
+      </table></div>
+      <p class="nota" style="margin-top:10px;">No se desglosan minutos por etapa porque el trabajo de documentación corrió conversando, sin subagentes — no hay marcas de tiempo por pieza que aislar todavía.</p>
     </div>
 
     <div class="card" style="margin-top:12px;">
-      <h3>Trabajo real de la máquina por pieza construida</h3>
-      <div class="fila-barra"><span class="nombre">M1-01 la base</span><div class="pista"><div class="valor" style="width:44%"></div></div><span class="cifra">8,5 min</span></div>
-      <div class="fila-barra"><span class="nombre">M1-02 formulario</span><div class="pista"><div class="valor" style="width:65%"></div></div><span class="cifra">13 min</span></div>
-      <div class="fila-barra"><span class="nombre">M1-03 evaluación</span><div class="pista"><div class="valor" style="width:41%"></div></div><span class="cifra">8 min</span></div>
-      <div class="fila-barra"><span class="nombre">M1-04 espera+informe</span><div class="pista"><div class="valor" style="width:100%"></div></div><span class="cifra">19 min</span></div>
-      <div class="fila-barra"><span class="nombre">M1-05 calibración</span><div class="pista"><div class="valor" style="width:65%"></div></div><span class="cifra">13 min</span></div>
-      <div class="fila-barra"><span class="nombre">M2-01 login</span><div class="pista"><div class="valor" style="width:59%"></div></div><span class="cifra">12 min</span></div>
-      <div class="fila-barra"><span class="nombre">M2-02 sesión real</span><div class="pista"><div class="valor" style="width:43%"></div></div><span class="cifra">8 min</span></div>
-      <div class="fila-barra"><span class="nombre">M2-03 mis ideas</span><div class="pista"><div class="valor" style="width:48%"></div></div><span class="cifra">9 min</span></div>
-      <div class="fila-barra"><span class="nombre">M2-04 techo global</span><div class="pista"><div class="valor" style="width:20%"></div></div><span class="cifra">4 min</span></div>
-      <div class="fila-barra"><span class="nombre">M3-01 landing</span><div class="pista"><div class="valor" style="width:22%"></div></div><span class="cifra">4 min</span></div>
-      <div class="fila-barra"><span class="nombre">M3-02 anti-blanco</span><div class="pista"><div class="valor" style="width:37%"></div></div><span class="cifra">7 min</span></div>
-      <div class="fila-barra"><span class="nombre">M3-03 pulido</span><div class="pista"><div class="valor" style="width:45%"></div></div><span class="cifra">9 min</span></div>
-      <p class="nota" style="margin-top:10px;">M3-04 (producción + deploy) no fue «construir código»: fue infraestructura y control listo-para-publicar (~7 min de agentes de deploy), así que no entra en esta barra.</p>
-    </div>
-
-    <div class="card" style="margin-top:12px;">
-      <h3>La espera fue casi toda de M1</h3>
-      <div class="fila-barra"><span class="nombre">M1-03 evaluación</span><div class="pista" style="display:flex; gap:2px;"><div class="valor" style="width:11%"></div><div class="valor espera" style="width:89%"></div></div><span class="cifra">8 + 67 min</span></div>
-      <div class="fila-barra"><span class="nombre">M1-05 calibración</span><div class="pista" style="display:flex; gap:2px;"><div class="valor" style="width:18%"></div><div class="valor espera" style="width:82%"></div></div><span class="cifra">13 + 57 min</span></div>
-      <div class="fila-barra"><span class="nombre">M1-04 informe</span><div class="pista" style="display:flex; gap:2px;"><div class="valor" style="width:56%"></div><div class="valor espera" style="width:44%"></div></div><span class="cifra">19 + 16 min</span></div>
-      <div class="leyenda"><span><i style="background:var(--primary)"></i>La máquina trabajando</span><span><i style="background:repeating-linear-gradient(135deg, var(--ink-3) 0 3px, transparent 3px 6px); opacity:.6"></i>Parada, esperándote (permiso, dato o la clave)</span></div>
-      <p class="nota" style="margin-top:10px;">Casi toda la espera del proyecto (unas 2,4 h) se concentró en tres piezas de M1 —esperando un permiso, un dato o la API key—. <strong>M2 y M3 corrieron casi sin espera</strong>: una vez cargadas las claves y con las respuestas listas, la máquina no se frenó.</p>
+      <h3>La única tarea delegada a un subagente hasta ahora</h3>
+      <div class="fila-barra"><span class="nombre">Diseñador → user-flow + marca</span><div class="pista"><div class="valor" style="width:100%"></div></div><span class="cifra">82 s</span></div>
+      <p class="nota" style="margin-top:10px;">Sin huecos de espera — el Diseñador propuso los dos borradores en una sola corrida, del despacho a la respuesta. Es el único dato de "trabajo real de la máquina" que hay por ahora.</p>
     </div>
 
     <div class="grid-2 mt">
-      <div class="card kpi acento"><div class="num">≈ 10 min</div><div class="label">Trabajo real de la máquina por pieza construida y verificada (114 min / 11 piezas)</div></div>
-      <div class="card kpi"><div class="num">56%</div><div class="label">Del tiempo de construcción fue espera humana — y casi toda cayó en M1</div></div>
+      <div class="card kpi"><div class="num">5 días</div><div class="label">Activos, de los cuales 4 pasos del método quedaron completos</div></div>
+      <div class="card kpi"><div class="num">5 días</div><div class="label">De pausa entre cerrar el PRD (9 sep) y arrancar Arquitectura (14 sep) — normal entre sesiones</div></div>
     </div>
 
     <div class="grid-2 mt">
       <div class="card">
-        <h3>El resultado</h3>
-        <p class="nota" style="font-size:.92rem;">Un día: del <span class="mono">/icp</span> al deploy en producción, con los tres milestones cerrados y verificados. El trabajo efectivo de la máquina fue <strong>menos de 2 horas</strong> repartidas en 13 piezas; el resto del reloj fue definir el qué y el cómo, y esperar tus respuestas. Es exactamente el patrón que hace que construir sea rápido: cuando el plan está claro, cada pieza sale en ~10 minutos.</p>
+        <h3>Proyección a M1 — honesta</h3>
+        <p class="nota" style="font-size:.92rem;">Todavía no hay piezas de código construidas, así que no hay una base confiable para proyectar cuánto tarda cerrar M1. Único dato de referencia: la tarea delegada al Diseñador se resolvió en 82 segundos sin pausas — sugiere que, con el plan de /roadmap armado y las respuestas listas de antemano, cada pieza debería resolverse en minutos, no en horas.</p>
       </div>
       <div class="card">
-        <h3>Lo que se aprendió (para el próximo)</h3>
+        <h3>3 sugerencias para no perder ritmo</h3>
         <ol class="pasos">
-          <li><strong>Que la máquina no espere por vos.</strong> Los huecos grandes fueron esperas humanas: respondé los bloques de preguntas de una vez y dejá las claves cargadas antes de arrancar.</li>
-          <li><strong>La pieza de riesgo se lleva su propia sesión.</strong> La calibración del informe (M1-05) fue la más incierta — reservarle foco vale más que apurarla.</li>
-          <li><strong>Commiteá al cerrar cada etapa.</strong> Esta vez el trabajo de M3 quedó sin guardar hasta el deploy; commits por pieza mantienen todo trazable.</li>
+          <li><strong>Corré /roadmap ahora.</strong> La arquitectura quedó firme sin cabos sueltos — es el momento de partir M1 en piezas antes de que se enfríe el contexto.</li>
+          <li><strong>Respondé los bloques de preguntas de una sola vez.</strong> La pausa de 5 días de esta vez fue tiempo entre sesiones, no trabajo de la máquina — pero cuanto antes cierres una ronda de preguntas, antes sigue el plan.</li>
+          <li><strong>Usá /save-point antes de que el Programador toque código.</strong> No hay ningún commit desde el 31 de agosto — hoy hay 8 documentos nuevos sin guardar en git (ver Avisos).</li>
         </ol>
       </div>
     </div>
@@ -368,47 +347,52 @@
   <!-- ================= TÉCNICA ================= -->
   <section class="panel" id="p-tecnica" role="tabpanel" aria-labelledby="tab-tecnica">
     <div class="panel-head">
-      <h2>Con qué está hecho</h2>
-      <p class="sub">Las decisiones técnicas están tomadas y documentadas (7 documentos en <span class="mono">docs/arquitectura/</span>). Lo esencial, sin jerga:</p>
+      <h2>Con qué se va a construir</h2>
+      <p class="sub">Las decisiones ya están tomadas y documentadas (6 documentos en <span class="mono">docs/arquitectura/</span>) — falta escribir el primer código.</p>
     </div>
     <div class="grid-2">
       <div class="card">
         <h3>El stack</h3>
-        <div class="badges"><span class="badge">Next.js 16</span><span class="badge">TypeScript</span><span class="badge">Tailwind v4</span><span class="badge">Supabase</span><span class="badge">Claude Opus 5</span><span class="badge">Vercel</span></div>
-        <p class="nota" style="margin-top:12px;">Costo fijo: <strong>USD 0</strong> (planes gratuitos, Supabase en São Paulo). La IA es el único costo variable, con techo de <strong>USD 25/mes</strong> y freno antes de gastar, en tres capas: por llamada, por usuario (3 evaluaciones) y global — más el tope externo en la consola de Anthropic.</p>
+        <div class="badges"><span class="badge">Next.js</span><span class="badge">TypeScript</span><span class="badge">Prisma</span><span class="badge">Supabase (Postgres)</span><span class="badge">Vercel</span></div>
+        <p class="nota" style="margin-top:12px;">Costo esperado en esta etapa: <strong>USD 0/mes</strong> (planes gratuitos). El número final con supuestos de uso lo calcula <span class="mono">/costo</span>. Acceso: portón compartido con una sola contraseña, sin cuentas individuales todavía.</p>
       </div>
       <div class="card">
         <h3>Los datos</h3>
         <div class="modelo">
-          <div class="entidad"><header>ideas</header><ul><li>qué es · para quién</li><li>cómo gana plata</li><li>qué existe hoy</li><li>dueño (siempre)</li></ul></div>
-          <div class="vinculo">1 idea<br>→<br>1 evaluación</div>
-          <div class="entidad"><header>evaluaciones</header><ul><li>puntaje + fundamentos</li><li>fortalezas · riesgos</li><li>el próximo paso</li></ul></div>
+          <div class="entidad"><header>Cliente</header><ul><li>nombre</li><li>versión activa</li><li>notas</li></ul></div>
+          <div class="vinculo">habilita<br>↔<br>no tiene</div>
+          <div class="entidad"><header>Feature</header><ul><li>lista maestra</li><li>nombre · descripción</li></ul></div>
         </div>
-        <p class="nota" style="margin-top:12px;">Cada fila nace con dueño obligatorio y la base impide ver lo ajeno (regla #1). En producción se verificó sobre la base real: seguridad activa en las dos tablas y 8 candados por usuario.</p>
+        <div class="modelo" style="margin-top:8px;">
+          <div class="entidad"><header>Cliente</header><ul><li>(la misma tabla)</li></ul></div>
+          <div class="vinculo">cada cambio<br>→<br>queda guardado</div>
+          <div class="entidad"><header>Historial de versión</header><ul><li>versión</li><li>fecha</li></ul></div>
+        </div>
+        <p class="nota" style="margin-top:12px;">Todo etiquetado por organización desde el día 1 (regla #1), aunque el MVP solo tenga una organización cargada — sumar la segunda es agregar filas, no rediseñar.</p>
       </div>
     </div>
     <div class="card" style="margin-top:12px;">
-      <h3>El recorrido del usuario — todo en vivo</h3>
+      <h3>El recorrido del usuario — diseñado, sin construir todavía</h3>
       <div class="flujo">
-        <span class="paso hecho">Landing</span><span class="flecha">→</span>
-        <span class="paso hecho">Registro / Entrar</span><span class="flecha">→</span>
-        <span class="paso hecho">Mis ideas</span><span class="flecha">→</span>
-        <span class="paso hecho">Formulario: 4 preguntas + repaso</span><span class="flecha">→</span>
-        <span class="paso hecho">Evaluando…</span><span class="flecha">→</span>
-        <span class="paso hecho">El informe de 4 bloques</span>
+        <span class="paso apagado">Ingresar (contraseña)</span><span class="flecha">→</span>
+        <span class="paso apagado">Inicio: lista de clientes</span><span class="flecha">→</span>
+        <span class="paso apagado">Alta de cliente</span><span class="flecha">→</span>
+        <span class="paso apagado">Vista de cliente + historial</span><span class="flecha">→</span>
+        <span class="paso apagado">Por feature</span><span class="flecha">→</span>
+        <span class="paso apagado">Armar lista de release</span>
       </div>
-      <p class="nota" style="margin-top:12px;">Los seis pasos corren en producción y se probaron de punta a punta (incluido cerrar sesión, volver a entrar y releer el informe). Todo pensado primero para el celular (regla #6). El informe: puntaje grande con fundamento → fortalezas → riesgos → UN próximo paso destacado.</p>
+      <p class="nota" style="margin-top:12px;">Los seis pasos están validados en el documento (<span class="mono">docs/arquitectura/user-flow.md</span>) pero ninguno corre todavía — arrancan a construirse con la primera pieza de M1.</p>
     </div>
     <div class="card" style="margin-top:12px;">
-      <h3>La marca del producto <span class="pill pill-ok" style="margin-left:6px;">En producción</span></h3>
-      <p class="nota">Nombre cerrado con vos: <strong>«Novolabs — Evaluador de Ideas con IA»</strong>. Base «papel» con un solo color de acción (verde petróleo); los semánticos se reservan para el veredicto. Títulos en Fraunces, texto en Inter. Voseo, directo, sin tono de gurú. Lo viste en vivo y lo aprobaste. (Este tablero usa la marca de Novolabs, no la del producto.)</p>
+      <h3>La marca del producto <span class="pill pill-alerta" style="margin-left:6px;">A validar</span></h3>
+      <p class="nota">Propuesta del Diseñador de Producto a partir del ICP — todavía no te la mostramos para que la apruebes o pidas cambios. Tono directo y calmo (nada de "growth" ni jerga enterprise), pensado como herramienta de trabajo, no vidriera.</p>
       <div class="paleta">
-        <div class="swatch"><div class="color" style="background:#FAF9F6;"></div><div class="nombre">Fondo papel</div></div>
-        <div class="swatch"><div class="color" style="background:#1A2E35;"></div><div class="nombre">Tinta</div></div>
-        <div class="swatch"><div class="color" style="background:#0D6E5F;"></div><div class="nombre">Acción</div></div>
-        <div class="swatch"><div class="color" style="background:#2E7D32;"></div><div class="nombre">Fortalezas</div></div>
-        <div class="swatch"><div class="color" style="background:#B26A00;"></div><div class="nombre">Riesgos</div></div>
-        <div class="swatch"><div class="color" style="background:#B3261E;"></div><div class="nombre">Crítico</div></div>
+        <div class="swatch"><div class="color" style="background:#1E3A5F;"></div><div class="nombre">Primario</div></div>
+        <div class="swatch"><div class="color" style="background:#F7F8FA;"></div><div class="nombre">Fondo</div></div>
+        <div class="swatch"><div class="color" style="background:#1A1D21;"></div><div class="nombre">Texto</div></div>
+        <div class="swatch"><div class="color" style="background:#2F6B4F;"></div><div class="nombre">Lo tiene</div></div>
+        <div class="swatch"><div class="color" style="background:#B5762B;"></div><div class="nombre">No lo tiene</div></div>
+        <div class="swatch"><div class="color" style="background:#B3392E;"></div><div class="nombre">Error</div></div>
       </div>
     </div>
     <div class="siguiente"><button class="btn" data-ir="equipo">Ver el equipo de agentes →</button></div>
@@ -417,47 +401,46 @@
   <!-- ================= EQUIPO ================= -->
   <section class="panel" id="p-equipo" role="tabpanel" aria-labelledby="tab-equipo">
     <div class="panel-head">
-      <h2>El método, completo</h2>
-      <p class="sub">Los 8 comandos, en orden. Los recorriste todos: de definir para quién es el producto hasta publicarlo.</p>
+      <h2>El método, a mitad de camino</h2>
+      <p class="sub">4 de 8 comandos recorridos: de para quién es el producto hasta con qué se construye. Falta armar el plan, escribir las fichas, construir y publicar.</p>
     </div>
     <div class="card">
       <div class="pipeline">
-        <span class="cmd hecho">/icp</span><span class="flecha">→</span><span class="cmd hecho">/solucion</span><span class="flecha">→</span><span class="cmd hecho">/prd</span><span class="flecha">→</span><span class="cmd hecho">/arquitectura</span><span class="flecha">→</span><span class="cmd hecho">/roadmap</span><span class="flecha">→</span><span class="cmd hecho">/specs</span><span class="flecha">→</span><span class="cmd hecho">/implementar</span><span class="flecha">→</span><span class="cmd hecho">/deploy</span>
+        <span class="cmd hecho">/icp</span><span class="flecha">→</span><span class="cmd hecho">/solucion</span><span class="flecha">→</span><span class="cmd hecho">/prd</span><span class="flecha">→</span><span class="cmd hecho">/arquitectura</span><span class="flecha">→</span><span class="cmd actual">/roadmap</span><span class="flecha">→</span><span class="cmd futuro">/specs</span><span class="flecha">→</span><span class="cmd futuro">/implementar</span><span class="flecha">→</span><span class="cmd futuro">/deploy</span>
       </div>
-      <p class="nota">El ciclo está completo. Para el próximo proyecto: <span class="mono">/empezar</span> te dice dónde estás. Antes de un cambio grande: <span class="mono">/save-point</span>. Para refrescar este tablero: <span class="mono">/dashboard</span>.</p>
+      <p class="nota">Si en algún momento no sabés qué toca: <span class="mono">/empezar</span>. Antes de que el Programador empiece a tocar código: <span class="mono">/save-point</span>. Para refrescar este tablero: <span class="mono">/dashboard</span>.</p>
     </div>
     <div class="card" style="margin-top:12px;">
       <h3>Quién hizo qué</h3>
       <div class="roles">
-        <div class="rol"><b>Programador</b><span>Construyó las 13 piezas, una por vez y con tests primero — de M1-01 a M3-03.</span></div>
-        <div class="rol"><b>DevOps</b><span>Corrió el control «listo para publicar» y ejecutó el deploy real a producción (M3-04) con tu OK.</span></div>
-        <div class="rol"><b>Diseñador de Producto</b><span>Definió el recorrido y la marca; después auditó que la app no parezca hecha por IA.</span></div>
-        <div class="rol"><b>Investigador de ICP</b><span>Definió para quién es el producto (hoy una hipótesis: 0 entrevistas).</span></div>
-        <div class="rol"><b>Arquitecto de Soluciones</b><span>Definió qué es el producto y su promesa: claridad, no éxito.</span></div>
-        <div class="rol"><b>Vos</b><span>Respondiste los bloques de preguntas, validaste con tus ojos y diste el OK para publicar.</span></div>
+        <div class="rol"><b>Investigador de ICP</b><span>Definió el perfil ICP-01: PM/PO/líder técnico con clientes en versiones divergentes.</span></div>
+        <div class="rol"><b>Arquitecto de Soluciones</b><span>Definió qué es ReleaseView, su promesa y el modelo de cobro por organización.</span></div>
+        <div class="rol"><b>Analista de Producto</b><span>Convirtió todo eso en un MVP de 3 milestones, con riesgos y su límite.</span></div>
+        <div class="rol"><b>Arquitecto</b><span>Fijó el stack, el modelo de datos y las 6 reglas/documentos técnicos.</span></div>
+        <div class="rol"><b>Diseñador de Producto</b><span>Propuso el recorrido de usuario y la marca — a la espera de tu validación.</span></div>
+        <div class="rol"><b>Vos</b><span>Decidiste multi-tenant desde el arranque, el portón compartido y el historial de versión.</span></div>
       </div>
+      <p class="nota" style="margin-top:10px;">Programador y DevOps todavía no entraron en escena — arrancan después de <span class="mono">/roadmap</span> y <span class="mono">/specs</span>.</p>
     </div>
     <div class="grid-2 mt">
       <div class="card">
         <h3>Las reglas que cuidan el proyecto</h3>
         <ul class="checks">
-          <li><span class="estado hecho"></span><span><strong>#1</strong> Cada usuario ve solo lo suyo — verificado en la base de producción</span></li>
-          <li><span class="estado hecho"></span><span><strong>#2</strong> Las claves nunca van en el código — están en Vercel</span></li>
-          <li><span class="estado hecho"></span><span><strong>#3</strong> Techo de gasto antes de gastar — 3 capas + tope en la consola</span></li>
-          <li><span class="estado hecho"></span><span><strong>#4</strong> Nada sale hacia afuera sin tu OK — el deploy pasó por tu confirmación</span></li>
-          <li><span class="estado hecho"></span><span><strong>#5</strong> Terminado = 3 verificaciones en verde</span></li>
-          <li><span class="estado hecho"></span><span><strong>#6</strong> Primero el celular</span></li>
+          <li><span class="estado medio"></span><span><strong>#1</strong> Aislamiento de datos por organización — diseñada en <span class="mono">modelo-de-datos.md</span>, sin código todavía que la aplique</span></li>
+          <li><span class="estado medio"></span><span><strong>#2</strong> Claves fuera del código — diseñada en <span class="mono">secretos.md</span>, sin código todavía</span></li>
+          <li><span class="estado"></span><span><strong>#3</strong> Techo de gasto antes de gastar — no aplica, ReleaseView no consume IA</span></li>
+          <li><span class="estado"></span><span><strong>#4</strong> Aprobación humana en efectos hacia afuera — no aplica en el MVP, sin integraciones externas</span></li>
+          <li><span class="estado"></span><span><strong>#5</strong> Terminado = 3 verificaciones en verde — pendiente, todavía no hay código que verificar</span></li>
         </ul>
-        <p class="nota" style="margin-top:8px;">Las seis se aplicaron en el proyecto terminado; la #4 jugó en el deploy de M3.</p>
       </div>
       <div class="card">
         <h3>Últimas decisiones registradas</h3>
         <div class="tabla-scroll"><table>
           <tr><th>Cuándo</th><th>Qué se decidió</th></tr>
-          <tr><td class="fecha">18-ago</td><td>Nombre del producto: «Novolabs — Evaluador de Ideas con IA».</td></tr>
-          <tr><td class="fecha">18-ago</td><td>«Olvidé mi contraseña» y dominio propio quedan fuera del MVP.</td></tr>
-          <tr><td class="fecha">18-ago</td><td>Al registrarse va a «Mis ideas» vacío; techo global con función en la base.</td></tr>
-          <tr><td class="fecha">18-ago</td><td>Stack: Next.js + Vercel + Supabase + Claude Opus 5.</td></tr>
+          <tr><td class="fecha">16-sep</td><td>Se cierran las 2 preguntas abiertas del PRD; se suma historial simple de versión con fecha.</td></tr>
+          <tr><td class="fecha">15-sep</td><td>Stack Next.js + Supabase, portón compartido (una contraseña, sin cuentas individuales).</td></tr>
+          <tr><td class="fecha">14-sep</td><td>Modelo de datos preparado para multi-tenant desde el arranque.</td></tr>
+          <tr><td class="fecha">9-sep</td><td>MVP con carga manual (sin integración automática) y sin login individual.</td></tr>
         </table></div>
         <p class="nota" style="margin-top:8px;">Registro completo con porqués: <span class="mono">DECISIONS.md</span>.</p>
       </div>
@@ -469,20 +452,20 @@
   <section class="panel" id="p-avisos" role="tabpanel" aria-labelledby="tab-avisos">
     <div class="panel-head">
       <h2>Cosas que conviene mirar</h2>
-      <p class="sub">Solo lo vigente. Lo ámbar espera una acción tuya; lo rojo es contexto; lo verde ya está resuelto.</p>
+      <p class="sub">Solo lo vigente. Lo ámbar espera una acción tuya; lo rojo/azul es contexto; lo verde ya está resuelto.</p>
     </div>
     <div class="avisos">
-      <div class="card aviso"><span class="quien">Te toca a vos · seguridad</span><h3>Rotá la clave de la API de Claude</h3><p>La <span class="mono">ANTHROPIC_API_KEY</span> quedó impresa en el log de una sesión (un comando que falló al enmascararla). No está en el repo, pero es una clave viva expuesta: lo prolijo es generar una nueva en console.anthropic.com, revocar la vieja y actualizar la variable en Vercel.</p></div>
-      <div class="card aviso"><span class="quien">Te toca a vos · opcional</span><h3>El costo estimado por evaluación subvalúa a Opus</h3><p>El freno del código topea por cantidad (250 evaluaciones/mes) sobre un costo estimado de USD 0,10 que para Claude Opus 5 es optimista. Quien topea de verdad en dólares es el tope de la consola (que ya seteaste). Si querés que el freno del código también respete los USD 25, subimos ese número.</p></div>
-      <div class="card aviso info"><span class="quien">Contexto · lo que sigue</span><h3>El perfil de cliente es una hipótesis, no un hecho</h3><p>El ICP se definió sin entrevistas. Ahora que la app está online, cada informe que le muestres a un emprendedor real es la forma de validarlo: ¿vuelve a evaluar otra idea?, ¿ejecuta el próximo paso? (pregunta abierta #3 del PRD).</p></div>
-      <div class="card aviso info"><span class="quien">Contexto · post-MVP</span><h3>Lo que quedó afuera a propósito</h3><p>Cobro por evaluación (ancla USD 15), «olvidé mi contraseña», dominio propio, compartir el informe y datos de mercado en vivo. Nada de esto frena el MVP; son decisiones para cuando haya señal de usuarios reales.</p></div>
-      <div class="card aviso ok"><span class="quien">Resuelto</span><h3>La app está publicada y probada</h3><p>Deploy real hecho con tu OK, recorrido §2 verificado de punta a punta en producción, RLS y política de contraseña confirmadas en la base real, y el tope de gasto de Anthropic seteado. Milestone M3 cerrado y archivado.</p></div>
+      <div class="card aviso"><span class="quien">Te toca a vos · orden</span><h3>Nada quedó commiteado todavía</h3><p>El último commit es del 31 de agosto. Desde entonces se sumaron 8 documentos (ICP, Solución, PRD completo y toda la arquitectura) sin guardar en git. Si querés, decime "commiteá esto" y lo guardo con un mensaje claro antes de seguir a <span class="mono">/roadmap</span>.</p></div>
+      <div class="card aviso"><span class="quien">Te toca a vos · validación</span><h3>La paleta y el tono de marca.md son una propuesta, no algo que ya aprobaste</h3><p>El Diseñador de Producto la armó a partir del ICP, pero nadie te la mostró todavía para que la apruebes o pidas cambios. Conviene revisar <span class="mono">docs/arquitectura/marca.md</span> antes de que el Programador empiece a construir pantallas con esos colores.</p></div>
+      <div class="card aviso info"><span class="quien">Contexto · pausa entre sesiones</span><h3>Hubo 5 días sin actividad entre el PRD y la Arquitectura</h3><p>Del 9 al 14 de septiembre no hubo trabajo en el proyecto — normal entre sesiones, no es un bloqueo del sistema.</p></div>
+      <div class="card aviso info"><span class="quien">Contexto · ICP</span><h3>El ICP tiene 3 supuestos marcados a validar</h3><p><span class="mono">docs/icp.md</span> deja anotado qué falta confirmar con más casos reales: si consultora y empresa de software son el mismo perfil, el nivel de consciencia real del cliente, y si el patrón se repite fuera de tu propia experiencia (hoy N=1).</p></div>
+      <div class="card aviso ok"><span class="quien">Resuelto</span><h3>La arquitectura no dejó preguntas abiertas</h3><p>Las 2 preguntas pendientes del PRD (cadencia de cambios e historial de versión) se cerraron el 16 de septiembre — el plan puede arrancar con <span class="mono">/roadmap</span> sin bloqueos.</p></div>
     </div>
     <div class="siguiente"><button class="btn" data-ir="resumen">← Volver al resumen</button></div>
   </section>
 
   <footer>
-    Fuente del estado: no hay plan activo (los tres milestones están en <span class="mono">docs/sdd/roadmaps/archive/</span>) + los registros de sesiones de Claude Code.
+    Fuente del estado: no hay plan activo todavía (<span class="mono">docs/sdd/roadmaps/active/</span> vacío — el próximo paso es <span class="mono">/roadmap</span>) + <span class="mono">docs/prd.md</span>, <span class="mono">docs/arquitectura/</span>, <span class="mono">DECISIONS.md</span> y los registros de sesiones de Claude Code.
     Para actualizar este tablero: <span class="mono">/dashboard</span>.
   </footer>
 </main>

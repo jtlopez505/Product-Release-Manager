@@ -10,10 +10,10 @@
 
 | # | Regla | Dueño |
 |---|---|---|
-| **1** | Si hay datos de más de un usuario, cada dato pertenece a su dueño: ningún usuario puede ver ni tocar lo de otro. | _pendiente — lo completa `/arquitectura` en `docs/arquitectura/modelo-de-datos.md`_ |
-| **2** | Las claves y secretos (API keys, contraseñas) salen de variables de entorno; NUNCA van en el código ni en el repo. | _pendiente — `docs/arquitectura/secretos.md`_ |
-| **3** | Toda llamada a la IA o a un servicio pago tiene un techo de gasto que se chequea ANTES de gastar. | _pendiente — `docs/arquitectura/integraciones-ia.md`_ |
-| **4** | Toda acción con efecto hacia afuera (mandar un mail, cobrar, publicar) pasa por aprobación humana explícita. | _pendiente — `docs/arquitectura/integraciones.md`_ |
+| **1** | Si hay datos de más de un usuario, cada dato pertenece a su dueño: ningún usuario puede ver ni tocar lo de otro. | [`docs/arquitectura/modelo-de-datos.md`](../arquitectura/modelo-de-datos.md) |
+| **2** | Las claves y secretos (API keys, contraseñas) salen de variables de entorno; NUNCA van en el código ni en el repo. | [`docs/arquitectura/secretos.md`](../arquitectura/secretos.md) |
+| **3** | Toda llamada a la IA o a un servicio pago tiene un techo de gasto que se chequea ANTES de gastar. | _no aplica — ReleaseView no consume IA, ver `docs/arquitectura/README.md`_ |
+| **4** | Toda acción con efecto hacia afuera (mandar un mail, cobrar, publicar) pasa por aprobación humana explícita. | _no aplica en el MVP — sin integraciones externas todavía, ver `docs/arquitectura/README.md`_ |
 | **5** | Terminado = las 3 verificaciones en verde, en orden (unitarias+linter → integración → recorrido completo). Nada se cierra sin esto. | [`README.md` § Qué significa "terminado"](README.md) |
 
 **Cuándo aplica cada una:** la #1 si la pieza toca datos de usuarios · la #2 si maneja claves ·

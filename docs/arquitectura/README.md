@@ -8,14 +8,14 @@
 
 | Tema | Documento | Reglas que numera |
 |---|---|---|
-| Stack y deploy | `stack.md` | — |
-| Modelo de datos (y aislamiento entre usuarios) | `modelo-de-datos.md` | #1 |
-| Secretos y claves | `secretos.md` | #2 |
-| Recorrido del usuario | `user-flow.md` | — |
-| Marca: identidad visual y tono | `marca.md` | — |
-| Integraciones con IA + techo de gasto *(si aplica)* | `integraciones-ia.md` | #3 |
-| Integraciones con otros sistemas *(si aplica)* | `integraciones.md` | #4 |
-| Autenticación y permisos *(si aplica)* | `auth-y-permisos.md` | — |
+| Stack y deploy | [`stack.md`](stack.md) | — |
+| Modelo de datos (y aislamiento entre organizaciones) | [`modelo-de-datos.md`](modelo-de-datos.md) | #1 |
+| Secretos y claves | [`secretos.md`](secretos.md) | #2 |
+| Recorrido del usuario | [`user-flow.md`](user-flow.md) | — |
+| Marca: identidad visual y tono | [`marca.md`](marca.md) | — |
+| Integraciones con IA + techo de gasto | *no aplica — ReleaseView no consume ningún modelo de IA; gestiona productos que pueden ser agentes de IA, pero eso no requiere que la app misma llame a un LLM* | #3 |
+| Integraciones con otros sistemas | *no aplica en el MVP — la integración con Azure DevOps/Jira está explícitamente fuera de alcance del MVP (`docs/prd.md` §5); se crea este doc cuando se construya* | #4 |
+| Autenticación y permisos | [`auth-y-permisos.md`](auth-y-permisos.md) — portón compartido (una contraseña), sin cuentas individuales | — |
 | Costo mensual estimado *(lo escribe `/costo`)* | `costos.md` | — |
 | Monitoreo de errores — Sentry *(si se instala, `/instalar-sentry`)* | `sentry.md` | — |
 | Analítica de producto — PostHog *(si se instala, `/instalar-posthog`)* | `posthog.md` | — |
