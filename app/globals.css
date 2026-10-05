@@ -1,31 +1,47 @@
-/* Estilos base mínimos. La identidad visual completa (paleta, escalas) la define
-   docs/arquitectura/marca.md y se aplica cuando lleguen las pantallas (M1-03 en adelante). */
-:root {
-  --fondo: #ffffff;
-  --texto: #171717;
+@import "tailwindcss";
+
+/* Identidad visual de docs/arquitectura/marca.md, declarada UNA sola vez.
+   Regla de la casa: ningún hex suelto en el markup — todo se aplica por estos tokens
+   (`bg-fondo`, `text-texto-secundario`, `font-datos`, ...). Si hace falta un color que
+   marca.md no define, se agrega primero al doc; no se inventa acá.
+
+   Las tipografías ya las carga app/layout.tsx con next/font (Inter e IBM Plex Mono) y
+   publica las variables --fuente-interfaz / --fuente-datos: acá solo se las expone como
+   tokens de tema, no se vuelven a cargar. */
+@theme {
+  /* Paleta (marca.md § Paleta de color) */
+  --color-primario: #1e3a5f; /* acciones, foco */
+  --color-fondo: #f7f8fa; /* fondo base */
+  --color-superficie: #ffffff; /* tarjetas, paneles */
+  --color-texto: #1a1d21; /* texto principal */
+  --color-texto-secundario: #5b6470; /* metadatos, ayuda contextual */
+  --color-exito: #2f6b4f; /* "lo tiene" */
+  --color-alerta: #b5762b; /* "no lo tiene todavía" */
+  --color-error: #b3392e; /* error técnico real */
+
+  /* Tipografía (marca.md § Tipografía) */
+  --font-interfaz: var(--fuente-interfaz), system-ui, sans-serif;
+  --font-datos: var(--fuente-datos), ui-monospace, monospace;
 }
 
-* {
-  box-sizing: border-box;
-}
+@layer base {
+  html,
+  body {
+    min-height: 100%;
+  }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  max-width: 100vw;
-  min-height: 100%;
-}
+  body {
+    /* Herramienta interna de uso diario: fondo neutro, texto de alta legibilidad y
+       densidad real (marca.md) — nada de aire tipo landing page. */
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--font-interfaz);
+    -webkit-font-smoothing: antialiased;
+  }
 
-body {
-  background: var(--fondo);
-  color: var(--texto);
-  font-family: var(--fuente-interfaz), system-ui, sans-serif;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
-
-code,
-.dato {
-  font-family: var(--fuente-datos), ui-monospace, monospace;
+  /* Números de versión e identificadores: monoespaciado para comparar de un vistazo. */
+  code,
+  .dato {
+    font-family: var(--font-datos);
+  }
 }

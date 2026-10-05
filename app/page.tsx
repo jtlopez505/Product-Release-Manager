@@ -2,6 +2,10 @@
  * Página base de M1-01: la prueba de que la app corre en local Y que el camino
  * Next.js → Prisma → Postgres de Supabase está en pie (lee la organización sembrada).
  * El inicio de verdad (versión y features por cliente) lo construye M1-05.
+ *
+ * Desde M1-02 queda detrás del portón: sin sesión válida, el middleware manda a `/ingresar`.
+ * Los estilos pasaron a los tokens de marca (app/globals.css) junto con la llegada de
+ * Tailwind: tenía un gris pegado a mano, y la regla es que ningún hex viva en el markup.
  */
 import { prisma } from "@/lib/prisma";
 
@@ -15,27 +19,17 @@ export default async function Home() {
   });
 
   return (
-    <main
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.75rem",
-        padding: "4rem 1.5rem",
-        maxWidth: "40rem",
-        margin: "0 auto",
-      }}
-    >
-      <h1 style={{ margin: 0, fontSize: "1.75rem" }}>ReleaseView</h1>
-      <p style={{ margin: 0 }}>
-        La base del proyecto está en pie: Next.js corriendo, Prisma conectado a
-        Postgres y las claves fuera del código.
+    <main className="mx-auto flex w-full max-w-2xl flex-col gap-3 px-6 py-10">
+      <h1 className="text-xl font-semibold tracking-tight">ReleaseView</h1>
+      <p className="text-sm">
+        La base del proyecto está en pie: Next.js corriendo, Prisma conectado a Postgres
+        y las claves fuera del código.
       </p>
-      <p style={{ margin: 0 }}>
+      <p className="text-sm">
         Organización: <strong>{organizacion?.name ?? "(ninguna sembrada)"}</strong>
       </p>
-      <p style={{ margin: 0, color: "#52525b" }}>
-        Las pantallas de clientes y features llegan en las piezas siguientes de
-        M1.
+      <p className="text-sm text-texto-secundario">
+        Las pantallas de clientes y features llegan en las piezas siguientes de M1.
       </p>
     </main>
   );
