@@ -56,6 +56,7 @@ const FORMULARIO = readFileSync(
   join(RAIZ, "app", "ingresar", "formulario-de-ingreso.tsx"),
   "utf8",
 );
+const TABLA = readFileSync(join(RAIZ, "app", "features", "tabla-de-features.tsx"), "utf8");
 
 describe("tokens de marca declarados una sola vez", () => {
   it("marca.md define una paleta con las tres tablas nuevas (la prueba no es vacía)", () => {
@@ -135,5 +136,43 @@ describe("“Verificando…” es ocupado, no deshabilitado", () => {
 
   it("el campo de contraseña usa el token de borde de control", () => {
     expect(FORMULARIO).toMatch(/border-borde-control/);
+  });
+});
+
+/**
+ * La primera tabla de la app (M1-03) contra las reglas de interfaz que `marca.md` agregó
+ * justo para esto: densidad, divisores y nada de zebra. Son las que se pierden primero
+ * cuando una pantalla se retoca sin releer el doc.
+ */
+describe("la tabla de la lista maestra sigue las reglas de tabla de marca.md", () => {
+  it("sin filas alternadas (zebra): compite con el hover y con la fila enfocada", () => {
+    expect(TABLA).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+  });
+
+  it("densidad: fila de 40px y encabezado de 36px", () => {
+    expect(TABLA).toMatch(/\bh-10\b/);
+    expect(TABLA).toMatch(/\bh-9\b/);
+  });
+
+  it("encabezado de 12px medium en texto secundario, sin mayúsculas ni letter-spacing", () => {
+    expect(TABLA).toMatch(/text-xs font-medium text-texto-secundario/);
+    expect(TABLA).not.toMatch(/\buppercase\b/);
+    expect(TABLA).not.toMatch(/\btracking-(wide|wider|widest)\b/);
+  });
+
+  it("divisor sutil entre filas y borde marcado al pie del encabezado", () => {
+    expect(TABLA).toMatch(/divide-y divide-borde-sutil/);
+    expect(TABLA).toMatch(/border-b border-borde-marcado/);
+  });
+
+  it("hover solo donde hay clic: la fila navegable lleva hover y cursor-pointer", () => {
+    expect(TABLA).toMatch(/cursor-pointer/);
+    expect(TABLA).toMatch(/hover:bg-hover/);
+    // Con teclado la fila toma el tinte de seleccionada (marca.md § Reglas de interfaz).
+    expect(TABLA).toMatch(/focus-within:bg-seleccionado/);
+  });
+
+  it("el estado se lee como palabra, no solo como color", () => {
+    expect(TABLA).toMatch(/ETIQUETAS_DE_ESTADO\[estado\]/);
   });
 });

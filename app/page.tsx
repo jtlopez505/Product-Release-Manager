@@ -7,6 +7,8 @@
  * Los estilos pasaron a los tokens de marca (app/globals.css) junto con la llegada de
  * Tailwind: tenía un gris pegado a mano, y la regla es que ningún hex viva en el markup.
  */
+import Link from "next/link";
+
 import { prisma } from "@/lib/prisma";
 
 // La organización se lee en cada request: nada de prerender en build, que no tiene base.
@@ -29,8 +31,13 @@ export default async function Home() {
         Organización: <strong>{organizacion?.name ?? "(ninguna sembrada)"}</strong>
       </p>
       <p className="text-sm text-texto-secundario">
-        Las pantallas de clientes y features llegan en las piezas siguientes de M1.
+        Las pantallas de clientes llegan en las piezas siguientes de M1.
       </p>
+      {/* M1-03: hasta que exista la navegación de pestañas (user-flow.md §1, M1-05/M2), este
+          link es cómo se llega a la lista maestra de features. */}
+      <Link href="/features" className="text-sm font-medium text-primario underline">
+        Ver la lista de features
+      </Link>
     </main>
   );
 }
