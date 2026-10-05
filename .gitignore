@@ -29,6 +29,8 @@ npm-debug.log*
 yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
+# Cliente de Prisma generado: artefacto de build, se recrea con `prisma generate` (postinstall).
+prisma/generated/
 
 # === Python (apps/api, services/worker) ===
 __pycache__/

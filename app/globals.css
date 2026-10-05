@@ -1,0 +1,31 @@
+/* Estilos base mínimos. La identidad visual completa (paleta, escalas) la define
+   docs/arquitectura/marca.md y se aplica cuando lleguen las pantallas (M1-03 en adelante). */
+:root {
+  --fondo: #ffffff;
+  --texto: #171717;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+  min-height: 100%;
+}
+
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente-interfaz), system-ui, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+code,
+.dato {
+  font-family: var(--fuente-datos), ui-monospace, monospace;
+}
