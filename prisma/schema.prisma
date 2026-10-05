@@ -1,0 +1,102 @@
+// Schema inicial de ReleaseView — el modelo lo manda docs/arquitectura/modelo-de-datos.md.
+// Regla #1: todo dato de cliente o feature cuelga de una organización (organizationId) desde
+// el día 1, aunque el MVP tenga una sola organización sembrada.
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/client"
+}
+
+// Regla #2: las dos URLs salen de .env (ver docs/arquitectura/secretos.md). Desde Prisma 7 el
+// bloque datasource ya NO admite `url`/`directUrl`; cada connection string se declara donde se usa:
+//   DATABASE_URL -> pooler modo transacción (6543, ?pgbouncer=true), la usa la app -> lib/prisma.ts
+//   DIRECT_URL   -> pooler modo sesión (5432), la usa `prisma migrate`            -> prisma.config.ts
+// (el pooler en modo transacción no soporta las sentencias DDL de las migraciones).
+datasource db {
+  provider = "postgresql"
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  clients  Client[]
+  features Feature[]
+}
+
+model Client {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  name           String
+  currentVersion String
+  notes          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  features       ClientFeature[]
+  versionHistory ClientVersionHistory[]
+
+  @@index([organizationId])
+}
+
+// Una fila por cada cambio de versión (incluida la primera carga) — nunca se edita ni se
+// borra, es el registro de "qué versión tuvo este cliente y desde cuándo".
+model ClientVersionHistory {
+  id         String   @id @default(cuid())
+  clientId   String
+  client     Client   @relation(fields: [clientId], references: [id])
+  version    String
+  recordedAt DateTime @default(now())
+
+  @@index([clientId])
+}
+
+enum Prioridad {
+  ALTA
+  MEDIA
+  BAJA
+}
+
+// Estado del feature en sí (¿existe, se está construyendo, o todavía es un plan?) —
+// NO es si un cliente puntual lo tiene prendido, eso vive en ClientFeature.enabled.
+enum EstadoFeature {
+  DISPONIBLE
+  EN_DESARROLLO
+  PROXIMAMENTE
+}
+
+model Feature {
+  id                  String        @id @default(cuid())
+  organizationId      String
+  organization        Organization  @relation(fields: [organizationId], references: [id])
+  code                String? // ej. "F-020" — el identificador legible del catálogo
+  producto            String? // ej. "IWIA - Nexus Go/Pro" — texto libre, no una tabla propia
+  name                String
+  queHace             String?       @db.Text
+  queProblemaResuelve String?       @db.Text
+  aQuienBeneficia     String?       @db.Text
+  prioridad           Prioridad?
+  estado              EstadoFeature @default(DISPONIBLE)
+  metricaExito        String?       @db.Text
+  observaciones       String?       @db.Text
+  createdAt           DateTime      @default(now())
+
+  clients ClientFeature[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId])
+}
+
+model ClientFeature {
+  clientId  String
+  featureId String
+  enabled   Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+
+  client  Client  @relation(fields: [clientId], references: [id])
+  feature Feature @relation(fields: [featureId], references: [id])
+
+  @@id([clientId, featureId])
+}
