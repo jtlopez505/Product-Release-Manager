@@ -37,6 +37,79 @@ jerga ITIL/CAB — el ICP la rechaza explícitamente, `docs/icp.md` §8).
 azules de framework sin tocar, cualquier "vibrant/gradient mesh" — es lo primero que delata un
 template sin decisiones propias.
 
+**Todos los valores de este documento son de modo claro**, derivados sobre `#FFFFFF`. El MVP no
+tiene modo oscuro y no es una decisión pendiente: si alguna vez se agrega, estos valores se
+recalculan completos.
+
+### Bordes y divisores
+
+| Uso | Color | Hex | Justificación |
+|---|---|---|---|
+| Borde sutil / divisor entre filas | Gris neutro claro | `#E6E8EA` | Separa filas sin dibujar una grilla. |
+| Borde marcado / límite de tarjeta, pie del encabezado de tabla | Gris neutro | `#D6D8DB` | Cierra bloques y ancla el encabezado; un paso por encima del divisor, no dos. |
+| Borde de control (input, select, botón secundario) | Gris medio | `#7E8691` | 3.68:1 sobre superficie — el único borde con mínimo de contraste exigible, porque es lo que identifica dónde se escribe. |
+
+Los dos primeros son decorativos y no tienen mínimo de contraste; el tercero es funcional y por
+eso rompe la escala. **No se usan colores con transparencia para bordes:** el alfa deriva su
+resultado del fondo, así que el mismo divisor cambiaría de valor entre una fila normal, una en
+hover y el encabezado — se lee como inconsistencia justo donde más se nota.
+
+### Estados de interacción
+
+| Uso | Color | Hex | Justificación |
+|---|---|---|---|
+| Hover de fila clickeable y de control secundario | Primario al 8% | `#EDEFF2` | Un solo tinte para todo lo clickeable; escanear una lista larga no debería requerir fijar la vista. |
+| Fila seleccionada / control presionado | Primario al 14% | `#DFE3E9` | Un paso por encima del hover, misma familia: marca "esta es la fila que miro" sin color nuevo. |
+| Primario — hover | Azul petróleo claro | `#27496F` | Aclara en vez de oscurecer: el primario ya es oscuro y bajarlo no se percibe. |
+| Primario — active / presionado | Azul petróleo profundo | `#16293F` | El par del hover hacia abajo; da la sensación de botón hundido. |
+| Anillo de foco (teclado) | = Primario | `#1E3A5F` | 11.50:1 sobre superficie y 8.93:1 sobre la fila seleccionada: visible en todos los fondos de la app sin un token aparte. |
+
+### Semánticos para texto y chips
+
+| Uso | Color | Hex | Justificación |
+|---|---|---|---|
+| Ámbar cuando es **texto** | Ámbar terroso oscuro | `#8F5A1C` | `#B5762B` da 3.76:1 y no alcanza para texto. Mismo tono, un paso más oscuro: 5.76:1. |
+| Fondo de chip — "lo tiene" | Éxito al 10% | `#EAF0ED` | Chip legible sin borde; el verde encima da 5.45:1. |
+| Fondo de chip — "no lo tiene todavía" | Ámbar al 10% | `#F4EFE8` | El ámbar oscuro encima da 5.03:1. |
+| Fondo de chip — error técnico | Error al 10% | `#F7EBEA` | El rojo encima da 5.09:1. |
+| Relleno de skeleton (filas cargando) | = Borde sutil | `#E6E8EA` | Reusa el borde sutil en vez de sumar un token. |
+
+`#B5762B` **no se retira**: sigue siendo el ámbar para puntos de estado, íconos y gráficos, donde
+3.76:1 sí cumple. El cambio aplica solo cuando el ámbar es texto.
+
+## Reglas de interfaz
+
+- **Filas alternadas (zebra): no.** Las tablas del MVP tienen 3-4 columnas; el zebra sirve para
+  seguir la línea en tablas anchas y acá no hay ancho que seguir. Lo que sí hace es competir con
+  el hover y con la fila seleccionada. La densidad se resuelve con divisor de 1px y alto de fila.
+- **Hover solo donde hay clic.** El historial de versiones es registro, no lista navegable: sin
+  hover y sin `cursor-pointer`. Un hover que no lleva a ningún lado es una promesa falsa.
+- **Foco visible, una sola regla global:** `outline: 2px solid #1E3A5F; outline-offset: 2px` en
+  `:focus-visible`, nunca anulada sin reemplazo. El offset es lo que la hace funcionar también
+  sobre el botón primario. Sin transición: instantáneo. En listas, la fila toma el tinte de
+  seleccionada con `:focus-within`, para que recorrer con teclado se vea igual que con mouse.
+- **"Deshabilitado" y "ocupado" son estados distintos.** Deshabilitado: `opacity: .6` y
+  `cursor: not-allowed`. Ocupado (guardando, verificando): **color pleno**, con `aria-busy` y los
+  clics bloqueados — el label comunica estado y el usuario necesita poder leerlo.
+- **Radios:** 6px controles e inputs · 8px tarjetas y paneles · 4px chips · 0 en celdas de tabla.
+- **Elevación:** las tarjetas se delimitan con **borde, no con sombra**. La sombra queda para lo
+  que flota sobre contenido (dropdowns, popovers, confirmaciones):
+  `0 4px 12px -2px rgb(26 29 33 / 0.12)` más borde marcado. Sombra en tarjetas estáticas es el
+  gesto que las hace ver como cards de landing.
+- **Densidad de tabla:** fila 40px (padding 10px vertical / 16px horizontal), encabezado 36px.
+  Celda 14px; encabezado 12px medium en texto secundario, **sin mayúsculas ni letter-spacing** —
+  el header espaciado en mayúsculas es marca de template.
+- **Transiciones:** 120ms ease-out para fondo y borde, nada más. Sin animación de entrada de
+  filas y sin shimmer en diagonal en el skeleton (pulso lento de opacidad) — el shimmer es
+  exactamente el tell que este documento manda evitar.
+- **El color nunca va solo.** "Lo tiene" y "no lo tiene todavía" llevan además glifo o palabra:
+  verde y ámbar se diferencian muy poco en luminancia para quien tiene deuteranopia.
+
+**Supuesto de layout sobre el que se derivaron estos valores:** las tablas viven sobre
+`superficie` (`#FFFFFF`), dentro de un panel con borde, apoyado sobre el `fondo` (`#F7F8FA`). Si
+alguna pantalla usa tabla a sangre directamente sobre el fondo, los divisores hay que
+recalcularlos — `#E6E8EA` sobre `#F7F8FA` casi desaparece.
+
 ## Tipografía
 
 - **Interfaz / texto general:** **Inter** (Google Fonts) — pensada para UI densa de datos,

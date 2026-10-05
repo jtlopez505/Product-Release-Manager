@@ -38,7 +38,7 @@ export default async function Ingresar({
       {/* Tarjeta delimitada con borde y no con sombra (marca.md § Reglas de interfaz): la
           sombra queda para lo que flota sobre contenido. El borde es el token de marca, no
           un color con alfa: el mismo pixel que antes, con nombre propio. */}
-      <div className="rounded-lg border border-borde-sutil bg-superficie p-5">
+      <div className="rounded-lg border border-borde-marcado bg-superficie p-5">
         <FormularioDeIngreso errorInicial={error ? MENSAJE_POR_ERROR[error] : undefined} />
       </div>
 
