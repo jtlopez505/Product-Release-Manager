@@ -7,6 +7,9 @@
  *
  * Correr con: npm run db:seed
  */
+// Primero el entorno (este script corre con tsx, que no lee .env), después el cliente.
+import "../lib/cargar-env";
+
 import { prisma } from "../lib/prisma";
 
 const NOMBRE_POR_DEFECTO = "Organización principal";

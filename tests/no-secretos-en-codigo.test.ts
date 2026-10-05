@@ -19,7 +19,19 @@ import { CLAVES_OBLIGATORIAS } from "../lib/env";
 // nombre de la variable y el archivo donde apareció.
 
 const RAIZ = join(__dirname, "..");
-const EXTENSIONES = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"];
+// Además del código: los .mts de configuración, el schema y los .sql de las migraciones,
+// que también se commitean y también podrían llevar una credencial pegada por error.
+const EXTENSIONES = [
+  ".ts",
+  ".tsx",
+  ".mts",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+  ".prisma",
+  ".sql",
+];
 const DIRECTORIOS_IGNORADOS = new Set([
   "node_modules",
   ".next",

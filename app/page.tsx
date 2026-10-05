@@ -1,8 +1,19 @@
 /**
- * Página base de M1-01: la prueba de que la app corre en local.
+ * Página base de M1-01: la prueba de que la app corre en local Y que el camino
+ * Next.js → Prisma → Postgres de Supabase está en pie (lee la organización sembrada).
  * El inicio de verdad (versión y features por cliente) lo construye M1-05.
  */
-export default function Home() {
+import { prisma } from "@/lib/prisma";
+
+// La organización se lee en cada request: nada de prerender en build, que no tiene base.
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const organizacion = await prisma.organization.findFirst({
+    orderBy: { createdAt: "asc" },
+    select: { name: true },
+  });
+
   return (
     <main
       style={{
@@ -18,6 +29,9 @@ export default function Home() {
       <p style={{ margin: 0 }}>
         La base del proyecto está en pie: Next.js corriendo, Prisma conectado a
         Postgres y las claves fuera del código.
+      </p>
+      <p style={{ margin: 0 }}>
+        Organización: <strong>{organizacion?.name ?? "(ninguna sembrada)"}</strong>
       </p>
       <p style={{ margin: 0, color: "#52525b" }}>
         Las pantallas de clientes y features llegan en las piezas siguientes de

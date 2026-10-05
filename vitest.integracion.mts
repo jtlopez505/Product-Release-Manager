@@ -7,7 +7,7 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["tests/integracion/**/*.test.ts"],
-    setupFiles: ["tests/integracion/cargar-env.ts"],
+    setupFiles: ["lib/cargar-env.ts"],
     hookTimeout: 30_000,
     testTimeout: 30_000,
     fileParallelism: false,
