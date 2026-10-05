@@ -83,8 +83,15 @@ describe("firmarSesion / verificarSesion", () => {
     );
     await expect(verificarSesion(vencimientoFalseado, SECRETO)).resolves.toBe(false);
 
-    // Firma tocada, vencimiento original.
-    const firmaFalseada = [version, expiraEn, `${firma.slice(0, -1)}A`].join(".");
+    // Firma tocada, vencimiento original. El carácter de reemplazo se elige distinto del
+    // original a propósito: fijarlo en "A" hacía fallar la prueba 1 de cada 64 corridas,
+    // cuando la firma ya terminaba en "A" y la "manipulación" no cambiaba nada.
+    const ultimo = firma.slice(-1);
+    const firmaFalseada = [
+      version,
+      expiraEn,
+      `${firma.slice(0, -1)}${ultimo === "A" ? "B" : "A"}`,
+    ].join(".");
     await expect(verificarSesion(firmaFalseada, SECRETO)).resolves.toBe(false);
   });
 
