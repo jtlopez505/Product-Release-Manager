@@ -16,8 +16,29 @@
   --color-texto: #1a1d21; /* texto principal */
   --color-texto-secundario: #5b6470; /* metadatos, ayuda contextual */
   --color-exito: #2f6b4f; /* "lo tiene" */
-  --color-alerta: #b5762b; /* "no lo tiene todavía" */
+  --color-alerta: #b5762b; /* "no lo tiene todavía" — puntos de estado, íconos, gráficos */
   --color-error: #b3392e; /* error técnico real */
+
+  /* Bordes y divisores (marca.md § Bordes y divisores).
+     Valores fijos a propósito: nada de color con transparencia para bordes — el alfa deriva
+     su resultado del fondo, así que el mismo divisor cambiaría de valor entre una fila
+     normal, una en hover y el encabezado. */
+  --color-borde-sutil: #e6e8ea; /* divisor entre filas; también relleno de skeleton */
+  --color-borde-marcado: #d6d8db; /* límite de tarjeta, pie del encabezado de tabla */
+  --color-borde-control: #7e8691; /* input, select, botón secundario — 3.68:1 sobre blanco */
+
+  /* Estados de interacción (marca.md § Estados de interacción).
+     El anillo de foco no tiene token aparte: es el primario (11.50:1 sobre superficie). */
+  --color-hover: #edeff2; /* fila clickeable y control secundario en hover */
+  --color-seleccionado: #dfe3e9; /* fila seleccionada / control presionado */
+  --color-primario-hover: #27496f; /* aclara: el primario ya es oscuro */
+  --color-primario-active: #16293f; /* el par hacia abajo: botón hundido */
+
+  /* Semánticos para texto y chips (marca.md § Semánticos para texto y chips) */
+  --color-alerta-texto: #8f5a1c; /* el ámbar cuando es texto: 5.76:1 (el #b5762b da 3.76:1) */
+  --color-chip-exito: #eaf0ed; /* fondo de chip "lo tiene" */
+  --color-chip-alerta: #f4efe8; /* fondo de chip "no lo tiene todavía" */
+  --color-chip-error: #f7ebea; /* fondo de chip de error técnico */
 
   /* Tipografía (marca.md § Tipografía) */
   --font-interfaz: var(--fuente-interfaz), system-ui, sans-serif;
@@ -37,6 +58,15 @@
     color: var(--color-texto);
     font-family: var(--font-interfaz);
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Foco visible, UNA sola regla global (marca.md § Reglas de interfaz): nunca anulada sin
+     reemplazo. El offset es lo que la hace funcionar también sobre el botón primario, donde
+     un outline pegado al borde se perdería contra el relleno oscuro. Sin transición: el foco
+     es instantáneo — por eso ningún control transiciona `outline`. */
+  :focus-visible {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
   }
 
   /* Números de versión e identificadores: monoespaciado para comparar de un vistazo. */

@@ -4,8 +4,9 @@ import { useState } from "react";
 
 /**
  * El formulario del portón y sus tres estados (ficha M1-02 §4):
- *   - Carga: mientras el servidor verifica, el botón queda deshabilitado y lo dice (evita
- *     el doble envío).
+ *   - Carga: mientras el servidor verifica, el botón pasa a "ocupado" — lo dice en el label,
+ *     en color pleno, con los clics bloqueados (evita el doble envío). Ocupado no es
+ *     deshabilitado: no se atenúa, porque el label es justo lo que hay que poder leer.
  *   - Error: contraseña incorrecta → mensaje en la misma pantalla, sin redirigir.
  *   - Vacío: no aplica — esta pantalla siempre muestra el mismo formulario fijo.
  *
@@ -69,6 +70,10 @@ export function FormularioDeIngreso({
         <label htmlFor="contrasena" className="text-sm font-medium">
           Contraseña
         </label>
+        {/* Borde de control de marca.md (3.68:1): es lo que identifica dónde se escribe, así
+            que es el único borde con mínimo de contraste exigible. El foco lo pinta la regla
+            global de `:focus-visible` (app/globals.css) — por eso acá no se anula el outline
+            ni se dibuja un anillo propio. */}
         <input
           id="contrasena"
           name="contrasena"
@@ -78,7 +83,7 @@ export function FormularioDeIngreso({
           required
           aria-invalid={error.length > 0}
           aria-describedby={error ? "error-de-ingreso" : undefined}
-          className="rounded-md border border-texto-secundario/25 bg-superficie px-3 py-2 text-sm outline-none focus:border-primario focus:ring-2 focus:ring-primario/25 disabled:opacity-60"
+          className="rounded-md border border-borde-control bg-superficie px-3 py-2 text-sm focus:border-primario"
           disabled={verificando}
         />
       </div>
@@ -89,10 +94,18 @@ export function FormularioDeIngreso({
         </p>
       ) : null}
 
+      {/* "Verificando…" es OCUPADO, no deshabilitado (marca.md § Reglas de interfaz): color
+          pleno, `aria-busy` y los clics bloqueados. El label comunica el estado y el usuario
+          necesita poder leerlo — atenuarlo lo dejaba en 3.57:1. La opacidad queda reservada
+          para controles realmente deshabilitados. Hover y active salen de los tokens del
+          primario: aclarar/oscurecer el relleno, nunca bajar la opacidad del botón entero.
+          La transición es solo de fondo (120ms ease-out) para no demorar el outline de foco,
+          que es instantáneo. */}
       <button
         type="submit"
         disabled={verificando}
-        className="rounded-md bg-primario px-3 py-2 text-sm font-medium text-superficie transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primario disabled:cursor-not-allowed disabled:opacity-60"
+        aria-busy={verificando}
+        className="rounded-md bg-primario px-3 py-2 text-sm font-medium text-superficie transition-[background-color] duration-[120ms] ease-out hover:bg-primario-hover active:bg-primario-active"
       >
         {verificando ? "Verificando…" : "Entrar"}
       </button>
