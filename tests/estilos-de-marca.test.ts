@@ -176,3 +176,62 @@ describe("la tabla de la lista maestra sigue las reglas de tabla de marca.md", (
     expect(TABLA).toMatch(/ETIQUETAS_DE_ESTADO\[estado\]/);
   });
 });
+
+/**
+ * El formulario de cliente (M1-04) contra las reglas de `marca.md` que le tocan: la densidad
+ * del checklist de features, el hover solo donde hay clic, la versión en monoespaciada y
+ * "ocupado" sin atenuar nada. Los scans de arriba ya cubren hex sueltos, bordes con alfa,
+ * sombras y outline anulado en todo `app/`.
+ */
+const FORMULARIO_DE_CLIENTE = readFileSync(
+  join(RAIZ, "app", "clientes", "formulario-de-cliente.tsx"),
+  "utf8",
+);
+
+describe("el formulario de cliente sigue las reglas de interfaz de marca.md", () => {
+  it("la versión activa se escribe en monoespaciada (se compara de un vistazo)", () => {
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/name="currentVersion"[\s\S]*?font-datos/);
+  });
+
+  it("el checklist mantiene la densidad de una lista de trabajo (filas de 36px)", () => {
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/\bh-9\b/);
+  });
+
+  it("sin filas alternadas: el zebra competiría con el hover", () => {
+    expect(FORMULARIO_DE_CLIENTE).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+  });
+
+  it("hover solo donde hay clic: la fila del checklist tildea, así que lo lleva", () => {
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/cursor-pointer/);
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/hover:bg-hover/);
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/focus-within:bg-seleccionado/);
+  });
+
+  it("divisor sutil entre filas del checklist y borde marcado al límite del panel", () => {
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/divide-y divide-borde-sutil/);
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/border border-borde-marcado/);
+  });
+
+  it("los campos usan el token de borde de control", () => {
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/border border-borde-control/);
+  });
+
+  it("guardar es ocupado, no deshabilitado: aria-busy y nada atenuado", () => {
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/aria-busy=\{guardando\}/);
+    expect(FORMULARIO_DE_CLIENTE).not.toMatch(/disabled:opacity/);
+    expect(FORMULARIO_DE_CLIENTE).not.toMatch(/hover:opacity-/);
+  });
+
+  it("el botón primario usa los tokens de hover y active", () => {
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/hover:bg-primario-hover/);
+    expect(FORMULARIO_DE_CLIENTE).toMatch(/active:bg-primario-active/);
+  });
+
+  it("las transiciones son solo de fondo, 120ms ease-out", () => {
+    const transiciones = FORMULARIO_DE_CLIENTE.match(/transition-\[[^\]]+\]/g) ?? [];
+    expect(transiciones.length).toBeGreaterThan(0);
+    for (const transicion of transiciones) {
+      expect(transicion).toBe("transition-[background-color]");
+    }
+  });
+});
