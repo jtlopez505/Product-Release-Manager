@@ -78,8 +78,14 @@ Formato mínimo por entrada: qué decisión, por qué, alternativa rechazada, co
 - **Alternativa rechazada:** <qué se descartó y por qué>
 - **Constraint / consecuencia:** <restricción que esto impone hacia adelante>
 
-## 2026-01-15: Usar Redis para cachear preferencias de usuario
-- **Decisión:** cachear las preferencias de usuario en Redis.
-- **Razón:** alta frecuencia de lectura (cada llamada de API), datos chicos.
-- **Alternativa rechazada:** vista materializada en PostgreSQL — la alta frecuencia de cambio no justifica el costo de mantenimiento.
-- **Constraint:** TTL de cache de 5 minutos, invalidación activa al escribir.
+## 2026-10-05: Convivir con las 9 vulnerabilidades *high* del scaffold
+- **Decisión:** no correr `npm audit fix --force` ni degradar dependencias. Las 9 advertencias quedan documentadas y se revisan cuando Prisma y Next publiquen las transitivas parcheadas.
+- **Razón:** las 9 trazan a dos raíces y ninguna es alcanzable en esta app. (a) `braces`/`micromatch`/`fast-glob` entran por `eslint-config-next`: es el linter, lo corremos nosotros sobre nuestros propios archivos. (b) `mysql2` y `deepmerge-ts` entran por `@prisma/client` → `prisma`: `mysql2` nunca se importa (usamos `@prisma/adapter-pg` contra Postgres) y `deepmerge-ts` solo mergea nuestro propio `prisma.config.ts`, no input de terceros. Las dos son DoS por agotamiento de stack con input que acá no existe.
+- **Alternativa rechazada:** `npm audit fix --force` — degrada `prisma` a 6.19.3 y `eslint-config-next` a 14.2.35. El primero rompe el setup de Prisma 7 que acabamos de verificar en verde; el segundo nos deja el linter de Next 14 contra Next 16. El remedio es peor que la enfermedad.
+- **Constraint:** revisar de nuevo antes de `/deploy` y cada vez que se actualice Prisma o Next. Si alguna vez se agrega una conexión MySQL o se mergean configs de terceros, la evaluación cambia y hay que rehacerla.
+
+## 2026-10-05: Tailwind CSS como herramienta de estilos
+- **Decisión:** implementar la paleta y tipografía de `marca.md` con Tailwind CSS, declarando los colores como tokens de tema en `app/globals.css`. Lo instala y configura M1-02 (la primera pieza con pantalla).
+- **Razón:** el riesgo que marcó el Diseñador es que la app termine pareciendo un prototipo, y eso casi siempre se reduce a espaciado y densidad inconsistentes entre pantallas. Tailwind vuelve esos valores explícitos y difíciles de desalinear, y es además lo que el agente escribe más rápido y más parejo.
+- **Alternativa rechazada:** CSS Modules (ya viene en Next, cero dependencias) — buena opción, pero deja la consistencia de espaciado librada a la disciplina y no a la herramienta, que es justo el punto débil acá. CSS plano — sin aislamiento de estilos, los nombres de clase empiezan a chocar a medida que crecen las pantallas.
+- **Constraint:** los colores de `marca.md` se declaran UNA vez como tokens; ningún hex suelto en el markup. Si un color no está en `marca.md`, no se inventa: se agrega primero al doc.

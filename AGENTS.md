@@ -1,13 +1,19 @@
-# <Nombre del proyecto>
+# ReleaseView
 
 ## Overview
-<Una o dos oraciones que dejen claro QUÉ es esto.>
-Stack: <ej. Next.js + Vercel>.
+Panel interno que centraliza, cliente por cliente, qué versión y qué features tiene activos cada
+instalación del producto — para responder en el momento y armar la lista de despliegue en minutos.
+Stack: Next.js (App Router) + Supabase (Postgres) + Prisma, desplegado en Vercel.
 
 ## Quick Start
-- Instalar: `<npm install | ...>`
-- Levantar en dev: `<npm run dev | ...>`
-- **Verificación completa: `<npm test && npm run lint | make check>`**
+- Instalar: `npm install`
+- Levantar en dev: `npm run dev` (la app queda en `http://localhost:3000`)
+- **Verificación completa: `npm run check`** (typecheck + tests + linter)
+- Integración (necesita la base real de Supabase): `npm run test:integracion`
+- Base de datos: `npm run db:migrate` (migrar) · `npm run db:seed` (sembrar) · `npm run db:studio` (ver datos)
+
+Las claves van en `.env` en la raíz (NO `.env.local`: el CLI de Prisma solo lee `.env`). Son
+cuatro — ver [`docs/arquitectura/secretos.md`](docs/arquitectura/secretos.md).
 
 ## Las reglas del proyecto
 Las reglas innegociables, numeradas y citables por `#<n>`, viven en `docs/sdd/constitucion.md`.

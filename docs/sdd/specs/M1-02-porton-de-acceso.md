@@ -75,5 +75,10 @@ acceso todavía — cualquiera que entre a la URL ve la app directo.
 - **Entregables:** pantalla `/ingresar` (ruta nueva), endpoint de verificación de contraseña,
   middleware de Next.js que protege el resto de las rutas, utilidad de firma/verificación de la
   cookie de sesión.
+- **Esta pieza instala y configura Tailwind CSS**, por ser la primera con pantalla (ver
+  [`stack.md`](../../arquitectura/stack.md) y `DECISIONS.md`, 2026-10-05). Los colores y la
+  tipografía de [`marca.md`](../../arquitectura/marca.md) se declaran como tokens de tema en
+  `app/globals.css`; ningún hex suelto en el markup. Si un color hace falta y no está en
+  `marca.md`, no se inventa: se agrega primero al doc.
 - **Diseño y alcance no se deciden acá:** el cómo va a `docs/arquitectura/auth-y-permisos.md` y
   `docs/arquitectura/secretos.md`; el si entra o no, a `docs/prd.md`.

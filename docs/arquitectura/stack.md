@@ -19,6 +19,11 @@
 - **Acceso a la base de datos desde el código:** [Prisma](https://www.prisma.io/) — define las
   tablas en un archivo legible y genera las consultas ya tipadas, para que sea más difícil
   introducir errores al leer o escribir datos.
+- **Estilos de las pantallas:** [Tailwind CSS](https://tailwindcss.com/) — la paleta y la
+  tipografía de [`marca.md`](marca.md) se definen una sola vez como tokens y después se aplican
+  desde el markup. Se eligió por consistencia: el riesgo que marcó el Diseñador es que la app
+  "parezca un prototipo", y eso casi siempre es espaciado y densidad desparejos — con tokens
+  explícitos es mucho más difícil desalinearlos.
 - **Deploy:** [Vercel](https://vercel.com/) para la app (conecta directo al repo de GitHub: cada
   cambio publicado se despliega solo) y Supabase aloja la base de datos. Los dos tienen plan
   gratuito que alcanza sin problema para el volumen del MVP (un puñado de clientes internos
@@ -49,5 +54,9 @@ un plan pago.
   deploy automático en cada push a `main`).
 - Prisma como ORM contra Postgres de Supabase (`DATABASE_URL` — ver
   [`secretos.md`](secretos.md)).
+- Tailwind CSS para los estilos. Los colores de [`marca.md`](marca.md) se declaran como tokens de
+  tema en `app/globals.css` (no sueltos en el markup), y las tipografías ya cargadas (Inter e IBM
+  Plex Mono) se exponen por el mismo camino. **Lo instala y configura M1-02**, que es la primera
+  pieza con pantalla (el login) — no M1-03.
 - Sin colas, sin jobs en background, sin websockets: el MVP es CRUD + lectura filtrada, no
   necesita infraestructura adicional.

@@ -17,9 +17,9 @@ M1 — sin esto, no hay dónde escribir código ni dónde guardar datos.
 | 2 | Existe un proyecto Supabase (Postgres) creado para ReleaseView | El `DATABASE_URL` de ese proyecto está disponible (en `.env.local`) y Prisma puede conectarse con él |
 | 3 | El schema inicial de Prisma (`Organization`, `Client`, `Feature`, `ClientFeature`, `ClientVersionHistory`, según `modelo-de-datos.md`) está migrado contra Supabase | `npx prisma migrate dev` (o `db push`) corre sin error y las tablas quedan creadas — verificable con `npx prisma studio` o una consulta directa |
 | 4 | Hay al menos una organización sembrada | Después de migrar, una consulta a `Organization` devuelve una fila (seed), lista para que las piezas siguientes (M1-03/M1-04) cuelguen sus datos ahí |
-| 5 | Las tres claves (`DATABASE_URL`, `APP_PASSWORD`, `SESSION_SECRET`) viven en `.env.local`, fuera del código y fuera de git | `.env.local` existe con las tres claves, `.gitignore` lo excluye, y `git status` / `git check-ignore .env.local` confirma que no se trackea |
+| 5 | Las cuatro claves (`DATABASE_URL`, `DIRECT_URL`, `APP_PASSWORD`, `SESSION_SECRET`) viven en `.env`, fuera del código y fuera de git | `.env` existe con las cuatro claves, `.gitignore` lo excluye, y `git check-ignore .env` confirma que no se trackea |
 | 6 | **(no debe pasar)** ningún secreto queda escrito en el código | Buscar en el repo (`grep` sobre `.ts`/`.tsx`/`.js`) la connection string, `APP_PASSWORD` o `SESSION_SECRET` en texto literal no debe dar resultados — solo deben aparecer como `process.env.<NOMBRE>` |
-| 7 | **(no debe pasar)** la app no arranca en silencio si falta una variable obligatoria | Borrando `DATABASE_URL` del `.env.local` y corriendo `npm run dev` (o cualquier operación que use Prisma), el fallo es explícito (error claro en consola), no un cuelgue silencioso ni una página en blanco sin pista del problema |
+| 7 | **(no debe pasar)** la app no arranca en silencio si falta una variable obligatoria | Borrando `DATABASE_URL` del `.env` y corriendo `npm run dev` (o cualquier operación que use Prisma), el fallo es explícito (error claro en consola), no un cuelgue silencioso ni una página en blanco sin pista del problema |
 
 ## 3. Qué queda afuera
 
@@ -35,8 +35,8 @@ M1 — sin esto, no hay dónde escribir código ni dónde guardar datos.
 - **#1** — el schema de Prisma ya incluye `organizationId` en `Client` y `Feature` desde esta
   pieza (aunque todavía no haya pantallas que lo usen), para que M1-03/04 no tengan que migrar
   el aislamiento por organización más adelante.
-- **#2** — las tres claves (`DATABASE_URL`, `APP_PASSWORD`, `SESSION_SECRET`) salen de
-  `.env.local` desde el arranque del proyecto, nunca del código; esta pieza deja el patrón
+- **#2** — las cuatro claves (`DATABASE_URL`, `DIRECT_URL`, `APP_PASSWORD`, `SESSION_SECRET`)
+  salen de `.env` desde el arranque del proyecto, nunca del código; esta pieza deja el patrón
   (`.gitignore`, `process.env.*`) instalado para que todas las piezas siguientes lo hereden.
 
 ---
@@ -53,7 +53,7 @@ M1 — sin esto, no hay dónde escribir código ni dónde guardar datos.
   vacío antes de cerrar.
 - **Entregables:** proyecto Next.js inicial (`package.json`, `app/page.tsx` con una página base
   mínima, `tsconfig.json`), `prisma/schema.prisma` con el modelo inicial de
-  `modelo-de-datos.md`, script o archivo de seed para la organización inicial, `.env.local` con
-  las tres claves (no commiteado) y `.gitignore` actualizado.
+  `modelo-de-datos.md`, script o archivo de seed para la organización inicial, `.env` con
+  las cuatro claves (no commiteado) y `.gitignore` actualizado.
 - **Diseño y alcance no se deciden acá:** el cómo va a su doc de `docs/arquitectura/` (`stack.md`,
   `secretos.md`, `modelo-de-datos.md`); el si entra o no, a `docs/prd.md`.
