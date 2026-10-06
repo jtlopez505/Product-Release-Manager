@@ -44,7 +44,7 @@ Si eso corre de punta a punta **una vez** — con datos cargados a mano, sin int
 **Por qué segundo:** usa los mismos datos de M1 desde el otro ángulo — resuelve la segunda pregunta de negocio del ICP.
 
 **Está terminado cuando:**
-- [ ] Se puede elegir un feature y ver qué clientes lo tienen activo y cuáles no.
+- [x] Se puede elegir un feature y ver qué clientes lo tienen activo y cuáles no.
 
 ### M3 — Lista de despliegue para un release
 

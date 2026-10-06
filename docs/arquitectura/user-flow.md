@@ -22,8 +22,10 @@ Lo primero que se ve al entrar: la lista de clientes cargados, con su versión a
 la misma fila (sin tener que abrir cada uno). Acción principal, siempre visible: **"+ Agregar
 cliente"**. Buscador simple por nombre, útil apenas hay más de ~10 clientes.
 
-Navegación de nivel superior: dos pestañas — **"Por cliente"** (esta vista) / **"Por feature"**
-(§3) — cambiar de ángulo de consulta es un clic.
+Navegación de nivel superior: tres pestañas — **"Por cliente"** (esta vista) / **"Por feature"**
+(§4) / **"Lista de release"** (§5) — cambiar de ángulo de consulta es un clic. La tercera llega
+con M3: la lista de release no tiene otra entrada posible y es el momento de mayor uso del ICP,
+así que va en el mismo nivel que las otras dos.
 
 - **Estado vacío** (sin clientes todavía): "Todavía no cargaste ningún cliente." + el botón
 "+ Agregar cliente" como única acción.
