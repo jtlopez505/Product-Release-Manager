@@ -7,9 +7,13 @@
  * otra organización no devuelve nada y la ruta responde 404 — se comporta como si no
  * existiera, sin confirmar que ese id exista en otra parte.
  *
- * También es el destino después de guardar (`?guardado=1`): muestra la confirmación con los
- * datos ya persistidos. El redirigido a la Vista de cliente completa, con el historial
- * visible, lo agrega M1-05.
+ * Se llega desde el botón "Editar" de la Vista de cliente, y al guardar se vuelve ahí con la
+ * confirmación (`user-flow.md` §2 y §3). Por eso esta pantalla ya no muestra el "Cliente
+ * guardado.": el destino del guardado es la Vista, que es donde se ve el resultado completo
+ * —versión, features e historial— y no solo el formulario de nuevo.
+ *
+ * Sin navegación de pestañas a propósito (ver `app/navegacion.tsx`): salir de un formulario
+ * por un link costaría lo tipeado. La salida es "Cancelar", que pregunta antes de descartar.
  */
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -31,13 +35,10 @@ export const dynamic = "force-dynamic";
 
 export default async function EditarCliente({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ guardado?: string }>;
 }): Promise<React.ReactElement> {
   const { id } = await params;
-  const { guardado } = await searchParams;
 
   let cliente;
   let features;
@@ -72,16 +73,6 @@ export default async function EditarCliente({
           Versión activa: <span className="font-datos">{cliente.currentVersion}</span>
         </p>
       </div>
-
-      {guardado ? (
-        /* El color nunca va solo (marca.md): el chip lleva la palabra. */
-        <p
-          role="status"
-          className="rounded-md bg-chip-exito px-3 py-2 text-sm text-exito"
-        >
-          {MENSAJES_DE_CLIENTE.guardado}
-        </p>
-      ) : null}
 
       <FormularioDeCliente cliente={cliente} features={features.map(opcionDeFeature)} />
     </main>

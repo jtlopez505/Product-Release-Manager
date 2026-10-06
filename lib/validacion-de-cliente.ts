@@ -18,9 +18,18 @@ export const MENSAJES_DE_CLIENTE = {
   noExiste: "Ese cliente ya no existe.",
   guardadoFallido: "No se pudo guardar el cliente. Probá de nuevo.",
   cargaFallida: "No se pudo cargar el cliente.",
+  listaFallida: "No se pudo cargar la lista de clientes.",
   sinFeatures: "Todavía no hay features cargados.",
+  sinClientes: "Todavía no cargaste ningún cliente.",
+  sinFeaturesDelCliente: "Este cliente todavía no tiene features cargados.",
   guardado: "Cliente guardado.",
   descartarCambios: "Hay cambios sin guardar. Si salís ahora se descartan.",
+} as const;
+
+/** Los dos grupos de features de la Vista de cliente (ficha M1-05, criterio #4). */
+export const ETIQUETAS_DE_HABILITACION = {
+  habilitados: "Habilitados",
+  noHabilitados: "No habilitados todavía",
 } as const;
 
 /** Etiquetas visibles, con el vocabulario del ICP (marca.md § Voz y tono, punto 2). */

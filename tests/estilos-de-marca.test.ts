@@ -235,3 +235,150 @@ describe("el formulario de cliente sigue las reglas de interfaz de marca.md", ()
     }
   });
 });
+
+/**
+ * Las pantallas de consulta de M1-05 (Inicio, Vista de cliente y la navegación) contra las
+ * reglas de `marca.md` que les tocan. Dos son específicas de esta pieza y el doc las nombra
+ * con nombre y apellido:
+ *   - **"Hover solo donde hay clic. El historial de versiones es registro, no lista
+ *     navegable: sin hover y sin `cursor-pointer`"** — la lista de clientes sí es navegable,
+ *     el historial y los features del cliente no.
+ *   - **Las versiones en monoespaciada**, que es para lo que se eligió IBM Plex Mono:
+ *     comparar versiones entre filas de un vistazo.
+ * Los scans de arriba ya cubren hex sueltos, bordes con alfa, sombras y outline anulado en
+ * todo `app/`.
+ */
+const TABLA_DE_CLIENTES = readFileSync(join(RAIZ, "app", "tabla-de-clientes.tsx"), "utf8");
+const HISTORIAL = readFileSync(
+  join(RAIZ, "app", "clientes", "[id]", "historial-de-versiones.tsx"),
+  "utf8",
+);
+const FEATURES_DEL_CLIENTE = readFileSync(
+  join(RAIZ, "app", "clientes", "[id]", "features-del-cliente.tsx"),
+  "utf8",
+);
+const VISTA_DE_CLIENTE = readFileSync(
+  join(RAIZ, "app", "clientes", "[id]", "page.tsx"),
+  "utf8",
+);
+const NAVEGACION = readFileSync(join(RAIZ, "app", "navegacion.tsx"), "utf8");
+
+describe("la lista de clientes de Inicio sigue las reglas de tabla de marca.md", () => {
+  it("sin filas alternadas (zebra)", () => {
+    expect(TABLA_DE_CLIENTES).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+  });
+
+  it("densidad: fila de 40px y encabezado de 36px", () => {
+    expect(TABLA_DE_CLIENTES).toMatch(/\bh-10\b/);
+    expect(TABLA_DE_CLIENTES).toMatch(/\bh-9\b/);
+  });
+
+  it("encabezado de 12px medium en texto secundario, sin mayúsculas ni letter-spacing", () => {
+    expect(TABLA_DE_CLIENTES).toMatch(/text-xs font-medium text-texto-secundario/);
+    expect(TABLA_DE_CLIENTES).not.toMatch(/\buppercase\b/);
+    expect(TABLA_DE_CLIENTES).not.toMatch(/\btracking-(wide|wider|widest)\b/);
+  });
+
+  it("divisor sutil entre filas y borde marcado al pie del encabezado", () => {
+    expect(TABLA_DE_CLIENTES).toMatch(/divide-y divide-borde-sutil/);
+    expect(TABLA_DE_CLIENTES).toMatch(/border-b border-borde-marcado/);
+  });
+
+  it("hover solo donde hay clic: la fila abre la Vista, así que lo lleva", () => {
+    expect(TABLA_DE_CLIENTES).toMatch(/cursor-pointer/);
+    expect(TABLA_DE_CLIENTES).toMatch(/hover:bg-hover/);
+    expect(TABLA_DE_CLIENTES).toMatch(/focus-within:bg-seleccionado/);
+  });
+
+  it("la versión activa va en monoespaciada (se compara entre filas de un vistazo)", () => {
+    expect(TABLA_DE_CLIENTES).toMatch(/font-datos/);
+  });
+
+  it("las transiciones son solo de fondo, 120ms ease-out", () => {
+    const transiciones = TABLA_DE_CLIENTES.match(/transition-\[[^\]]+\]/g) ?? [];
+    expect(transiciones.length).toBeGreaterThan(0);
+    for (const transicion of transiciones) {
+      expect(transicion).toBe("transition-[background-color]");
+    }
+  });
+});
+
+describe("el historial de versiones es registro, no lista navegable (marca.md)", () => {
+  it("sin hover y sin cursor-pointer: un hover que no lleva a ningún lado es promesa falsa", () => {
+    expect(HISTORIAL).not.toMatch(/hover:/);
+    expect(HISTORIAL).not.toMatch(/cursor-pointer/);
+  });
+
+  it("tampoco se anima: sin transiciones en las filas del registro", () => {
+    expect(HISTORIAL).not.toMatch(/transition-/);
+  });
+
+  it("la versión de cada fila va en monoespaciada", () => {
+    expect(HISTORIAL).toMatch(/font-datos/);
+  });
+
+  it("densidad de tabla: fila 40px, encabezado 36px, sin zebra", () => {
+    expect(HISTORIAL).toMatch(/\bh-10\b/);
+    expect(HISTORIAL).toMatch(/\bh-9\b/);
+    expect(HISTORIAL).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+  });
+
+  it("encabezado de 12px medium en texto secundario, sin mayúsculas ni letter-spacing", () => {
+    expect(HISTORIAL).toMatch(/text-xs font-medium text-texto-secundario/);
+    expect(HISTORIAL).not.toMatch(/\buppercase\b/);
+    expect(HISTORIAL).not.toMatch(/\btracking-(wide|wider|widest)\b/);
+  });
+
+  it("divisor sutil entre filas y borde marcado al pie del encabezado", () => {
+    expect(HISTORIAL).toMatch(/divide-y divide-borde-sutil/);
+    expect(HISTORIAL).toMatch(/border-b border-borde-marcado/);
+  });
+});
+
+describe("los features del cliente: dos grupos, sin prometer clic", () => {
+  it("sin hover ni cursor-pointer: las filas no llevan a ninguna parte", () => {
+    expect(FEATURES_DEL_CLIENTE).not.toMatch(/hover:/);
+    expect(FEATURES_DEL_CLIENTE).not.toMatch(/cursor-pointer/);
+  });
+
+  it("el color nunca va solo: cada grupo dice la palabra", () => {
+    expect(FEATURES_DEL_CLIENTE).toMatch(/ETIQUETAS_DE_HABILITACION\.habilitados/);
+    expect(FEATURES_DEL_CLIENTE).toMatch(/ETIQUETAS_DE_HABILITACION\.noHabilitados/);
+  });
+
+  it("el ámbar como texto usa el tono oscuro (el de puntos de estado no se lee)", () => {
+    expect(FEATURES_DEL_CLIENTE).toMatch(/text-alerta-texto/);
+    // El token pelado `text-alerta` es el ámbar de 3.76:1: no alcanza para texto.
+    expect(FEATURES_DEL_CLIENTE).not.toMatch(/text-alerta(?!-texto)/);
+  });
+
+  it("densidad: encabezado de grupo 36px, fila 40px, divisor sutil, sin zebra", () => {
+    expect(FEATURES_DEL_CLIENTE).toMatch(/\bh-9\b/);
+    expect(FEATURES_DEL_CLIENTE).toMatch(/\bh-10\b/);
+    expect(FEATURES_DEL_CLIENTE).toMatch(/divide-y divide-borde-sutil/);
+    expect(FEATURES_DEL_CLIENTE).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+  });
+});
+
+describe("el encabezado de la Vista de cliente y la navegación", () => {
+  it("la versión activa se destaca en monoespaciada", () => {
+    expect(VISTA_DE_CLIENTE).toMatch(/font-datos text-lg/);
+  });
+
+  it("la tarjeta del encabezado se delimita con borde (el scan de sombras ya corre)", () => {
+    expect(VISTA_DE_CLIENTE).toMatch(/border border-borde-marcado/);
+  });
+
+  it("la pestaña activa se marca con aria-current, no solo con color", () => {
+    expect(NAVEGACION).toMatch(/aria-current=\{activa \? "page" : undefined\}/);
+    expect(NAVEGACION).toMatch(/bg-seleccionado/);
+  });
+
+  it("la navegación transiciona solo el fondo, 120ms ease-out", () => {
+    const transiciones = NAVEGACION.match(/transition-\[[^\]]+\]/g) ?? [];
+    expect(transiciones.length).toBeGreaterThan(0);
+    for (const transicion of transiciones) {
+      expect(transicion).toBe("transition-[background-color]");
+    }
+  });
+});

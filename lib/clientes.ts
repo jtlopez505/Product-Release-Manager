@@ -53,6 +53,21 @@ export type FilaDeHistorial = {
   recordedAt: Date;
 };
 
+/** Una fila de la lista de Inicio: lo que se ve sin abrir el detalle (ficha M1-05, #1). */
+export type FilaDeListaDeClientes = {
+  id: string;
+  name: string;
+  currentVersion: string;
+};
+
+/** El encabezado de la Vista de cliente (ficha M1-05, #3). */
+export type ClienteParaVista = {
+  id: string;
+  name: string;
+  currentVersion: string;
+  notes: string | null;
+};
+
 /** Cualquiera de los dos clientes de Prisma: el de siempre o el de dentro de una transacción. */
 type ClientePrisma = Pick<typeof prisma, "feature">;
 
@@ -76,6 +91,40 @@ async function featuresSonDeLaOrganizacion(
     where: { organizationId, id: { in: featureIds } },
   });
   return encontrados === featureIds.length;
+}
+
+/**
+ * Los clientes de esta organización, ordenados como se leen: por nombre.
+ *
+ * Trae la versión activa en la misma fila (criterio #1 de M1-05): la pregunta "qué versión
+ * tiene cada cliente" se responde sin abrir ninguno. Regla #1: el `where` lleva
+ * `organizationId` siempre — es la consulta donde una fuga sería más visible.
+ */
+export async function listarClientesDeOrganizacion(
+  organizationId: string,
+): Promise<FilaDeListaDeClientes[]> {
+  return prisma.client.findMany({
+    where: { organizationId },
+    select: { id: true, name: true, currentVersion: true },
+    orderBy: [{ name: "asc" }],
+  });
+}
+
+/**
+ * Un cliente de esta organización para su Vista (si no es de ella, `null`).
+ *
+ * Mismo criterio que la edición (regla #1, criterio #7 de M1-05): un id de otra
+ * organización devuelve `null` y la pantalla responde 404 — se comporta como si el cliente
+ * no existiera, sin confirmar que ese id exista en otra parte.
+ */
+export async function obtenerClienteParaVista(
+  organizationId: string,
+  id: string,
+): Promise<ClienteParaVista | null> {
+  return prisma.client.findFirst({
+    where: { id, organizationId },
+    select: { id: true, name: true, currentVersion: true, notes: true },
+  });
 }
 
 /** Un cliente de esta organización, listo para precargar el formulario (si no, `null`). */

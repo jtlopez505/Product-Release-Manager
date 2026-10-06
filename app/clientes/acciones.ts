@@ -15,10 +15,10 @@
  *     organización — justo lo que la regla #1 prohíbe.
  *   - Un error nunca se convierte en excepción hacia la pantalla: se devuelve como estado,
  *     con lo tipeado adentro (ficha §4).
- *   - Si el guardado sale bien, redirige al formulario de edición del cliente con la
- *     confirmación (`?guardado=1`): la Vista de cliente, que es el destino final del
- *     recorrido, la construye M1-05. El `redirect` va FUERA del `try`: internamente lanza, y
- *     atraparlo lo convertiría en un error falso.
+ *   - Si el guardado sale bien, redirige a la **Vista de cliente** con la confirmación
+ *     (`?guardado=1`), que es donde `user-flow.md` §2 termina el recorrido del alta: la
+ *     persona ve guardado lo que cargó, con su historial de versiones. El `redirect` va
+ *     FUERA del `try`: internamente lanza, y atraparlo lo convertiría en un error falso.
  *
  * El pedido pasa por el portón igual que cualquier ruta: el matcher de `proxy.ts` cierra por
  * omisión y no hay nada que agregar a ninguna lista.
@@ -132,7 +132,11 @@ export async function guardarCliente(
       };
     }
 
-    destino = `/clientes/${resultado.cliente.id}/editar?guardado=1`;
+    // La lista de Inicio (M1-05) muestra nombre y versión activa: después de guardar, tiene
+    // que mostrar los nuevos, no los que el router tenía en cache.
+    revalidatePath("/");
+
+    destino = `/clientes/${resultado.cliente.id}?guardado=1`;
   } catch (error) {
     // Cae acá lo técnico (base caída, organización sin sembrar). Se registra en el servidor
     // y a la persona se le dice qué pasó y qué hacer, no el stack.

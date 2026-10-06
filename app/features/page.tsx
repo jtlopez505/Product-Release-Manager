@@ -4,9 +4,9 @@
  * Queda detrás del portón sin hacer nada: el matcher de `proxy.ts` cierra por omisión, así
  * que esta ruta NO está en la lista de rutas públicas y sin sesión redirige a `/ingresar`.
  *
- * Es una ruta propia (`/features`) y todavía no cuelga de la navegación de pestañas "Por
- * cliente" / "Por feature": esas pantallas no existen (M1-05 y M2), y `user-flow.md` §1 las
- * define recién para entonces. La ficha lo acepta explícitamente.
+ * Desde M1-05 cuelga de la navegación de pestañas de `user-flow.md` §1: es la pantalla del
+ * ángulo "Por feature" mientras la consulta por feature (M2) no exista. El link suelto que
+ * M1-03 había dejado en Inicio como puente hasta acá ya no hace falta y se retiró.
  *
  * **Qué se está mirando lo dice la URL**, no un estado escondido en el navegador:
  *   - `/features` → la lista;
@@ -27,6 +27,7 @@ import { listarFeaturesDeOrganizacion } from "@/lib/features";
 import { organizacionActual } from "@/lib/organizacion";
 import { MENSAJES_DE_FEATURE } from "@/lib/validacion-de-feature";
 
+import { Navegacion } from "../navegacion";
 import { EsqueletoDeLista } from "./esqueleto-de-lista";
 import { FormularioDeFeature } from "./formulario-de-feature";
 import { TablaDeFeatures } from "./tabla-de-features";
@@ -149,18 +150,21 @@ export default function Features({
   searchParams: Promise<Busqueda>;
 }): React.ReactElement {
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-col gap-5 px-6 py-10">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-semibold tracking-tight">Features</h1>
-        <p className="text-sm text-texto-secundario">
-          El catálogo del producto. De esta lista se eligen los features que tiene habilitado
-          cada cliente.
-        </p>
-      </div>
+    <>
+      <Navegacion actual="features" />
+      <main className="mx-auto flex w-full max-w-4xl flex-col gap-5 px-6 py-10">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-xl font-semibold tracking-tight">Features</h1>
+          <p className="text-sm text-texto-secundario">
+            El catálogo del producto. De esta lista se eligen los features que tiene habilitado
+            cada cliente.
+          </p>
+        </div>
 
-      <Suspense fallback={<EsqueletoDeLista />}>
-        <ListaMaestra busqueda={searchParams} />
-      </Suspense>
-    </main>
+        <Suspense fallback={<EsqueletoDeLista />}>
+          <ListaMaestra busqueda={searchParams} />
+        </Suspense>
+      </main>
+    </>
   );
 }

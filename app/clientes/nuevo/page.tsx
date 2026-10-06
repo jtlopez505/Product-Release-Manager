@@ -4,9 +4,11 @@
  * Queda detrás del portón sin hacer nada: el matcher de `proxy.ts` cierra por omisión, así
  * que esta ruta NO está en la lista de rutas públicas y sin sesión redirige a `/ingresar`.
  *
- * Es una ruta directa y todavía no hay un enlace navegable hacia acá: la lista de clientes
- * (Inicio) y la Vista de cliente son M1-05, y la ficha §4 lo acepta explícitamente — M1-05
- * agrega el "+ Agregar cliente" de verdad.
+ * Desde M1-05 se llega acá por el "+ Agregar cliente" de Inicio (antes solo escribiendo la
+ * URL). Al guardar, el recorrido termina en la Vista de cliente (`user-flow.md` §2).
+ *
+ * Sin navegación de pestañas a propósito (ver `app/navegacion.tsx`): salir de un formulario
+ * por un link costaría lo tipeado. La salida es "Cancelar", que pregunta antes de descartar.
  */
 import type { Metadata } from "next";
 
