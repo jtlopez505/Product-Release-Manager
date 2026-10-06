@@ -3,7 +3,7 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 
 # Dónde retomar
 
-- **Último commit:** `6a7c2f1` — ver `git log`. Árbol limpio.
+- **Último commit:** `e007ac3` (las acciones del formulario de cliente vuelven al pie). Árbol limpio.
 - **Verificación completa:** `npm run check` (typecheck + tests + linter). La de integración va aparte: `npm run test:integracion` (necesita la base real y levanta su propio `next dev`).
 - **Plan activo:** `docs/sdd/roadmaps/active/m1-carga-y-consulta.md` (M1 · Carga y consulta por cliente). **M1-01 a M1-04 terminadas**, queda M1-05 — la última del milestone.
 - **Próximo paso:** `/implementar M1-05` — Inicio (lista de clientes) + Vista de cliente. Es la última: al cerrarla va el "probalo vos" con el owner.
