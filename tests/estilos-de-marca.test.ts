@@ -452,3 +452,62 @@ describe("la consulta por feature (M2-01) sigue las reglas de interfaz de marca.
     expect(PAGINA_POR_FEATURE).toMatch(/ChipDeEstado estado={featureElegido\.estado}/);
   });
 });
+
+/**
+ * La lista de release (M3-01) contra las reglas de interfaz de `marca.md` que le tocan. La
+ * vista previa reusa `TablaDeClientes` tal cual (ya cubierta arriba); lo que se agrega acá es
+ * el campo de versión (control de formulario) y el esqueleto de carga. Los scans de arriba ya
+ * cubren hex sueltos, bordes con alfa, sombras y outline anulado en todo `app/`.
+ */
+const FORMULARIO_DE_VERSION = readFileSync(
+  join(RAIZ, "app", "lista-de-release", "formulario-de-version.tsx"),
+  "utf8",
+);
+const VISTA_PREVIA_DE_LISTA = readFileSync(
+  join(RAIZ, "app", "lista-de-release", "vista-previa-de-lista-de-release.tsx"),
+  "utf8",
+);
+const ESQUELETO_DE_LISTA_DE_RELEASE = readFileSync(
+  join(RAIZ, "app", "lista-de-release", "esqueleto-de-lista-de-release.tsx"),
+  "utf8",
+);
+const PAGINA_DE_LISTA_DE_RELEASE = readFileSync(
+  join(RAIZ, "app", "lista-de-release", "page.tsx"),
+  "utf8",
+);
+
+describe("la lista de release (M3-01) sigue las reglas de interfaz de marca.md", () => {
+  it("el campo de versión usa el token de borde de control y va en monoespaciada", () => {
+    expect(FORMULARIO_DE_VERSION).toMatch(/border-borde-control/);
+    expect(FORMULARIO_DE_VERSION).toMatch(/name="version"[\s\S]*?font-datos/);
+  });
+
+  it("el botón primario usa los tokens de hover y active, no opacidad", () => {
+    expect(FORMULARIO_DE_VERSION).toMatch(/hover:bg-primario-hover/);
+    expect(FORMULARIO_DE_VERSION).toMatch(/active:bg-primario-active/);
+    expect(FORMULARIO_DE_VERSION).not.toMatch(/hover:opacity-/);
+  });
+
+  it("la vista previa se delimita con borde, no con sombra", () => {
+    expect(VISTA_PREVIA_DE_LISTA).toMatch(/border border-borde-marcado/);
+  });
+
+  it("el esqueleto usa las medidas reales de la tabla y el mismo pulso que el resto", () => {
+    expect(ESQUELETO_DE_LISTA_DE_RELEASE).toMatch(/\bh-10\b/);
+    expect(ESQUELETO_DE_LISTA_DE_RELEASE).toMatch(/\bh-9\b/);
+    expect(ESQUELETO_DE_LISTA_DE_RELEASE).toMatch(/animate-pulse/);
+    // El shimmer en diagonal es el gesto que marca.md manda evitar: solo pulso de opacidad.
+    expect(ESQUELETO_DE_LISTA_DE_RELEASE).not.toMatch(/bg-gradient|animate-shimmer/);
+  });
+
+  it("sin filas alternadas en ningún archivo nuevo de esta pieza", () => {
+    for (const archivo of [
+      FORMULARIO_DE_VERSION,
+      VISTA_PREVIA_DE_LISTA,
+      ESQUELETO_DE_LISTA_DE_RELEASE,
+      PAGINA_DE_LISTA_DE_RELEASE,
+    ]) {
+      expect(archivo).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+    }
+  });
+});

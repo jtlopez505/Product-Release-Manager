@@ -14,6 +14,10 @@ import Link from "next/link";
  * de features", `user-flow.md` §2.1) — ya no es la entrada de la pestaña, es un paso más
  * adentro.
  *
+ * Desde M3-01 suma una tercera pestaña, "Lista de release" (`/lista-de-release`,
+ * `user-flow.md` §5): va en el mismo nivel que las otras dos porque la lista de release no
+ * tiene otra entrada posible y es el momento de mayor uso del ICP.
+ *
  * No está en `app/layout.tsx` a propósito: el portón (`/ingresar`) no tiene navegación —
  * todavía no se entró — y los formularios de cliente tampoco, porque salir de ahí por un
  * link costaría lo tipeado (ver `formulario-de-cliente.tsx`: la salida es "Cancelar", que
@@ -22,11 +26,12 @@ import Link from "next/link";
  * Cuál pestaña está activa lo decide la pantalla por `prop`, no `usePathname`: así esto es un
  * componente de servidor y la navegación se pinta igual antes de que cargue el JS.
  */
-export type SeccionActual = "clientes" | "features";
+export type SeccionActual = "clientes" | "features" | "release";
 
 const SECCIONES = [
   { seccion: "clientes", etiqueta: "Por cliente", destino: "/" },
   { seccion: "features", etiqueta: "Por feature", destino: "/por-feature" },
+  { seccion: "release", etiqueta: "Lista de release", destino: "/lista-de-release" },
 ] as const satisfies readonly { seccion: SeccionActual; etiqueta: string; destino: string }[];
 
 /* La pestaña activa toma el tinte de "control presionado" de marca.md y además queda en el
