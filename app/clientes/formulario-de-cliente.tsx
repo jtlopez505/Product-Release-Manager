@@ -143,41 +143,43 @@ export function FormularioDeCliente({
     >
       {cliente ? <input type="hidden" name="id" value={cliente.id} /> : null}
 
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          {/* En el alta, el `h1` de la pantalla ya dice "Nuevo cliente": repetirlo acá sería
-              ruido. En la edición el `h1` es el nombre del cliente, así que el panel sí
-              necesita decir qué se está haciendo con él. */}
-          {cliente ? (
-            <h2 className="text-base font-semibold tracking-tight">Editar cliente</h2>
-          ) : null}
-          <p className="text-sm text-texto-secundario">
-            El nombre y la versión activa son obligatorios. Cada cambio de versión queda
-            registrado con su fecha.
-          </p>
-        </div>
-        {/* Arriba y primero en el documento: así Enter en un campo de texto guarda el
-            cliente y no dispara el alta de feature inline. */}
-        <div className="flex items-center gap-2">
-          <button
-            type="submit"
-            name="intencion"
-            value="guardar"
-            onClick={() => setIntencionEnCurso("guardar")}
-            disabled={guardando}
-            aria-busy={guardando}
-            className={CLASES_DE_ACCION_PRINCIPAL}
-          >
-            {guardando && intencionEnCurso === "guardar" ? "Guardando…" : "Guardar cliente"}
-          </button>
-          <Link
-            href="/"
-            onClick={confirmarDescarte}
-            className={CLASES_DE_BOTON_SECUNDARIO}
-          >
-            Cancelar
-          </Link>
-        </div>
+      <div className="flex flex-col gap-1">
+        {/* En el alta, el `h1` de la pantalla ya dice "Nuevo cliente": repetirlo acá sería
+            ruido. En la edición el `h1` es el nombre del cliente, así que el panel sí
+            necesita decir qué se está haciendo con él. */}
+        {cliente ? (
+          <h2 className="text-base font-semibold tracking-tight">Editar cliente</h2>
+        ) : null}
+        <p className="text-sm text-texto-secundario">
+          El nombre y la versión activa son obligatorios. Cada cambio de versión queda
+          registrado con su fecha.
+        </p>
+      </div>
+
+      {/* Primero en el documento, último en pantalla. Lo primero importa porque hay dos
+          botones de envío (guardar cliente y crear feature inline) y el navegador dispara el
+          primero del documento cuando se aprieta Enter en un campo: así Enter guarda y no
+          crea un feature vacío. Lo segundo importa porque nadie busca "Guardar" arriba de
+          campos sin completar. `order-last` separa un orden del otro. */}
+      <div className="order-last flex items-center gap-2 border-t border-borde-sutil pt-4">
+        <button
+          type="submit"
+          name="intencion"
+          value="guardar"
+          onClick={() => setIntencionEnCurso("guardar")}
+          disabled={guardando}
+          aria-busy={guardando}
+          className={CLASES_DE_ACCION_PRINCIPAL}
+        >
+          {guardando && intencionEnCurso === "guardar" ? "Guardando…" : "Guardar cliente"}
+        </button>
+        <Link
+          href="/"
+          onClick={confirmarDescarte}
+          className={CLASES_DE_BOTON_SECUNDARIO}
+        >
+          Cancelar
+        </Link>
       </div>
 
       {errores.general ? (
