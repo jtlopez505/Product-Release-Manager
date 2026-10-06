@@ -244,7 +244,9 @@ describe("criterio #1 · Inicio lista los clientes con su versión activa en la 
 
   it("la navegación de verdad reemplaza el link puente a la lista de features", async () => {
     const { cuerpo } = await html("/");
-    expect(cuerpo).toContain('href="/features"');
+    // Desde M2-01, "Por feature" lleva a la consulta por feature, no a la lista maestra
+    // directamente (`app/navegacion.tsx`).
+    expect(cuerpo).toContain('href="/por-feature"');
     expect(cuerpo).not.toContain("Ver la lista de features");
   });
 });

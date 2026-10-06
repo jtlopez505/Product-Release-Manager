@@ -50,7 +50,8 @@ const CLASES_POR_ESTADO: Record<Feature["estado"], string> = {
   PROXIMAMENTE: "bg-borde-sutil text-texto-secundario",
 };
 
-function ChipDeEstado({ estado }: { estado: Feature["estado"] }): React.ReactElement {
+/** Se exporta para reusarlo en la consulta por feature (M2-01, criterio #6) sin duplicarlo. */
+export function ChipDeEstado({ estado }: { estado: Feature["estado"] }): React.ReactElement {
   return (
     <span
       className={`inline-flex items-center rounded-sm px-2 py-0.5 text-xs font-medium ${CLASES_POR_ESTADO[estado]}`}

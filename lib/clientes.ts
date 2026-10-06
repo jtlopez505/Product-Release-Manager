@@ -175,6 +175,31 @@ export async function featuresHabilitadosDeCliente(
 }
 
 /**
+ * Los ids de clientes de esta organización que tienen este feature habilitado (ficha M2-01).
+ *
+ * Es la lectura inversa a `featuresHabilitadosDeCliente`: ahí se filtra por cliente y se
+ * devuelven sus features; acá se filtra por feature y se devuelven sus clientes. El filtro de
+ * organización va por `client: { organizationId }` — nunca por el `featureId` solo — así un
+ * id de cliente de otra organización no puede aparecer en la lista aunque alguien mandara a
+ * mano el id de un feature ajeno (ese caso ya lo corta antes `obtenerFeature`, regla #1).
+ *
+ * "Tener el feature" es la fila habilitada, no la existencia de la fila: un cliente sin
+ * ninguna fila, o con la fila en `enabled: false`, simplemente no aparece acá — y es lo que
+ * `particionarClientesPorFeature` (`lib/consulta-por-feature.ts`) necesita para poner a los
+ * dos en "no lo tienen todavía" sin distinguirlos.
+ */
+export async function idsDeClientesConFeatureHabilitado(
+  organizationId: string,
+  featureId: string,
+): Promise<string[]> {
+  const filas = await prisma.clientFeature.findMany({
+    where: { featureId, enabled: true, client: { organizationId } },
+    select: { clientId: true },
+  });
+  return filas.map((fila) => fila.clientId);
+}
+
+/**
  * El registro de versiones de un cliente, del más viejo al más nuevo.
  *
  * Orden cronológico (no al revés) porque es la secuencia que se lee para auditar; la pantalla

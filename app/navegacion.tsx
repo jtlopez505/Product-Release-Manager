@@ -8,9 +8,11 @@ import Link from "next/link";
  * link suelto a `/features` que M1-03 puso en Inicio, y el hecho de que a `/clientes/nuevo`
  * solo se llegaba escribiendo la URL (ahora cuelga del "+ Agregar cliente" de Inicio).
  *
- * En M1, "Por feature" lleva a la lista maestra de features: es la única pantalla de ese
- * ángulo que existe todavía, y `user-flow.md` §2.1 la pone justo ahí ("accesible desde Por
- * feature"). La consulta por feature de M2 se suma a esa misma pestaña cuando llegue.
+ * Desde M2-01, "Por feature" lleva a la consulta por feature (`/por-feature`, `user-flow.md`
+ * §4): elegir un feature y ver quién lo tiene y quién no. La lista maestra de features
+ * (`/features`, M1-03) sigue viva donde estaba y queda alcanzable desde ahí ("Lista maestra
+ * de features", `user-flow.md` §2.1) — ya no es la entrada de la pestaña, es un paso más
+ * adentro.
  *
  * No está en `app/layout.tsx` a propósito: el portón (`/ingresar`) no tiene navegación —
  * todavía no se entró — y los formularios de cliente tampoco, porque salir de ahí por un
@@ -24,7 +26,7 @@ export type SeccionActual = "clientes" | "features";
 
 const SECCIONES = [
   { seccion: "clientes", etiqueta: "Por cliente", destino: "/" },
-  { seccion: "features", etiqueta: "Por feature", destino: "/features" },
+  { seccion: "features", etiqueta: "Por feature", destino: "/por-feature" },
 ] as const satisfies readonly { seccion: SeccionActual; etiqueta: string; destino: string }[];
 
 /* La pestaña activa toma el tinte de "control presionado" de marca.md y además queda en el

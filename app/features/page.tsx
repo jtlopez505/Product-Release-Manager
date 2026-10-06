@@ -4,9 +4,10 @@
  * Queda detrás del portón sin hacer nada: el matcher de `proxy.ts` cierra por omisión, así
  * que esta ruta NO está en la lista de rutas públicas y sin sesión redirige a `/ingresar`.
  *
- * Desde M1-05 cuelga de la navegación de pestañas de `user-flow.md` §1: es la pantalla del
- * ángulo "Por feature" mientras la consulta por feature (M2) no exista. El link suelto que
- * M1-03 había dejado en Inicio como puente hasta acá ya no hace falta y se retiró.
+ * Desde M2-01, la pestaña "Por feature" lleva a la consulta (`/por-feature`), no acá: esta
+ * pantalla queda alcanzable desde ahí con el link "Lista maestra de features"
+ * (`user-flow.md` §2.1). El link suelto que M1-03 había dejado en Inicio como puente hasta
+ * acá ya no hace falta y se retiró desde M1-05.
  *
  * **Qué se está mirando lo dice la URL**, no un estado escondido en el navegador:
  *   - `/features` → la lista;

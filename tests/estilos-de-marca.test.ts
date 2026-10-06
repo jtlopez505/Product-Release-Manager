@@ -382,3 +382,73 @@ describe("el encabezado de la Vista de cliente y la navegación", () => {
     }
   });
 });
+
+/**
+ * La consulta por feature (M2-01) contra las reglas de `marca.md` que le tocan. Las dos
+ * listas reusan `TablaDeClientes` tal cual (ya cubierta arriba) y el chip de estado reusa
+ * `ChipDeEstado` de `tabla-de-features.tsx` (también cubierto); lo que se agrega acá es el
+ * selector (control de formulario) y el título de cada lista. Los scans de arriba ya cubren
+ * hex sueltos, bordes con alfa, sombras y outline anulado en todo `app/`.
+ */
+const SELECTOR_DE_FEATURE = readFileSync(
+  join(RAIZ, "app", "por-feature", "selector-de-feature.tsx"),
+  "utf8",
+);
+const LISTAS_DE_CLIENTES = readFileSync(
+  join(RAIZ, "app", "por-feature", "listas-de-clientes.tsx"),
+  "utf8",
+);
+const ESQUELETO_DE_CONSULTA = readFileSync(
+  join(RAIZ, "app", "por-feature", "esqueleto-de-consulta.tsx"),
+  "utf8",
+);
+const PAGINA_POR_FEATURE = readFileSync(
+  join(RAIZ, "app", "por-feature", "page.tsx"),
+  "utf8",
+);
+
+describe("la consulta por feature (M2-01) sigue las reglas de interfaz de marca.md", () => {
+  it("el selector usa el token de borde de control", () => {
+    expect(SELECTOR_DE_FEATURE).toMatch(/border-borde-control/);
+  });
+
+  it("el botón primario usa los tokens de hover y active, no opacidad", () => {
+    expect(SELECTOR_DE_FEATURE).toMatch(/hover:bg-primario-hover/);
+    expect(SELECTOR_DE_FEATURE).toMatch(/active:bg-primario-active/);
+    expect(SELECTOR_DE_FEATURE).not.toMatch(/hover:opacity-/);
+  });
+
+  it("las dos listas van lado a lado en pantalla ancha y apiladas en angosta", () => {
+    expect(LISTAS_DE_CLIENTES).toMatch(/grid gap-4 lg:grid-cols-2/);
+  });
+
+  it("una lista vacía se delimita con borde, no con sombra", () => {
+    expect(LISTAS_DE_CLIENTES).toMatch(/border border-borde-marcado/);
+  });
+
+  it("el esqueleto anticipa el layout de dos columnas y usa el mismo pulso que el resto", () => {
+    expect(ESQUELETO_DE_CONSULTA).toMatch(/grid gap-4 lg:grid-cols-2/);
+    expect(ESQUELETO_DE_CONSULTA).toMatch(/animate-pulse/);
+    // El shimmer en diagonal es el gesto que marca.md manda evitar: solo pulso de opacidad.
+    expect(ESQUELETO_DE_CONSULTA).not.toMatch(/bg-gradient|animate-shimmer/);
+  });
+
+  it("sin filas alternadas en ningún archivo nuevo de esta pieza", () => {
+    for (const archivo of [
+      SELECTOR_DE_FEATURE,
+      LISTAS_DE_CLIENTES,
+      ESQUELETO_DE_CONSULTA,
+      PAGINA_POR_FEATURE,
+    ]) {
+      expect(archivo).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+    }
+  });
+
+  it("el feature elegido muestra su código en monoespaciada", () => {
+    expect(PAGINA_POR_FEATURE).toMatch(/font-datos text-xs text-texto-secundario/);
+  });
+
+  it("el estado del feature se reusa como chip, no se reinventa", () => {
+    expect(PAGINA_POR_FEATURE).toMatch(/ChipDeEstado estado={featureElegido\.estado}/);
+  });
+});
