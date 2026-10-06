@@ -33,10 +33,10 @@ Si eso corre de punta a punta **una vez** — con datos cargados a mano, sin int
 **Por qué primero:** sin datos cargados y una vista básica, no hay nada que consultar ni lista que armar después.
 
 **Está terminado cuando:**
-- [ ] Se puede dar de alta un cliente con su versión activa y la lista de features habilitados.
-- [ ] Se puede editar esos datos cuando cambian.
-- [ ] Se puede ver, para un cliente elegido, su versión activa y sus features de un vistazo.
-- [ ] Cada vez que la versión de un cliente cambia (incluida la primera carga), queda guardada con fecha — no se pierde el valor anterior — y se puede ver ese historial de versiones para el cliente.
+- [x] Se puede dar de alta un cliente con su versión activa y la lista de features habilitados.
+- [x] Se puede editar esos datos cuando cambian.
+- [x] Se puede ver, para un cliente elegido, su versión activa y sus features de un vistazo.
+- [x] Cada vez que la versión de un cliente cambia (incluida la primera carga), queda guardada con fecha — no se pierde el valor anterior — y se puede ver ese historial de versiones para el cliente.
 
 ### M2 — Consulta por feature
 
