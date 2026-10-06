@@ -3,10 +3,10 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 
 # Dónde retomar
 
-- **Último commit:** `2937900` (M3-01: lista de release por versión destino). Sin commitear: la tabla del plan.
+- **Último commit:** `647cb71` (M3-02: lista de release por feature). Sin commitear: la tabla del plan.
 - **Verificación completa:** `npm run check` (typecheck + tests + linter). La de integración va aparte: `npm run test:integracion` (necesita la base real y levanta su propio `next dev`).
-- **Plan activo:** `docs/sdd/roadmaps/active/m3-lista-de-release.md` (M3 · Lista de despliegue para un release). **M3-01 ✅**, quedan M3-02 (lista por feature) y M3-03 (exportar). **M1 y M2 terminados, probados por el owner y archivados** en `docs/sdd/roadmaps/archive/`.
-- **Próximo paso:** `/implementar M3-02` — ficha en `docs/sdd/specs/M3-02-lista-por-feature.md`. Después M3-03.
+- **Plan activo:** `docs/sdd/roadmaps/active/m3-lista-de-release.md` (M3 · Lista de despliegue para un release). **M3-01 y M3-02 ✅**, queda M3-03 (exportar) — la última. **M1 y M2 terminados, probados por el owner y archivados** en `docs/sdd/roadmaps/archive/`.
+- **Próximo paso:** `/implementar M3-03` — ficha en `docs/sdd/specs/M3-03-exportar-lista.md`. Al cerrarla, cierra todo M3: servir el "probalo vos".
 - **Decisiones de M3 ya tomadas con el owner** (están en el plan §3, no re-preguntar): por versión destino aparecen *todos los que no están en esa versión* (no se interpretan números de versión); el archivo es para **Excel en español** (punto y coma + acentos codificados para Excel); una tercera pestaña "Lista de release".
 - **Lo que cambió en M2:** la pestaña "Por feature" ya no lleva a la lista maestra de features — ahora es la pantalla de consulta (`/por-feature`). La lista maestra sigue en `/features`, alcanzable desde ahí con un link.
 - **Ojo con:**

@@ -82,7 +82,7 @@ Sin preguntas abiertas que bloqueen.
 | ID | Pieza | Estado | Depende de | Ficha |
 |---|---|---|---|---|
 | M3-01 | Lista de release por versión destino: la pestaña nueva, escribir la versión y ver qué clientes la reciben | ✅ terminada | — | `docs/sdd/specs/M3-01-lista-por-version.md` |
-| M3-02 | Lista de release por feature: elegir el feature y ver qué clientes lo reciben | ⬜ pendiente | M3-01 | `docs/sdd/specs/M3-02-lista-por-feature.md` |
+| M3-02 | Lista de release por feature: elegir el feature y ver qué clientes lo reciben | ✅ terminada | M3-01 | `docs/sdd/specs/M3-02-lista-por-feature.md` |
 | M3-03 | Exportar la lista a un archivo para Excel en español | ⬜ pendiente | M3-01, M3-02 | `docs/sdd/specs/M3-03-exportar-lista.md` |
 
 **Por qué este orden:** primero la pantalla con el criterio más simple —por versión, que no
