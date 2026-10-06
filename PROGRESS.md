@@ -6,7 +6,7 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 - **Último commit:** ver `git log -1` (M2 archivado, plan de M3 escrito). Árbol limpio.
 - **Verificación completa:** `npm run check` (typecheck + tests + linter). La de integración va aparte: `npm run test:integracion` (necesita la base real y levanta su propio `next dev`).
 - **Plan activo:** `docs/sdd/roadmaps/active/m3-lista-de-release.md` (M3 · Lista de despliegue para un release, 3 piezas, ninguna empezada). **M1 y M2 terminados, probados por el owner y archivados** en `docs/sdd/roadmaps/archive/`.
-- **Próximo paso:** `/specs` — las fichas de M3-01, M3-02 y M3-03 (son 3: se escriben directo, sin subagentes).
+- **Próximo paso:** `/implementar M3-01` — las tres fichas ya están escritas (`docs/sdd/specs/M3-0{1,2,3}-*.md`). Orden: M3-01 → M3-02 → M3-03.
 - **Decisiones de M3 ya tomadas con el owner** (están en el plan §3, no re-preguntar): por versión destino aparecen *todos los que no están en esa versión* (no se interpretan números de versión); el archivo es para **Excel en español** (punto y coma + acentos codificados para Excel); una tercera pestaña "Lista de release".
 - **Lo que cambió en M2:** la pestaña "Por feature" ya no lleva a la lista maestra de features — ahora es la pantalla de consulta (`/por-feature`). La lista maestra sigue en `/features`, alcanzable desde ahí con un link.
 - **Ojo con:**
