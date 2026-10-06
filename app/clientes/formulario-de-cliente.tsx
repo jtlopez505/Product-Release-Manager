@@ -145,9 +145,12 @@ export function FormularioDeCliente({
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <h2 className="text-base font-semibold tracking-tight">
-            {cliente ? "Editar cliente" : "Nuevo cliente"}
-          </h2>
+          {/* En el alta, el `h1` de la pantalla ya dice "Nuevo cliente": repetirlo acá sería
+              ruido. En la edición el `h1` es el nombre del cliente, así que el panel sí
+              necesita decir qué se está haciendo con él. */}
+          {cliente ? (
+            <h2 className="text-base font-semibold tracking-tight">Editar cliente</h2>
+          ) : null}
           <p className="text-sm text-texto-secundario">
             El nombre y la versión activa son obligatorios. Cada cambio de versión queda
             registrado con su fecha.
