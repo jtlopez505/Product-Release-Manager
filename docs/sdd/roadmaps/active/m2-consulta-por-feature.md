@@ -68,7 +68,7 @@ Sin preguntas abiertas que bloqueen.
 
 | ID | Pieza | Estado | Depende de | Ficha |
 |---|---|---|---|---|
-| M2-01 | Consulta por feature: elegir un feature y ver qué clientes lo tienen y cuáles no | ⬜ pendiente | — | `docs/sdd/specs/M2-01-consulta-por-feature.md` |
+| M2-01 | Consulta por feature: elegir un feature y ver qué clientes lo tienen y cuáles no | ✅ terminada | — | `docs/sdd/specs/M2-01-consulta-por-feature.md` |
 
 **Por qué una sola pieza:** la consulta y su entrada de navegación van juntas. Una pantalla a la
 que solo se llega escribiendo la URL no está terminada — es exactamente lo que M1-04 dejó pendiente
