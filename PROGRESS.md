@@ -3,18 +3,19 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 
 # Dónde retomar
 
-- **Último commit:** `e007ac3` (las acciones del formulario de cliente vuelven al pie). Árbol limpio.
+- **Último commit:** `13e407b` (M1-05: inicio, vista de cliente y navegación real). Sin commitear: la tabla del plan.
 - **Verificación completa:** `npm run check` (typecheck + tests + linter). La de integración va aparte: `npm run test:integracion` (necesita la base real y levanta su propio `next dev`).
-- **Plan activo:** `docs/sdd/roadmaps/active/m1-carga-y-consulta.md` (M1 · Carga y consulta por cliente). **M1-01 a M1-04 terminadas**, queda M1-05 — la última del milestone.
-- **Próximo paso:** `/implementar M1-05` — Inicio (lista de clientes) + Vista de cliente. Es la última: al cerrarla va el "probalo vos" con el owner.
+- **Plan activo:** `docs/sdd/roadmaps/active/m1-carga-y-consulta.md` (M1 · Carga y consulta por cliente). **Las 5 piezas están ✅.** Falta el "probalo vos" del owner antes de mover el plan a `archive/`.
+- **Próximo paso:** el owner prueba la app (link y qué mirar, se le ofreció al cerrar la sesión). Con su confirmación: mover el plan a `docs/sdd/roadmaps/archive/` y recién ahí `/roadmap` para M2 (consulta por feature).
 - **Ojo con:**
-  - **Falta un chip neutro en `marca.md`.** Hay chip de éxito, alerta y error, pero `EstadoFeature` tiene tres valores: "Próximamente" quedó usando el relleno de skeleton con texto secundario. Funciona y se ve bien, pero no es un token pensado para eso — si el Diseñador quiere uno propio, va al doc primero.
-  - **El nombre duplicado no tiene candado en la base.** El schema solo tiene `@@unique` sobre `(organizationId, code)`. La validación de nombre es un pre-chequeo en código, así que dos altas simultáneas con el mismo nombre podrían pasar. Con un solo usuario cargando a mano es teórico; si alguna vez hay carga concurrente, hay que migrar.
-  - **Pantallas sin punto de entrada navegable:** `/features` cuelga de un link en `app/page.tsx`, y a `/clientes/nuevo` hoy solo se llega por URL directa. M1-05 trae la navegación real y ahí se retiran los puentes.
-  - **No hay forma de cerrar sesión.** La única salida es borrar la cookie o esperar los 30 días. Decidido en 2026-10-05: se evalúa recién en `/deploy`, cuando la app esté en una URL pública. Si se quiere antes, es una spec propia.
-  - **Para probar pantallas hay navegador en esta máquina** (Chrome y Edge) y Node trae `WebSocket`, así que se puede manejar por CDP y sacar capturas reales.
-  - **React SÍ hidrata con `npm run dev`** — verificado con Chrome real (`__reactFiber$` presente). Dos builders reportaron lo contrario; las dos veces fue su propia medición (servidores propios compitiendo, o chequear antes de que termine de cargar). No hace falta `build && start` para probar interactividad.
-  - **Ojo con los puertos al verificar:** apagar todo servidor propio antes de `npm run test:integracion`, que levanta el suyo. Ya costó una corrida.
+  - **M1-05 lo dejó un builder interrumpido por un límite de sesión de la API**, a mitad del recorrido final. El código estaba completo pero sin verificar ni commitear — las 3 verificaciones las corrí yo desde cero y están en verde. El builder además dejó dos servidores huérfanos vivos (puertos 3000 y 3101) que hicieron fallar la primera corrida de integración; liberados los puertos, 70/70 en verde. Si un builder se corta así de nuevo, revisar puertos ocupados antes de asumir que algo está roto.
+  - **Falta un chip neutro en `marca.md`.** Hay chip de éxito, alerta y error, pero `EstadoFeature` tiene tres valores: "Próximamente" usa el relleno de skeleton con texto secundario. Funciona y se ve bien, pero no es un token pensado para eso.
+  - **El nombre de feature duplicado no tiene candado en la base** — solo el código (`@@unique`) lo tiene. La validación de nombre es un pre-chequeo; con un solo usuario cargando a mano es teórico.
+  - **No hay forma de cerrar sesión.** La única salida es borrar la cookie o esperar los 30 días. Decidido en 2026-10-05: se evalúa recién en `/deploy`, cuando la app esté en una URL pública.
+  - **Para probar pantallas hay navegador en esta máquina** (Chrome y Edge) y Node trae `WebSocket`: manejar por CDP y sacar capturas reales.
+  - **React SÍ hidrata con `npm run dev`** — verificado varias veces con Chrome real. No investigar esto de nuevo.
+  - **Verificar los `id`/`name` reales del markup antes de escribir un script de prueba** — varias corridas se perdieron por asumir nombres de campo que no coincidían (`cliente-currentVersion` en vez de `cliente-version`, campo `password` en vez de `contrasena`, etc.).
+  - **Ojo con los puertos al verificar:** apagar todo servidor y navegador propio antes de `npm run test:integracion` y antes de levantar `npm run dev` para mirar algo.
   - **Las claves van en `.env`, no en `.env.local`.** Son cuatro: `DATABASE_URL`, `DIRECT_URL`, `APP_PASSWORD`, `SESSION_SECRET`.
   - **Prisma 7:** `url`/`directUrl` no van en `schema.prisma`. Están en `prisma.config.ts` (migraciones) y `lib/prisma.ts` (la app).
   - **Estilos:** Tailwind con los tokens de `marca.md` en `app/globals.css`. Ningún hex suelto; `tests/estilos-de-marca.test.ts` lo vigila solo.

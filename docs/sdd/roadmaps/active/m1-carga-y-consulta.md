@@ -45,7 +45,7 @@ modelo de datos, auth y recorrido — este plan solo los parte en piezas.
 | M1-02 | Portón de acceso: contraseña compartida + sesión | ✅ terminada | M1-01 | `docs/sdd/specs/M1-02-porton-de-acceso.md` |
 | M1-03 | Lista maestra de features (crear, ver, editar) | ✅ terminada | M1-01, M1-02 | `docs/sdd/specs/M1-03-lista-maestra-de-features.md` |
 | M1-04 | Alta y edición de cliente + historial de versión | ✅ terminada | M1-01, M1-02, M1-03 | `docs/sdd/specs/M1-04-alta-y-edicion-de-cliente.md` |
-| M1-05 | Inicio (lista de clientes) + Vista de cliente | ⬜ pendiente | M1-04 | `docs/sdd/specs/M1-05-inicio-y-vista-de-cliente.md` |
+| M1-05 | Inicio (lista de clientes) + Vista de cliente | ✅ terminada | M1-04 | `docs/sdd/specs/M1-05-inicio-y-vista-de-cliente.md` |
 
 **Por qué este orden:** no hay pantalla sin proyecto (M1-01); nada queda protegido sin el portón
 (M1-02); un cliente no puede elegir features que no existen, así que la lista maestra va antes
