@@ -2,9 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import {
   MENSAJES_DE_LISTA_DE_RELEASE,
+  criterioActivo,
   mensajeDeClientesQueYaEstan,
+  mensajeDeClientesQueYaTienenFeature,
   particionarClientesPorVersion,
   tituloDeListaDeRelease,
+  tituloDeListaDeReleasePorFeature,
   versionPedida,
 } from "./lista-de-release";
 
@@ -138,5 +141,55 @@ describe("MENSAJES_DE_LISTA_DE_RELEASE · los textos fijos de la ficha", () => {
     expect(MENSAJES_DE_LISTA_DE_RELEASE.cargaFallida).toBe(
       "No se pudo cargar la lista de release.",
     );
+  });
+
+  it("sin feature elegido (ficha M3-02, criterio #6)", () => {
+    expect(MENSAJES_DE_LISTA_DE_RELEASE.sinFeatureElegido).toBe(
+      "Elegí el feature que vas a desplegar para ver qué clientes lo reciben.",
+    );
+  });
+});
+
+/**
+ * Verificación 1 de M3-02: qué criterio decide la URL, y los textos de la rama "por feature"
+ * — misma lógica de M3-01, sin reescribir `particionarClientesPorFeature`
+ * (`lib/consulta-por-feature.ts`): esto solo decide el título y el mensaje secundario para esa
+ * partición ya hecha.
+ */
+describe("criterioActivo · ficha M3-02, criterios #1 y #10 (un criterio por vez)", () => {
+  it("sin ?por=, el criterio es 'version' (comportamiento de M3-01)", () => {
+    expect(criterioActivo(undefined)).toBe("version");
+  });
+
+  it("con ?por=feature, el criterio es 'feature'", () => {
+    expect(criterioActivo("feature")).toBe("feature");
+  });
+
+  it("con cualquier otro valor, el criterio es 'version'", () => {
+    expect(criterioActivo("lo-que-sea")).toBe("version");
+  });
+});
+
+describe("tituloDeListaDeReleasePorFeature · ficha M3-02, criterio #4", () => {
+  it("compone 'Clientes que reciben <feature> (N)'", () => {
+    expect(tituloDeListaDeReleasePorFeature("SSO", 2)).toBe("Clientes que reciben SSO (2)");
+  });
+
+  it("también con 0: lo decide quien la llama si mostrarlo o no", () => {
+    expect(tituloDeListaDeReleasePorFeature("SSO", 0)).toBe("Clientes que reciben SSO (0)");
+  });
+});
+
+describe("mensajeDeClientesQueYaTienenFeature · ficha M3-02, criterio #4 (singular y plural)", () => {
+  it("con 0, no hay nada que decir: null", () => {
+    expect(mensajeDeClientesQueYaTienenFeature(0)).toBeNull();
+  });
+
+  it("con 1, usa el singular", () => {
+    expect(mensajeDeClientesQueYaTienenFeature(1)).toBe("1 cliente ya tiene este feature");
+  });
+
+  it("con 2 o más, usa el plural", () => {
+    expect(mensajeDeClientesQueYaTienenFeature(2)).toBe("2 clientes ya tienen este feature");
   });
 });

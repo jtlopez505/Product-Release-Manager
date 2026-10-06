@@ -5,6 +5,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { crearCliente } from "../../lib/clientes";
 import { requireEnv } from "../../lib/env";
+import { crearFeature } from "../../lib/features";
 import { organizacionActual } from "../../lib/organizacion";
 import { prisma } from "../../lib/prisma";
 import { NOMBRE_COOKIE_SESION } from "../../lib/sesion";
@@ -339,6 +340,305 @@ describe("con clientes en versiones repartidas", () => {
       const { cuerpo } = await html("/lista-de-release");
       expect(cuerpo).toMatch(/<a[^>]*href="\/"[^>]*>Por cliente<\/a>/);
       expect(cuerpo).toMatch(/<a[^>]*href="\/por-feature"[^>]*>Por feature<\/a>/);
+    });
+  });
+});
+
+/**
+ * Verificación 2 de M3-02 (integración, regla #5): la elección de criterio y la rama "por
+ * feature" de `/lista-de-release`, servidas por el mismo Next de M3-01 (reusa su servidor en
+ * `BASE`, así que estos describes corren después de que los de arriba ya limpiaron lo suyo).
+ *
+ * Lo que las pruebas de `lib/` no pueden ver:
+ *   - que el link "Por feature" y el campo oculto `por=feature` del selector arman la URL
+ *     correcta, y que la opción activa trae `aria-current` (fila 1);
+ *   - los cuatro estados vacíos de esta rama servidos de verdad (filas 6, 7, 8, 9);
+ *   - **fila 10 (no debe pasar):** un criterio por vez — el parámetro del criterio inactivo se
+ *     ignora, en los dos sentidos;
+ *   - **regla #1 (fila 12, no debe pasar):** ni un cliente ni un feature de otra organización
+ *     aparecen ni suman a los conteos, y un `?feature=` ajeno responde igual que uno
+ *     inexistente.
+ */
+describe("fila 1 y 2 · la elección de criterio, sin feature elegido todavía", () => {
+  it("sin ?por=, 'Por versión destino' está activa", async () => {
+    const { cuerpo } = await html("/lista-de-release");
+    expect(cuerpo).toMatch(/<a[^>]*aria-current="page"[^>]*>Por versión destino<\/a>/);
+  });
+
+  it("el link 'Por feature' lleva a /lista-de-release?por=feature", async () => {
+    const { cuerpo } = await html("/lista-de-release");
+    expect(cuerpo).toMatch(/<a[^>]*href="\/lista-de-release\?por=feature"[^>]*>Por feature<\/a>/);
+  });
+
+  it("con ?por=feature, 'Por feature' queda activa", async () => {
+    const { cuerpo } = await html("/lista-de-release?por=feature");
+    expect(cuerpo).toMatch(/<a[^>]*aria-current="page"[^>]*>Por feature<\/a>/);
+  });
+});
+
+describe("fila 8 · sin features en el catálogo (antes de sembrar ninguno)", () => {
+  it("no hay selector: mensaje y salida a /features?nuevo=1", async () => {
+    const { estado, cuerpo } = await html("/lista-de-release?por=feature");
+    expect(estado).toBe(200);
+    expect(cuerpo).toContain("Todavía no cargaste ningún feature.");
+    expect(cuerpo).toContain('href="/features?nuevo=1"');
+    expect(cuerpo).not.toContain("<select");
+  });
+});
+
+describe("M3-02 · con un feature en el catálogo", () => {
+  const FEATURE = `Feature release ${SUFIJO}`;
+  let idFeature = "";
+
+  beforeAll(async () => {
+    const propia = await organizacionActual();
+    const feature = await crearFeature(propia.id, { name: FEATURE, code: `F-M3-02-${SUFIJO}` });
+    if (!feature.ok) {
+      throw new Error("No se pudo sembrar el feature de prueba.");
+    }
+    idFeature = feature.feature.id;
+  });
+
+  afterAll(async () => {
+    if (idFeature) {
+      await prisma.feature.deleteMany({ where: { id: idFeature } });
+    }
+  });
+
+  describe("fila 6 · sin feature elegido", () => {
+    it("explica qué hacer, sin consultar clientes", async () => {
+      const { estado, cuerpo } = await html("/lista-de-release?por=feature");
+      expect(estado).toBe(200);
+      expect(cuerpo).toContain(
+        "Elegí el feature que vas a desplegar para ver qué clientes lo reciben.",
+      );
+      expect(cuerpo).not.toContain("Clientes que reciben");
+    });
+
+    it("el selector trae el feature en el <select>", async () => {
+      const { cuerpo } = await html("/lista-de-release?por=feature");
+      expect(cuerpo).toContain(FEATURE);
+      expect(cuerpo).toContain(`F-M3-02-${SUFIJO}`);
+    });
+
+    it("el selector manda a /lista-de-release con el campo oculto por=feature", async () => {
+      const { cuerpo } = await html("/lista-de-release?por=feature");
+      // El orden de atributos del HTML servido no es el de la fuente JSX (React lo decide al
+      // serializar, mismo criterio que la prueba de aria-current de más arriba): se verifica
+      // cada atributo del mismo `<form>`, no un orden literal.
+      expect(cuerpo).toMatch(/<form[^>]*method="get"[^>]*>/);
+      expect(cuerpo).toMatch(/<form[^>]*action="\/lista-de-release"[^>]*>/);
+      expect(cuerpo).toMatch(/<input[^>]*type="hidden"[^>]*name="por"[^>]*value="feature"/);
+      expect(cuerpo).toContain("Ver lista");
+    });
+  });
+
+  describe("fila 9 · sin clientes cargados, con un feature ya elegido", () => {
+    it("un solo mensaje y la acción, ni lista ni conteos", async () => {
+      const { estado, cuerpo } = await html(
+        `/lista-de-release?por=feature&feature=${idFeature}`,
+      );
+      expect(estado).toBe(200);
+      expect(cuerpo).toContain("Todavía no cargaste ningún cliente.");
+      expect(cuerpo).toContain("+ Agregar cliente");
+      expect(cuerpo).not.toContain("Clientes que reciben");
+    });
+  });
+
+  describe("con clientes sembrados", () => {
+    // A y B tienen el feature habilitado; C no tiene fila; D tiene la fila deshabilitada —
+    // el caso de la ficha M3-02, fila 3: C y D "todavía no lo tienen" (reciben el release).
+    const CLIENTE_A = `A feature ${SUFIJO}`;
+    const CLIENTE_B = `B feature ${SUFIJO}`;
+    const CLIENTE_C = `C feature ${SUFIJO}`;
+    const CLIENTE_D = `D feature ${SUFIJO}`;
+    const CLIENTE_AJENO = `Ajeno feature ${SUFIJO}`;
+    const FEATURE_AJENO = `Feature ajeno ${SUFIJO}`;
+    const FEATURE_TODOS = `Feature todos ${SUFIJO}`;
+
+    let idClienteA = "";
+    let idClienteB = "";
+    let idClienteC = "";
+    let idClienteD = "";
+    let idOrganizacionAjena = "";
+    let idFeatureAjeno = "";
+    let idClienteAjeno = "";
+    let idFeatureTodos = "";
+
+    beforeAll(async () => {
+      const propia = await organizacionActual();
+
+      const [a, b, c, d] = await Promise.all([
+        crearCliente(propia.id, { name: CLIENTE_A, currentVersion: "1.0.0", featureIds: [idFeature] }),
+        crearCliente(propia.id, { name: CLIENTE_B, currentVersion: "1.0.0", featureIds: [idFeature] }),
+        crearCliente(propia.id, { name: CLIENTE_C, currentVersion: "1.0.0", featureIds: [] }),
+        crearCliente(propia.id, { name: CLIENTE_D, currentVersion: "1.0.0", featureIds: [idFeature] }),
+      ]);
+      if (!a.ok || !b.ok || !c.ok || !d.ok) {
+        throw new Error("No se pudieron sembrar los clientes de prueba.");
+      }
+      idClienteA = a.cliente.id;
+      idClienteB = b.cliente.id;
+      idClienteC = c.cliente.id;
+      idClienteD = d.cliente.id;
+
+      // D queda con la fila deshabilitada: cae en "todavía no lo tienen" junto con C.
+      await prisma.clientFeature.update({
+        where: { clientId_featureId: { clientId: idClienteD, featureId: idFeature } },
+        data: { enabled: false },
+      });
+
+      // Un segundo feature que los cuatro tienen habilitado: ninguno queda en "reciben"
+      // (fila 7 de la ficha — "Ningún cliente corresponde a este filtro todavía").
+      const featureTodos = await crearFeature(propia.id, { name: FEATURE_TODOS });
+      if (!featureTodos.ok) {
+        throw new Error("No se pudo sembrar el feature que todos tienen.");
+      }
+      idFeatureTodos = featureTodos.feature.id;
+      await prisma.clientFeature.createMany({
+        data: [idClienteA, idClienteB, idClienteC, idClienteD].map((clientId) => ({
+          clientId,
+          featureId: idFeatureTodos,
+          enabled: true,
+        })),
+      });
+
+      // Organización ajena, con su propio feature y su propio cliente: la pantalla de la
+      // organización propia no se puede enterar de ninguno de los dos (regla #1, fila 12).
+      const ajena = await prisma.organization.create({ data: { name: `Org ajena feature ${SUFIJO}` } });
+      idOrganizacionAjena = ajena.id;
+      const featureAjeno = await crearFeature(ajena.id, { name: FEATURE_AJENO });
+      if (!featureAjeno.ok) {
+        throw new Error("No se pudo sembrar el feature ajeno.");
+      }
+      idFeatureAjeno = featureAjeno.feature.id;
+      const clienteAjeno = await crearCliente(ajena.id, {
+        name: CLIENTE_AJENO,
+        currentVersion: "9.9.9",
+        featureIds: [idFeatureAjeno],
+      });
+      if (!clienteAjeno.ok) {
+        throw new Error("No se pudo sembrar el cliente ajeno.");
+      }
+      idClienteAjeno = clienteAjeno.cliente.id;
+    });
+
+    afterAll(async () => {
+      await borrarClientes([idClienteA, idClienteB, idClienteC, idClienteD, idClienteAjeno]);
+      if (idFeatureTodos) {
+        await prisma.feature.deleteMany({ where: { id: idFeatureTodos } });
+      }
+      if (idFeatureAjeno) {
+        await prisma.feature.deleteMany({ where: { id: idFeatureAjeno } });
+      }
+      if (idOrganizacionAjena) {
+        await prisma.organization.deleteMany({ where: { id: idOrganizacionAjena } });
+      }
+    });
+
+    describe("fila 3, 4 y 5 · la partición, los conteos y la vista previa", () => {
+      it("C y D reciben (todavía no lo tienen); A y B ya lo tienen y no aparecen", async () => {
+        const { estado, cuerpo } = await html(
+          `/lista-de-release?por=feature&feature=${idFeature}`,
+        );
+        expect(estado).toBe(200);
+        expect(cuerpo).toContain(`Clientes que reciben ${FEATURE} (2)`);
+        expect(cuerpo).toContain("2 clientes ya tienen este feature");
+        expect(cuerpo).toContain(CLIENTE_C);
+        expect(cuerpo).toContain(CLIENTE_D);
+        expect(cuerpo).not.toContain(CLIENTE_A);
+        expect(cuerpo).not.toContain(CLIENTE_B);
+      });
+
+      it("cada cliente de la lista linkea a su Vista de cliente", async () => {
+        const { cuerpo } = await html(`/lista-de-release?por=feature&feature=${idFeature}`);
+        expect(cuerpo).toContain(`href="/clientes/${idClienteC}"`);
+        expect(cuerpo).toContain(`href="/clientes/${idClienteD}"`);
+      });
+
+      it("el selector queda con ese feature ya elegido", async () => {
+        const { cuerpo } = await html(`/lista-de-release?por=feature&feature=${idFeature}`);
+        expect(cuerpo).toMatch(new RegExp(`<option value="${idFeature}"[^>]*selected`));
+      });
+
+      it("muestra nombre, código y chip de estado del feature elegido", async () => {
+        const { cuerpo } = await html(`/lista-de-release?por=feature&feature=${idFeature}`);
+        expect(cuerpo).toContain(FEATURE);
+        expect(cuerpo).toContain(`F-M3-02-${SUFIJO}`);
+        expect(cuerpo).toContain("Disponible");
+      });
+    });
+
+    describe("fila 7 · todos los clientes ya tienen el feature", () => {
+      it("dice 'Ningún cliente corresponde a este filtro todavía' y el conteo en plural", async () => {
+        const { cuerpo } = await html(
+          `/lista-de-release?por=feature&feature=${idFeatureTodos}`,
+        );
+        expect(cuerpo).toContain("Ningún cliente corresponde a este filtro todavía.");
+        expect(cuerpo).toContain("4 clientes ya tienen este feature");
+        expect(cuerpo).not.toContain(`Clientes que reciben ${FEATURE_TODOS}`);
+      });
+    });
+
+    describe("fila 10 · un criterio por vez (no debe pasar)", () => {
+      it("?por=feature&feature=<id>&version=2.5.0 lista por feature e ignora la versión", async () => {
+        const { cuerpo } = await html(
+          `/lista-de-release?por=feature&feature=${idFeature}&version=2.5.0`,
+        );
+        expect(cuerpo).toContain(`Clientes que reciben ${FEATURE} (2)`);
+        expect(cuerpo).not.toContain("Clientes que reciben la 2.5.0");
+      });
+
+      it("?version=1.0.0&feature=<id> (sin por) lista por versión e ignora el feature", async () => {
+        const { cuerpo } = await html(
+          `/lista-de-release?version=1.0.0&feature=${idFeature}`,
+        );
+        // A, B, C, D están en 1.0.0: todos "ya están", ninguno "recibe".
+        expect(cuerpo).toContain("Ningún cliente corresponde a este filtro todavía.");
+        expect(cuerpo).toContain("4 clientes ya están en 1.0.0");
+        expect(cuerpo).not.toContain(`Clientes que reciben ${FEATURE}`);
+      });
+
+      it("cambiar de criterio con los links no arrastra la selección del otro", async () => {
+        const { cuerpo } = await html("/lista-de-release?por=feature");
+        // El link "Por versión destino" no lleva ningún ?feature= pegado.
+        expect(cuerpo).toMatch(/<a[^>]*href="\/lista-de-release"[^>]*>Por versión destino<\/a>/);
+      });
+    });
+
+    describe("fila 12 · regla #1, aislamiento entre organizaciones (no debe pasar)", () => {
+      it("el cliente y el feature ajenos no aparecen ni suman en los conteos", async () => {
+        const { cuerpo } = await html(`/lista-de-release?por=feature&feature=${idFeature}`);
+        expect(cuerpo).not.toContain(CLIENTE_AJENO);
+        expect(cuerpo).not.toContain(FEATURE_AJENO);
+        expect(cuerpo).not.toContain(idClienteAjeno);
+      });
+
+      it("el feature ajeno no aparece en el selector", async () => {
+        const { cuerpo } = await html("/lista-de-release?por=feature");
+        expect(cuerpo).not.toContain(FEATURE_AJENO);
+      });
+
+      it("un ?feature= de otra organización responde igual que uno inexistente", async () => {
+        const deOtra = await html(`/lista-de-release?por=feature&feature=${idFeatureAjeno}`);
+        const inventado = await html(
+          "/lista-de-release?por=feature&feature=id-que-no-existe-en-ninguna-parte",
+        );
+
+        expect(deOtra.estado).toBe(200);
+        expect(inventado.estado).toBe(200);
+
+        expect(deOtra.cuerpo).toContain("Ese feature ya no existe.");
+        expect(inventado.cuerpo).toContain("Ese feature ya no existe.");
+
+        expect(deOtra.cuerpo).not.toContain("Clientes que reciben");
+        expect(inventado.cuerpo).not.toContain("Clientes que reciben");
+        expect(deOtra.cuerpo).not.toContain(FEATURE_AJENO);
+
+        // El selector sigue usable en los dos casos (no se rompe la pantalla).
+        expect(deOtra.cuerpo).toContain("Ver lista");
+        expect(inventado.cuerpo).toContain("Ver lista");
+      });
     });
   });
 });

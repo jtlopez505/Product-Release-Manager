@@ -476,6 +476,11 @@ const PAGINA_DE_LISTA_DE_RELEASE = readFileSync(
   "utf8",
 );
 
+const CRITERIO_DE_FILTRO = readFileSync(
+  join(RAIZ, "app", "lista-de-release", "criterio-de-filtro.tsx"),
+  "utf8",
+);
+
 describe("la lista de release (M3-01) sigue las reglas de interfaz de marca.md", () => {
   it("el campo de versión usa el token de borde de control y va en monoespaciada", () => {
     expect(FORMULARIO_DE_VERSION).toMatch(/border-borde-control/);
@@ -507,6 +512,58 @@ describe("la lista de release (M3-01) sigue las reglas de interfaz de marca.md",
       ESQUELETO_DE_LISTA_DE_RELEASE,
       PAGINA_DE_LISTA_DE_RELEASE,
     ]) {
+      expect(archivo).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+    }
+  });
+});
+
+/**
+ * La lista de release por feature (M3-02) contra las reglas de interfaz de `marca.md` que le
+ * tocan. La elección de criterio (`criterio-de-filtro.tsx`) es nueva; `selector-de-feature.tsx`
+ * y `app/lista-de-release/page.tsx` están modificados. La vista previa y el esqueleto ya están
+ * cubiertos arriba (se reusan tal cual, sin cambios de fondo); los scans globales de hex
+ * sueltos, bordes con alfa, sombras y outline anulado ya cubren `app/` entero.
+ */
+describe("la elección de criterio de la lista de release (M3-02) reusa los tokens de la pestaña activa", () => {
+  it("marca la opción activa con aria-current, no solo con color", () => {
+    expect(CRITERIO_DE_FILTRO).toMatch(/aria-current=\{activa \? "page" : undefined\}/);
+  });
+
+  it("reusa exactamente los mismos tokens que la pestaña activa de Navegacion", () => {
+    expect(CRITERIO_DE_FILTRO).toMatch(/bg-seleccionado text-primario/);
+    expect(CRITERIO_DE_FILTRO).toMatch(/text-texto-secundario hover:bg-hover active:bg-seleccionado/);
+  });
+
+  it("transiciona solo el fondo, 120ms ease-out", () => {
+    const transiciones = CRITERIO_DE_FILTRO.match(/transition-\[[^\]]+\]/g) ?? [];
+    expect(transiciones.length).toBeGreaterThan(0);
+    for (const transicion of transiciones) {
+      expect(transicion).toBe("transition-[background-color]");
+    }
+  });
+
+  it("sin filas alternadas", () => {
+    expect(CRITERIO_DE_FILTRO).not.toMatch(/\b(odd|even|nth-child)[-:]/);
+  });
+});
+
+describe("la rama 'por feature' de la lista de release (M3-02) reusa el patrón de /por-feature", () => {
+  it("el selector se parametriza por props sin perder el default de /por-feature", () => {
+    expect(SELECTOR_DE_FEATURE).toMatch(/destino = "\/por-feature"/);
+    expect(SELECTOR_DE_FEATURE).toMatch(/textoBoton = "Ver clientes"/);
+  });
+
+  it("el feature elegido muestra su código en monoespaciada y reusa ChipDeEstado", () => {
+    expect(PAGINA_DE_LISTA_DE_RELEASE).toMatch(/font-datos text-xs text-texto-secundario/);
+    expect(PAGINA_DE_LISTA_DE_RELEASE).toMatch(/ChipDeEstado estado={featureElegido\.estado}/);
+  });
+
+  it("el botón de esta pantalla dice 'Ver lista', igual que el campo de versión", () => {
+    expect(PAGINA_DE_LISTA_DE_RELEASE).toMatch(/textoBoton="Ver lista"/);
+  });
+
+  it("sin filas alternadas en los archivos nuevos o modificados de esta pieza", () => {
+    for (const archivo of [SELECTOR_DE_FEATURE, PAGINA_DE_LISTA_DE_RELEASE, CRITERIO_DE_FILTRO]) {
       expect(archivo).not.toMatch(/\b(odd|even|nth-child)[-:]/);
     }
   });

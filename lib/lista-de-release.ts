@@ -1,5 +1,6 @@
 /**
- * La lógica de la lista de release por versión destino (ficha M3-01), sin base de datos.
+ * La lógica de la lista de release (ficha M3-01 por versión destino; M3-02 suma el criterio por
+ * feature), sin base de datos.
  *
  * Vive separada de `lib/clientes.ts` por la misma razón que `lib/consulta-por-feature.ts`: ese
  * módulo importa `lib/prisma.ts`, que exige DATABASE_URL al importarse, y la verificación 1
@@ -14,6 +15,11 @@
  * (`lib/validacion-de-cliente.ts`), la misma que usa el historial de M1-04 (ficha §3 fila 4).
  * Reusarla tal cual es lo que garantiza que la lista de release y el historial nunca discrepen
  * sobre si un cliente ya está en una versión dada.
+ *
+ * **M3-02 tampoco reescribe el cálculo por feature:** `particionarClientesPorFeature`
+ * (`lib/consulta-por-feature.ts`) ya existe de M2-01; acá solo se agregan el título y el
+ * mensaje secundario que le corresponden a esa partición cuando el criterio activo es "por
+ * feature" en esta pantalla, en vez de "por versión".
  */
 import { laVersionCambio } from "./validacion-de-cliente";
 
@@ -23,7 +29,22 @@ export const MENSAJES_DE_LISTA_DE_RELEASE = {
   // Texto literal de docs/arquitectura/user-flow.md §5 (criterio #8 de la ficha).
   ningunoCorresponde: "Ningún cliente corresponde a este filtro todavía.",
   cargaFallida: "No se pudo cargar la lista de release.",
+  // Ficha M3-02, criterio #6: distinto del "Elegí un feature para ver qué clientes lo tienen."
+  // de M2-01 — acá el verbo es "desplegar", no "tienen", porque la pregunta es otra.
+  sinFeatureElegido: "Elegí el feature que vas a desplegar para ver qué clientes lo reciben.",
 } as const;
+
+/** El criterio de filtro activo de "Lista de release" (ficha M3-02, fila 1): uno a la vez. */
+export type CriterioDeListaDeRelease = "version" | "feature";
+
+/**
+ * Qué criterio está activo, según `?por=` (ficha M3-02, filas 1 y 10 — "no debe pasar"):
+ * `"feature"` solo con ese valor exacto; la ausencia del parámetro o cualquier otro valor es
+ * `"version"` — el comportamiento de M3-01, sin cambios.
+ */
+export function criterioActivo(por: string | undefined): CriterioDeListaDeRelease {
+  return por === "feature" ? "feature" : "version";
+}
 
 export type ParticionDeListaDeRelease<T> = {
   /** Clientes cuya versión activa es distinta de la destino: a estos llega el release. */
@@ -88,4 +109,27 @@ export function mensajeDeClientesQueYaEstan(version: string, cantidad: number): 
   return cantidad === 1
     ? `1 cliente ya está en ${version}`
     : `${cantidad} clientes ya están en ${version}`;
+}
+
+/**
+ * "Clientes que reciben <nombre del feature> (N)" (ficha M3-02, fila 4) — mismo molde que
+ * `tituloDeListaDeRelease`, con el feature en vez de la versión como criterio de corte.
+ */
+export function tituloDeListaDeReleasePorFeature(featureName: string, cantidad: number): string {
+  return `Clientes que reciben ${featureName} (${cantidad})`;
+}
+
+/**
+ * "1 cliente ya tiene este feature" / "N clientes ya tienen este feature" — o `null` si no
+ * quedó nadie afuera (ficha M3-02, fila 4; misma regla de singular/plural que
+ * `mensajeDeClientesQueYaEstan`). No lleva el nombre del feature: así lo pide el texto de la
+ * ficha, a diferencia del mensaje por versión.
+ */
+export function mensajeDeClientesQueYaTienenFeature(cantidad: number): string | null {
+  if (cantidad === 0) {
+    return null;
+  }
+  return cantidad === 1
+    ? "1 cliente ya tiene este feature"
+    : `${cantidad} clientes ya tienen este feature`;
 }
