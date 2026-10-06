@@ -568,3 +568,51 @@ describe("la rama 'por feature' de la lista de release (M3-02) reusa el patrón 
     }
   });
 });
+
+/**
+ * "Exportar CSV" (M3-03, criterio #13) contra las reglas de interfaz de `marca.md` que le
+ * tocan. Es un botón **secundario** (borde, no relleno) — el mismo patrón que "Reintentar" de
+ * `PanelDeError`, nunca el botón primario de la pantalla. Los scans de arriba ya cubren hex
+ * sueltos, bordes con alfa, sombras y outline anulado en todo `app/`.
+ */
+const BOTON_EXPORTAR_CSV = readFileSync(
+  join(RAIZ, "app", "lista-de-release", "boton-exportar-csv.tsx"),
+  "utf8",
+);
+
+describe("el botón 'Exportar CSV' (M3-03) sigue las reglas de interfaz de marca.md", () => {
+  it("es un botón secundario: borde de control, no relleno primario", () => {
+    expect(BOTON_EXPORTAR_CSV).toMatch(/border-borde-control/);
+    expect(BOTON_EXPORTAR_CSV).not.toMatch(/bg-primario\b/);
+  });
+
+  it("hover y active usan los tokens compartidos, no opacidad", () => {
+    expect(BOTON_EXPORTAR_CSV).toMatch(/hover:bg-hover/);
+    expect(BOTON_EXPORTAR_CSV).toMatch(/active:bg-seleccionado/);
+    expect(BOTON_EXPORTAR_CSV).not.toMatch(/hover:opacity-/);
+  });
+
+  it("transiciona solo el fondo, 120ms ease-out", () => {
+    const transiciones = BOTON_EXPORTAR_CSV.match(/transition-\[[^\]]+\]/g) ?? [];
+    expect(transiciones.length).toBeGreaterThan(0);
+    for (const transicion of transiciones) {
+      expect(transicion).toBe("transition-[background-color]");
+    }
+  });
+
+  it("el label deja claro qué hace, sin depender solo del ícono o el color", () => {
+    expect(BOTON_EXPORTAR_CSV).toMatch(/Exportar CSV/);
+  });
+});
+
+describe("la vista previa de la lista (M3-03) suma el botón junto al título", () => {
+  it("reusa BotonExportarCsv, no reinventa la descarga en el componente de la vista", () => {
+    expect(VISTA_PREVIA_DE_LISTA).toMatch(/<BotonExportarCsv/);
+  });
+
+  it("el botón solo se pinta junto con la tabla, dentro del mismo condicional", () => {
+    expect(VISTA_PREVIA_DE_LISTA).toMatch(
+      /hayClientesQueCorresponden \? \(\s*<BotonExportarCsv/,
+    );
+  });
+});

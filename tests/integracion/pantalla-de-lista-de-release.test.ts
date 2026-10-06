@@ -86,6 +86,50 @@ async function html(ruta: string): Promise<{ estado: number; cuerpo: string }> {
   return { estado: respuesta.status, cuerpo: await respuesta.text() };
 }
 
+/**
+ * M3-03, verificación 2 (fila 9 de la ficha): el servidor manda las filas al componente de
+ * cliente `BotonExportarCsv` como prop, dentro del payload RSC que Next inyecta en
+ * `self.__next_f.push([1, "..."])`. Esa cadena es un literal de string de JS de verdad (con
+ * `\"`, `\n`, etc. escapados) — se decodifica con `JSON.parse` envolviéndola en comillas, y
+ * recién ahí se busca el `"filas":[...]` que le tocó a esta pantalla. Es la única forma de ver,
+ * desde afuera, qué datos recibió exactamente el botón sin levantar un navegador.
+ */
+function textoDeLosPayloadsRSC(cuerpo: string): string {
+  const regex = /self\.__next_f\.push\(\[1,"((?:\\.|[^"\\])*)"\]\)/g;
+  const decodificados: string[] = [];
+  let coincidencia: RegExpExecArray | null;
+  while ((coincidencia = regex.exec(cuerpo))) {
+    decodificados.push(JSON.parse(`"${coincidencia[1]}"`));
+  }
+  return decodificados.join("\n");
+}
+
+function escaparRegex(valor: string): string {
+  return valor.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+type IdentificadorDeExportacionDeTest =
+  | { tipo: "version"; version: string }
+  | { tipo: "feature"; featureId: string };
+
+/** Las filas exactas que recibió `BotonExportarCsv` para ese identificador, en orden. */
+function filasPasadasAlBoton(
+  cuerpo: string,
+  identificador: IdentificadorDeExportacionDeTest,
+): Array<{ id: string; name: string; currentVersion: string }> {
+  const prefijoIdentificador =
+    identificador.tipo === "version"
+      ? `"identificador":{"tipo":"version","version":"${escaparRegex(identificador.version)}"}`
+      : `"identificador":{"tipo":"feature"`;
+  const decodificado = textoDeLosPayloadsRSC(cuerpo);
+  const patron = new RegExp(`${prefijoIdentificador}[\\s\\S]*?,"filas":(\\[.*?\\])\\}`);
+  const coincidencia = patron.exec(decodificado);
+  if (!coincidencia) {
+    throw new Error("No se encontró el payload de BotonExportarCsv en la respuesta.");
+  }
+  return JSON.parse(coincidencia[1]);
+}
+
 /** Borra clientes (y su historial/features) por id — limpieza compartida entre describes. */
 async function borrarClientes(ids: string[]): Promise<void> {
   const presentes = ids.filter(Boolean);
@@ -329,6 +373,28 @@ describe("con clientes en versiones repartidas", () => {
     });
   });
 
+  describe("M3-03 · verificación 2: lo que viaja al botón es la misma lista de la vista previa", () => {
+    it("fila 9: BotonExportarCsv recibe exactamente A, B y D — ni C ni el ajeno", async () => {
+      const { cuerpo } = await html("/lista-de-release?version=2.5.0");
+      const filas = filasPasadasAlBoton(cuerpo, { tipo: "version", version: "2.5.0" });
+
+      expect(filas.map((f) => f.name)).toEqual([CLIENTE_A, CLIENTE_B, CLIENTE_D]);
+      expect(filas.map((f) => f.id)).toEqual([idClienteA, idClienteB, idClienteD]);
+      expect(filas.some((f) => f.name === CLIENTE_C)).toBe(false);
+      expect(filas.some((f) => f.name === CLIENTE_AJENO)).toBe(false);
+    });
+
+    it("regla #1 (fila 11): el contenido que viaja al botón es igual al de la tabla visible", async () => {
+      const { cuerpo } = await html("/lista-de-release?version=2.5.0");
+      const filas = filasPasadasAlBoton(cuerpo, { tipo: "version", version: "2.5.0" });
+      // Cada nombre que recibió el botón también está, una vez, en la fila de la tabla
+      // servida — no hay una copia paralela que pueda discrepar.
+      for (const fila of filas) {
+        expect(cuerpo).toContain(`href="/clientes/${fila.id}">${fila.name}`);
+      }
+    });
+  });
+
   describe("la navegación suma 'Lista de release' sin tocar las otras dos pestañas", () => {
     it("/lista-de-release trae aria-current en esa pestaña", async () => {
       const { cuerpo } = await html("/lista-de-release");
@@ -566,6 +632,25 @@ describe("M3-02 · con un feature en el catálogo", () => {
         expect(cuerpo).toContain(FEATURE);
         expect(cuerpo).toContain(`F-M3-02-${SUFIJO}`);
         expect(cuerpo).toContain("Disponible");
+      });
+    });
+
+    describe("M3-03 · verificación 2, rama por feature: lo que viaja al botón es C y D", () => {
+      it("fila 9 y regla #1 (fila 12): BotonExportarCsv recibe C y D — ni A/B ni el ajeno", async () => {
+        const { cuerpo } = await html(`/lista-de-release?por=feature&feature=${idFeature}`);
+        const filas = filasPasadasAlBoton(cuerpo, { tipo: "feature", featureId: idFeature });
+
+        expect(filas.map((f) => f.name)).toEqual([CLIENTE_C, CLIENTE_D]);
+        expect(filas.map((f) => f.id)).toEqual([idClienteC, idClienteD]);
+        expect(filas.some((f) => f.name === CLIENTE_AJENO)).toBe(false);
+      });
+
+      it("el identificador exportado lleva el código del feature, no solo el nombre", async () => {
+        const { cuerpo } = await html(`/lista-de-release?por=feature&feature=${idFeature}`);
+        const decodificado = textoDeLosPayloadsRSC(cuerpo);
+        expect(decodificado).toContain(
+          `"identificador":{"tipo":"feature","feature":{"code":"F-M3-02-${SUFIJO}","name":"${FEATURE}"}}`,
+        );
       });
     });
 

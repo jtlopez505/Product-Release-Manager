@@ -148,6 +148,7 @@ async function ListaDeReleasePorVersion({
       titulo={tituloDeListaDeRelease(version, particion.reciben.length)}
       mensajeSecundario={mensajeDeClientesQueYaEstan(version, particion.yaEstan.length)}
       reciben={particion.reciben}
+      identificador={{ tipo: "version", version }}
     />
   );
 }
@@ -164,10 +165,12 @@ async function ListaDeReleasePorFeature({
   organizationId,
   featureId,
   featureName,
+  featureCode,
 }: {
   organizationId: string;
   featureId: string;
   featureName: string;
+  featureCode: string | null;
 }): Promise<React.ReactElement> {
   let clientes;
   let idsHabilitados;
@@ -198,6 +201,7 @@ async function ListaDeReleasePorFeature({
       titulo={tituloDeListaDeReleasePorFeature(featureName, particion.noLoTienenTodavia.length)}
       mensajeSecundario={mensajeDeClientesQueYaTienenFeature(particion.loTienen.length)}
       reciben={particion.noLoTienenTodavia}
+      identificador={{ tipo: "feature", feature: { code: featureCode, name: featureName } }}
     />
   );
 }
@@ -289,6 +293,7 @@ async function SeccionPorFeature({
               organizationId={organizationId}
               featureId={featureElegido.id}
               featureName={featureElegido.name}
+              featureCode={featureElegido.code}
             />
           </Suspense>
         </>

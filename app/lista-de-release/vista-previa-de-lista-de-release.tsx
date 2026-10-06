@@ -1,7 +1,9 @@
 import type { FilaDeListaDeClientes } from "@/lib/clientes";
+import type { IdentificadorDeExportacion } from "@/lib/exportar-lista";
 import { MENSAJES_DE_LISTA_DE_RELEASE } from "@/lib/lista-de-release";
 
 import { TablaDeClientes } from "../tabla-de-clientes";
+import { BotonExportarCsv } from "./boton-exportar-csv";
 
 /**
  * La vista previa de la lista de release (ficha M3-01, criterios #5 y #6; `user-flow.md` §5:
@@ -22,11 +24,16 @@ import { TablaDeClientes } from "../tabla-de-clientes";
  * de `user-flow.md` §5 ("Ningún cliente corresponde a este filtro todavía.") en vez del título
  * que mandó quien llama — es la fila 8 de la ficha M3-01 (y la fila 7 de M3-02). La segunda
  * línea solo aparece si quedó alguien afuera: con todos recibiendo, no hay nada que decir ahí.
+ *
+ * **M3-03 suma "Exportar CSV"**, junto al título, solo cuando `reciben` no está vacío (fila 10
+ * de esa ficha: sin lista no hay botón) — el único punto de integración del botón en toda la
+ * app, ya que los dos criterios reusan este mismo componente.
  */
 export function VistaPreviaDeListaDeRelease({
   titulo,
   mensajeSecundario,
   reciben,
+  identificador,
 }: {
   /** Ya compuesto por quien llama; solo se pinta si `reciben` no está vacío. */
   titulo: string;
@@ -34,15 +41,24 @@ export function VistaPreviaDeListaDeRelease({
    * nadie afuera. */
   mensajeSecundario: string | null;
   reciben: FilaDeListaDeClientes[];
+  /** Qué se está exportando (versión o feature): compone el nombre del archivo. */
+  identificador: IdentificadorDeExportacion;
 }): React.ReactElement {
   const hayClientesQueCorresponden = reciben.length > 0;
 
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
-        <h2 className="text-base font-semibold tracking-tight">
-          {hayClientesQueCorresponden ? titulo : MENSAJES_DE_LISTA_DE_RELEASE.ningunoCorresponde}
-        </h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="text-base font-semibold tracking-tight">
+            {hayClientesQueCorresponden
+              ? titulo
+              : MENSAJES_DE_LISTA_DE_RELEASE.ningunoCorresponde}
+          </h2>
+          {hayClientesQueCorresponden ? (
+            <BotonExportarCsv identificador={identificador} filas={reciben} />
+          ) : null}
+        </div>
         {mensajeSecundario ? (
           <p className="text-sm text-texto-secundario">{mensajeSecundario}</p>
         ) : null}
