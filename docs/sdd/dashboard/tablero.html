@@ -199,15 +199,14 @@
 
   footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); font-size: .82rem; color: var(--ink-3); }
 </style>
-
 <main>
   <header>
     <p class="eyebrow">Tablero del proyecto · Novolabs</p>
     <h1>ReleaseView</h1>
     <p class="sub">Panel interno que centraliza, cliente por cliente, qué versión y qué features
     tiene activos cada instalación de un producto SaaS o agente de IA.
-    <strong>Documentación completa — todavía no se escribió código.</strong>
-    Foto tomada el 21 de septiembre de 2026.</p>
+    <strong>Las 9 piezas están construidas y la app corre. Falta que la pruebes vos.</strong>
+    Foto tomada el 12 de octubre de 2026.</p>
   </header>
 
   <div class="tabs" role="tablist" aria-label="Secciones del tablero">
@@ -222,28 +221,29 @@
   <!-- ================= RESUMEN ================= -->
   <section class="panel activa" id="p-resumen" role="tabpanel" aria-labelledby="tab-resumen">
     <div class="panel-head">
-      <h2>Los cimientos están firmes; construir todavía no arrancó</h2>
-      <p class="sub">Ya se definió para quién es (ICP), qué se vende (Solución), qué se construye primero (PRD) y con qué (Arquitectura). Falta partir el primer milestone en piezas chicas y empezar a programar.</p>
+      <h2>El MVP está construido. Falta tu visto bueno.</h2>
+      <p class="sub">Los tres milestones están programados y verificados: se cargan clientes, se consultan por cliente y por feature, y se arma la lista de despliegue para un release. El recorrido completo corre de punta a punta. Lo único que queda es que lo uses y confirmes que lo que ves está bien.</p>
     </div>
     <div class="kpis">
-      <div class="card kpi"><div class="num">4 <small>de 8</small></div><div class="label">Pasos del método completos — ICP, Solución, PRD y Arquitectura</div></div>
-      <div class="card kpi"><div class="num">0 <small>de 0</small></div><div class="label">Piezas construidas — el plan de M1 todavía no existe (falta /roadmap)</div></div>
-      <div class="card kpi"><div class="num">—</div><div class="label">Tests en verde — no aplica todavía, no hay código escrito</div></div>
-      <div class="card kpi acento"><div class="num">A definir</div><div class="label">Estimado a cierre de M1 — /roadmap da una fecha una vez armado el plan</div></div>
+      <div class="card kpi verde"><div class="num">3 <small>de 3</small></div><div class="label">Milestones construidos — M1 y M2 ya probados por vos y archivados; M3 espera tu prueba</div></div>
+      <div class="card kpi verde"><div class="num">9 <small>de 9</small></div><div class="label">Piezas terminadas, cada una con sus 3 verificaciones en verde</div></div>
+      <div class="card kpi verde"><div class="num">208</div><div class="label">Tests en verde — más el typecheck y el linter, todo pasando hoy</div></div>
+      <div class="card kpi acento"><div class="num">Hoy</div><div class="label">Estimado a cierre del MVP — depende solo de tu prueba, no de más programación</div></div>
     </div>
     <div class="hoy">
       <div class="card paso-sig">
         <p class="eyebrow">El único paso siguiente</p>
-        <h3 style="margin-top:10px;">Armar el plan de M1</h3>
-        <p class="nota">Partir "Carga y consulta por cliente" en piezas chicas y ordenadas que el Programador pueda construir una por vez, con tests primero.</p>
-        <span class="cmd">/roadmap</span>
+        <h3 style="margin-top:10px;">Probá la app — ya está levantada</h3>
+        <p class="nota">Abrí <strong>http://localhost:3000</strong> (la contraseña es la de <span class="mono">APP_PASSWORD</span> en tu archivo <span class="mono">.env</span>). Andá a la pestaña "Lista de release", probá los dos criterios y <strong>hacé clic en "Exportar CSV"</strong>. Con tu confirmación cierro M3 y el MVP queda demostrado.</p>
+        <span class="cmd">http://localhost:3000</span>
       </div>
       <div class="card">
         <p class="eyebrow">Lo que te espera a vos</p>
         <ul class="checks" style="margin-top:10px;">
-          <li><span class="estado"></span><span>Confirmar el orden de piezas que proponga /roadmap</span></li>
-          <li><span class="estado"></span><span>Revisar la paleta y el tono de <span class="mono">marca.md</span> antes de que se usen en pantallas reales — es una propuesta, todavía no la validaste</span></li>
-          <li><span class="estado"></span><span>Nada para probar en la app todavía — eso arranca con la primera pieza construida (M1-01)</span></li>
+          <li><span class="estado"></span><span><strong>Probar la lista de release y confirmar</strong> — es lo único que bloquea el cierre del MVP</span></li>
+          <li><span class="estado"></span><span><strong>Confirmar que el CSV baja y abre bien en tu Excel</strong> — el contenido del archivo está probado al byte, pero el clic que dispara la descarga nunca se pudo ver funcionar en esta máquina</span></li>
+          <li><span class="estado"></span><span>Validar la paleta y el tono de <span class="mono">marca.md</span> — se usaron en todas las pantallas, pero siguen siendo una propuesta que no revisaste</span></li>
+          <li><span class="estado"></span><span>Decidir sobre "cerrar sesión": hoy no existe, y se evalúa recién cuando la app esté en una URL pública</span></li>
         </ul>
       </div>
     </div>
@@ -253,219 +253,268 @@
   <!-- ================= PROGRESO ================= -->
   <section class="panel" id="p-progreso" role="tabpanel" aria-labelledby="tab-progreso">
     <div class="panel-head">
-      <h2>Tres milestones definidos, ninguno partido en piezas todavía</h2>
-      <p class="sub">El MVP es un solo recorrido: cargar un cliente → consultarlo por cliente o por feature → armar la lista de "qué cliente recibe qué" para el próximo release.</p>
+      <h2>Los tres milestones, construidos y verificados</h2>
+      <p class="sub">El MVP es un solo recorrido: cargar un cliente → consultarlo por cliente o por feature → armar la lista de "qué cliente recibe qué" para el próximo release. Las tres partes están programadas.</p>
     </div>
     <div class="milestones">
       <div class="card">
-        <span class="pill pill-pend">Sin empezar</span>
-        <h3 style="margin-top:12px;">M1 · Carga y consulta por cliente</h3>
-        <div class="barra"><span class="b-curso" style="width:0%"></span></div>
-        <p class="nota">Dar de alta un cliente con su versión y features, editarlo, verlo de un vistazo, y guardar el historial de versión con fecha desde la primera carga.</p>
+        <h3>M1 · Carga y consulta por cliente</h3>
+        <div class="barra"><span class="b-ok" style="width:100%"></span></div>
+        <p class="nota">5 de 5 piezas · <span class="pill pill-ok">probado y archivado</span></p>
       </div>
       <div class="card">
-        <span class="pill pill-pend">Sin empezar</span>
-        <h3 style="margin-top:12px;">M2 · Consulta por feature</h3>
-        <div class="barra"><span class="b-curso" style="width:0%"></span></div>
-        <p class="nota">Responder "¿qué clientes todavía no tienen el feature X?" — usa los mismos datos de M1 desde el otro ángulo.</p>
+        <h3>M2 · Consulta por feature</h3>
+        <div class="barra"><span class="b-ok" style="width:100%"></span></div>
+        <p class="nota">1 de 1 pieza · <span class="pill pill-ok">probado y archivado</span></p>
       </div>
       <div class="card">
-        <span class="pill pill-pend">Sin empezar</span>
-        <h3 style="margin-top:12px;">M3 · Lista de despliegue para un release</h3>
-        <div class="barra"><span class="b-curso" style="width:0%"></span></div>
-        <p class="nota">Armar y exportar en minutos la lista de "qué cliente recibe qué" antes de un release real.</p>
+        <h3>M3 · Lista de despliegue</h3>
+        <div class="barra"><span class="b-ok" style="width:100%"></span></div>
+        <p class="nota">3 de 3 piezas · <span class="pill pill-curso">espera tu prueba</span></p>
       </div>
     </div>
 
-    <h3 style="margin-top:30px;">Las piezas de M1</h3>
-    <div class="card">
-      <p class="nota">El plan todavía no existe. Corré <span class="mono">/roadmap</span> para partir M1 en piezas chicas y ordenadas — ahí van a aparecer acá, una por una, con su estado.</p>
+    <h3 style="margin-top:28px;">Las piezas del milestone activo (M3)</h3>
+    <div class="spec-lista">
+      <div class="spec">
+        <span class="spec-id">M3-01</span>
+        <span>Lista de release por versión destino: la pestaña nueva, escribir la versión y ver qué clientes la reciben</span>
+        <span class="pill pill-ok">terminada</span>
+        <span class="spec-dep">No dependía de nada — trajo la pestaña y la vista previa que usan las otras dos</span>
+      </div>
+      <div class="spec">
+        <span class="spec-id">M3-02</span>
+        <span>Lista de release por feature: elegir el feature y ver qué clientes lo reciben</span>
+        <span class="pill pill-ok">terminada</span>
+        <span class="spec-dep">Necesitaba la pantalla de M3-01 para sumarse a ella</span>
+      </div>
+      <div class="spec">
+        <span class="spec-id">M3-03</span>
+        <span>Exportar la lista a un archivo para Excel en español</span>
+        <span class="pill pill-ok">terminada</span>
+        <span class="spec-dep">Necesitaba los dos criterios construidos, porque exporta el que esté elegido</span>
+      </div>
     </div>
 
-    <div class="card" style="margin-top:14px;">
-      <h3>Qué tiene que pasar para dar M1 por terminado</h3>
-      <ul class="checks">
-        <li><span class="estado"></span><span>Se puede dar de alta un cliente con su versión activa y la lista de features habilitados</span></li>
-        <li><span class="estado"></span><span>Se puede editar esos datos cuando cambian</span></li>
-        <li><span class="estado"></span><span>Se puede ver, para un cliente elegido, su versión activa y sus features de un vistazo</span></li>
-        <li><span class="estado"></span><span>Cada cambio de versión (incluida la primera carga) queda guardado con fecha, y se puede ver ese historial</span></li>
+    <div class="card" style="margin-top:22px;">
+      <p class="eyebrow">Para cerrar M3</p>
+      <ul class="checks" style="margin-top:10px;">
+        <li><span class="estado hecho"></span><span>Las 3 piezas en verde, cada una con sus 3 verificaciones</span></li>
+        <li><span class="estado medio"></span><span>Las condiciones del milestone se pueden demostrar — el código está y corre; se tildan en el PRD cuando las veas funcionando</span></li>
+        <li><span class="estado"></span><span><strong>Lo probaste con tus ojos y confirmaste</strong> — la app está levantada esperándote</span></li>
+        <li><span class="estado"></span><span>El plan se mueve a la carpeta de archivados (lo hago yo con tu confirmación)</span></li>
       </ul>
     </div>
-    <div class="siguiente"><button class="btn" data-ir="ritmo">Ver el ritmo y los números →</button></div>
+    <div class="siguiente"><button class="btn primario" data-ir="ritmo">Ver el ritmo de trabajo →</button></div>
   </section>
 
   <!-- ================= RITMO ================= -->
   <section class="panel" id="p-ritmo" role="tabpanel" aria-labelledby="tab-ritmo">
     <div class="panel-head">
-      <h2>Cuatro etapas del método, 5 días activos, una pausa larga en el medio</h2>
-      <p class="sub">Estos datos salen de los registros reales de tus sesiones de Claude Code. Todavía no hay piezas de código construidas — esta foto es de las etapas de documentación.</p>
+      <h2>Todo el MVP se construyó en menos de 4 horas de trabajo real</h2>
+      <p class="sub">Los números salen de los registros de las sesiones. "Trabajo" es tiempo en el que el agente estaba haciendo algo; "espera" son los huecos de más de 2 minutos, casi siempre sesiones que quedaron abiertas de un día para el otro.</p>
     </div>
 
-    <div class="card">
-      <h3>El método, etapa por etapa</h3>
-      <div class="tabla-scroll"><table>
-        <tr><th>Etapa</th><th>Cuándo</th><th>Nota</th></tr>
-        <tr><td class="mono">/icp</td><td class="fecha">8 sep</td><td>ICP-01 definido, núcleo completo</td></tr>
-        <tr><td class="mono">/solucion</td><td class="fecha">8 sep</td><td>SaaS interno, integración híbrida (para más adelante)</td></tr>
-        <tr><td class="mono">/prd</td><td class="fecha">9 sep</td><td>MVP + 3 milestones + riesgos</td></tr>
-        <tr><td>— pausa —</td><td class="fecha">9→14 sep</td><td>5 días sin actividad en el proyecto</td></tr>
-        <tr><td class="mono">/arquitectura</td><td class="fecha">14–15 sep</td><td>Multi-tenant (14) + 6 documentos técnicos y de diseño (15)</td></tr>
-        <tr><td>Ajuste de PRD</td><td class="fecha">16 sep</td><td>Se cierran las 2 preguntas abiertas, se suma historial de versión</td></tr>
-        <tr><td class="mono">/dashboard</td><td class="fecha">21 sep</td><td>Este tablero</td></tr>
-      </table></div>
-      <p class="nota" style="margin-top:10px;">No se desglosan minutos por etapa porque el trabajo de documentación corrió conversando, sin subagentes — no hay marcas de tiempo por pieza que aislar todavía.</p>
+    <h3>Por etapa del método</h3>
+    <div class="fila-barra"><span class="nombre">Diseño (recorrido y marca)</span><span class="pista"><span class="valor" style="width:3%"></span></span><span class="cifra">1,4 min</span></div>
+    <div class="fila-barra"><span class="nombre">Fichas de las piezas</span><span class="pista"><span class="valor" style="width:13%"></span></span><span class="cifra">5,9 min</span></div>
+    <div class="fila-barra"><span class="nombre">Construcción (9 piezas)</span><span class="pista"><span class="valor" style="width:100%"></span></span><span class="cifra">224 min</span></div>
+    <div class="fila-barra"><span class="nombre">Ajustes de marca</span><span class="pista"><span class="valor" style="width:8%"></span></span><span class="cifra">18,8 min</span></div>
+    <p class="nota" style="margin-top:10px;">Las etapas anteriores (ICP, Solución, PRD, Arquitectura) se escribieron en conversación directa, sin agentes separados, así que no tienen un tiempo medido aparte.</p>
+
+    <h3 style="margin-top:28px;">Por pieza construida</h3>
+    <div class="fila-barra"><span class="nombre mono">M1-01 base</span><span class="pista"><span class="valor" style="width:48%"></span></span><span class="cifra">21,8 min</span></div>
+    <div class="fila-barra"><span class="nombre mono">M1-02 acceso</span><span class="pista"><span class="valor" style="width:40%"></span></span><span class="cifra">17,8 min</span></div>
+    <div class="fila-barra"><span class="nombre mono">M1-03 features</span><span class="pista"><span class="valor" style="width:56%"></span></span><span class="cifra">25,4 min</span></div>
+    <div class="fila-barra"><span class="nombre mono">M1-04 clientes</span><span class="pista"><span class="valor" style="width:58%"></span></span><span class="cifra">26,0 min</span></div>
+    <div class="fila-barra"><span class="nombre mono">M1-05 pantallas</span><span class="pista"><span class="valor" style="width:65%"></span></span><span class="cifra">29,2 min</span></div>
+    <div class="fila-barra"><span class="nombre mono">M2-01 por feature</span><span class="pista"><span class="valor" style="width:51%"></span></span><span class="cifra">23,1 min</span></div>
+    <div class="fila-barra"><span class="nombre mono">M3-01 por versión</span><span class="pista"><span class="valor" style="width:54%"></span></span><span class="cifra">24,4 min</span></div>
+    <div class="fila-barra"><span class="nombre mono">M3-02 por feature</span><span class="pista"><span class="valor" style="width:38%"></span></span><span class="cifra">17,3 min</span></div>
+    <div class="fila-barra"><span class="nombre mono">M3-03 exportar</span><span class="pista"><span class="valor" style="width:88%"></span></span><span class="cifra">39,4 min</span></div>
+    <div class="leyenda"><span><i style="background:var(--primary)"></i>Trabajo real del agente</span><span>Las barras miden solo trabajo — las esperas se explican abajo</span></div>
+
+    <div class="grid-2 mt">
+      <div class="card kpi"><div class="num">25 <small>min</small></div><div class="label">Trabajo promedio por pieza construida — bastante parejo: la más corta 17 min, la más larga 39</div></div>
+      <div class="card kpi"><div class="num">3 h 44</div><div class="label">Trabajo real acumulado para construir las 9 piezas del MVP completo</div></div>
     </div>
 
     <div class="card" style="margin-top:12px;">
-      <h3>La única tarea delegada a un subagente hasta ahora</h3>
-      <div class="fila-barra"><span class="nombre">Diseñador → user-flow + marca</span><div class="pista"><div class="valor" style="width:100%"></div></div><span class="cifra">82 s</span></div>
-      <p class="nota" style="margin-top:10px;">Sin huecos de espera — el Diseñador propuso los dos borradores en una sola corrida, del despacho a la respuesta. Es el único dato de "trabajo real de la máquina" que hay por ahora.</p>
+      <p class="eyebrow">Dónde se fue el tiempo de calendario</p>
+      <p class="nota" style="margin-top:8px;">El MVP tomó unos días de calendario pero menos de 4 horas de trabajo. La diferencia no es lentitud del agente ni espera tuya: dos piezas (M1-04 y M3-01) registran huecos de casi 6 días cada una porque la sesión quedó abierta de una jornada a la otra. La única espera real y corta fue en M3-03 (unas 2 h 36), cuando se verificó varias veces la descarga del archivo. <strong>Las esperas atribuibles a vos fueron mínimas</strong> — entre 0 y 4 minutos por pieza.</p>
     </div>
 
-    <div class="grid-2 mt">
-      <div class="card kpi"><div class="num">5 días</div><div class="label">Activos, de los cuales 4 pasos del método quedaron completos</div></div>
-      <div class="card kpi"><div class="num">5 días</div><div class="label">De pausa entre cerrar el PRD (9 sep) y arrancar Arquitectura (14 sep) — normal entre sesiones</div></div>
+    <div class="card" style="margin-top:12px;">
+      <p class="eyebrow">Proyección honesta</p>
+      <p class="nota" style="margin-top:8px;"><strong>Si el CSV baja bien: el MVP cierra hoy</strong>, en lo que tardes en probarlo. <strong>Si no baja:</strong> es una pieza de arreglo, estimada entre 20 y 40 minutos de trabajo según el ritmo de las 9 anteriores. Después de eso viene <span class="mono">/deploy</span>, que no está estimado porque depende de crear las cuentas de Vercel y cargar las claves allá — nada de eso se hizo todavía.</p>
     </div>
 
-    <div class="grid-2 mt">
-      <div class="card">
-        <h3>Proyección a M1 — honesta</h3>
-        <p class="nota" style="font-size:.92rem;">Todavía no hay piezas de código construidas, así que no hay una base confiable para proyectar cuánto tarda cerrar M1. Único dato de referencia: la tarea delegada al Diseñador se resolvió en 82 segundos sin pausas — sugiere que, con el plan de /roadmap armado y las respuestas listas de antemano, cada pieza debería resolverse en minutos, no en horas.</p>
-      </div>
-      <div class="card">
-        <h3>3 sugerencias para no perder ritmo</h3>
-        <ol class="pasos">
-          <li><strong>Corré /roadmap ahora.</strong> La arquitectura quedó firme sin cabos sueltos — es el momento de partir M1 en piezas antes de que se enfríe el contexto.</li>
-          <li><strong>Respondé los bloques de preguntas de una sola vez.</strong> La pausa de 5 días de esta vez fue tiempo entre sesiones, no trabajo de la máquina — pero cuanto antes cierres una ronda de preguntas, antes sigue el plan.</li>
-          <li><strong>Usá /save-point antes de que el Programador toque código.</strong> No hay ningún commit desde el 31 de agosto — hoy hay 8 documentos nuevos sin guardar en git (ver Avisos).</li>
-        </ol>
-      </div>
-    </div>
-    <div class="siguiente"><button class="btn" data-ir="tecnica">Ver la ficha técnica →</button></div>
+    <h3 style="margin-top:28px;">Tres formas de ir más rápido</h3>
+    <ol class="pasos">
+      <li><strong>Probá en el momento en que te sirvo el link.</strong> Las dos pausas más grandes del proyecto fueron sesiones quedadas abiertas entre días, no trabajo pendiente. Cerrar el ciclo el mismo día es lo que más comprime el calendario.</li>
+      <li><strong>Tené las cuentas y claves listas antes de arrancar una etapa.</strong> M1-01 incluyó crear el proyecto de Supabase sobre la marcha; <span class="mono">/deploy</span> va a necesitar lo mismo con Vercel. Tenerlo creado antes ahorra la ida y vuelta.</li>
+      <li><strong>Agrupá las validaciones visuales.</strong> La paleta de <span class="mono">marca.md</span> espera tu revisión desde septiembre y ya se usó en todas las pantallas: si algo no te gusta, cambiarlo ahora toca más archivos que si lo hubieras marcado al principio.</li>
+    </ol>
+    <div class="siguiente"><button class="btn primario" data-ir="tecnica">Ver la ficha técnica →</button></div>
   </section>
 
   <!-- ================= TÉCNICA ================= -->
   <section class="panel" id="p-tecnica" role="tabpanel" aria-labelledby="tab-tecnica">
     <div class="panel-head">
-      <h2>Con qué se va a construir</h2>
-      <p class="sub">Las decisiones ya están tomadas y documentadas (6 documentos en <span class="mono">docs/arquitectura/</span>) — falta escribir el primer código.</p>
+      <h2>Con qué está hecho</h2>
+      <p class="sub">Todas estas decisiones ya están implementadas y corriendo, no son planes.</p>
     </div>
-    <div class="grid-2">
-      <div class="card">
-        <h3>El stack</h3>
-        <div class="badges"><span class="badge">Next.js</span><span class="badge">TypeScript</span><span class="badge">Prisma</span><span class="badge">Supabase (Postgres)</span><span class="badge">Vercel</span></div>
-        <p class="nota" style="margin-top:12px;">Costo esperado en esta etapa: <strong>USD 0/mes</strong> (planes gratuitos). El número final con supuestos de uso lo calcula <span class="mono">/costo</span>. Acceso: portón compartido con una sola contraseña, sin cuentas individuales todavía.</p>
-      </div>
-      <div class="card">
-        <h3>Los datos</h3>
-        <div class="modelo">
-          <div class="entidad"><header>Cliente</header><ul><li>nombre</li><li>versión activa</li><li>notas</li></ul></div>
-          <div class="vinculo">habilita<br>↔<br>no tiene</div>
-          <div class="entidad"><header>Feature</header><ul><li>lista maestra</li><li>nombre · descripción</li></ul></div>
-        </div>
-        <div class="modelo" style="margin-top:8px;">
-          <div class="entidad"><header>Cliente</header><ul><li>(la misma tabla)</li></ul></div>
-          <div class="vinculo">cada cambio<br>→<br>queda guardado</div>
-          <div class="entidad"><header>Historial de versión</header><ul><li>versión</li><li>fecha</li></ul></div>
-        </div>
-        <p class="nota" style="margin-top:12px;">Todo etiquetado por organización desde el día 1 (regla #1), aunque el MVP solo tenga una organización cargada — sumar la segunda es agregar filas, no rediseñar.</p>
+
+    <div class="card">
+      <p class="eyebrow">Stack</p>
+      <div class="badges">
+        <span class="badge">Next.js 16 (App Router)</span>
+        <span class="badge">TypeScript</span>
+        <span class="badge">React 19</span>
+        <span class="badge">Prisma 7</span>
+        <span class="badge">Supabase (Postgres)</span>
+        <span class="badge">Tailwind CSS 4</span>
+        <span class="badge">Vitest · 208 tests</span>
+        <span class="badge" style="color:var(--ink-3)">Vercel — pendiente de /deploy</span>
       </div>
     </div>
+
     <div class="card" style="margin-top:12px;">
-      <h3>El recorrido del usuario — diseñado, sin construir todavía</h3>
+      <p class="eyebrow">Qué se guarda</p>
+      <div class="modelo" style="margin-top:10px;">
+        <div class="entidad"><header>Organización</header><ul><li>Quién usa ReleaseView</li><li>Hoy una sola</li></ul></div>
+        <span class="vinculo">tiene<br>muchos</span>
+        <div class="entidad"><header>Cliente</header><ul><li>Nombre</li><li>Versión activa</li></ul></div>
+        <span class="vinculo">guarda<br>cada cambio</span>
+        <div class="entidad"><header>Historial de versión</header><ul><li>Versión anterior</li><li>Fecha del cambio</li></ul></div>
+      </div>
+      <div class="modelo" style="margin-top:10px;">
+        <div class="entidad"><header>Feature</header><ul><li>La lista maestra del producto</li></ul></div>
+        <span class="vinculo">cruzado con<br>cliente</span>
+        <div class="entidad"><header>Cliente ↔ Feature</header><ul><li>Qué tiene habilitado cada cliente</li><li>Responde las dos preguntas del negocio</li></ul></div>
+      </div>
+      <p class="nota" style="margin-top:10px;">Todo queda etiquetado por organización desde la primera pieza: nadie puede ver los datos de otra, ni escribiendo la dirección a mano.</p>
+    </div>
+
+    <div class="card" style="margin-top:12px;">
+      <p class="eyebrow">El recorrido del usuario</p>
       <div class="flujo">
-        <span class="paso apagado">Ingresar (contraseña)</span><span class="flecha">→</span>
-        <span class="paso apagado">Inicio: lista de clientes</span><span class="flecha">→</span>
-        <span class="paso apagado">Alta de cliente</span><span class="flecha">→</span>
-        <span class="paso apagado">Vista de cliente + historial</span><span class="flecha">→</span>
-        <span class="paso apagado">Por feature</span><span class="flecha">→</span>
-        <span class="paso apagado">Armar lista de release</span>
+        <span class="paso hecho">Ingreso con contraseña</span><span class="flecha">→</span>
+        <span class="paso hecho">Inicio: lista de clientes</span><span class="flecha">→</span>
+        <span class="paso hecho">Alta y edición de cliente</span><span class="flecha">→</span>
+        <span class="paso hecho">Vista de cliente con historial</span>
       </div>
-      <p class="nota" style="margin-top:12px;">Los seis pasos están validados en el documento (<span class="mono">docs/arquitectura/user-flow.md</span>) pero ninguno corre todavía — arrancan a construirse con la primera pieza de M1.</p>
+      <div class="flujo" style="margin-top:6px;">
+        <span class="paso hecho">Lista maestra de features</span><span class="flecha">→</span>
+        <span class="paso hecho">Consulta por feature</span><span class="flecha">→</span>
+        <span class="paso actual">Lista de release + exportar</span><span class="flecha">→</span>
+        <span class="paso apagado">App publicada en internet</span>
+      </div>
+      <p class="nota" style="margin-top:10px;">Todo lo verde ya corre en tu máquina. Lo resaltado es lo que te toca probar ahora. Lo punteado es <span class="mono">/deploy</span>, que todavía no se hizo.</p>
     </div>
+
     <div class="card" style="margin-top:12px;">
-      <h3>La marca del producto <span class="pill pill-alerta" style="margin-left:6px;">A validar</span></h3>
-      <p class="nota">Propuesta del Diseñador de Producto a partir del ICP — todavía no te la mostramos para que la apruebes o pidas cambios. Tono directo y calmo (nada de "growth" ni jerga enterprise), pensado como herramienta de trabajo, no vidriera.</p>
+      <p class="eyebrow">Marca del producto <span class="pill pill-alerta" style="margin-left:8px;">a validar</span></p>
+      <p class="nota" style="margin-top:8px;">Azul petróleo sobrio, verde apagado para "lo tiene" y ámbar terroso para "todavía no" — deliberadamente calmo, porque es una herramienta de lectura rápida y no una vidriera. <strong>Ya está aplicada en todas las pantallas, pero nunca la revisaste.</strong></p>
       <div class="paleta">
-        <div class="swatch"><div class="color" style="background:#1E3A5F;"></div><div class="nombre">Primario</div></div>
-        <div class="swatch"><div class="color" style="background:#F7F8FA;"></div><div class="nombre">Fondo</div></div>
-        <div class="swatch"><div class="color" style="background:#1A1D21;"></div><div class="nombre">Texto</div></div>
-        <div class="swatch"><div class="color" style="background:#2F6B4F;"></div><div class="nombre">Lo tiene</div></div>
-        <div class="swatch"><div class="color" style="background:#B5762B;"></div><div class="nombre">No lo tiene</div></div>
-        <div class="swatch"><div class="color" style="background:#B3392E;"></div><div class="nombre">Error</div></div>
+        <div class="swatch"><div class="color" style="background:#1E3A5F"></div><div class="nombre">Primario<br>acciones</div></div>
+        <div class="swatch"><div class="color" style="background:#F7F8FA"></div><div class="nombre">Fondo<br>base</div></div>
+        <div class="swatch"><div class="color" style="background:#1A1D21"></div><div class="nombre">Texto<br>principal</div></div>
+        <div class="swatch"><div class="color" style="background:#2F6B4F"></div><div class="nombre">"Lo<br>tiene"</div></div>
+        <div class="swatch"><div class="color" style="background:#B5762B"></div><div class="nombre">"Todavía<br>no"</div></div>
+        <div class="swatch"><div class="color" style="background:#B3392E"></div><div class="nombre">Error<br>real</div></div>
       </div>
     </div>
-    <div class="siguiente"><button class="btn" data-ir="equipo">Ver el equipo de agentes →</button></div>
+    <div class="siguiente"><button class="btn primario" data-ir="equipo">Ver el equipo y las reglas →</button></div>
   </section>
 
   <!-- ================= EQUIPO ================= -->
   <section class="panel" id="p-equipo" role="tabpanel" aria-labelledby="tab-equipo">
     <div class="panel-head">
-      <h2>El método, a mitad de camino</h2>
-      <p class="sub">4 de 8 comandos recorridos: de para quién es el producto hasta con qué se construye. Falta armar el plan, escribir las fichas, construir y publicar.</p>
+      <h2>Quién hizo qué, y con qué reglas</h2>
+      <p class="sub">El método son ocho pasos. Siete están completos; el último es publicar la app en internet.</p>
     </div>
-    <div class="card">
-      <div class="pipeline">
-        <span class="cmd hecho">/icp</span><span class="flecha">→</span><span class="cmd hecho">/solucion</span><span class="flecha">→</span><span class="cmd hecho">/prd</span><span class="flecha">→</span><span class="cmd hecho">/arquitectura</span><span class="flecha">→</span><span class="cmd actual">/roadmap</span><span class="flecha">→</span><span class="cmd futuro">/specs</span><span class="flecha">→</span><span class="cmd futuro">/implementar</span><span class="flecha">→</span><span class="cmd futuro">/deploy</span>
-      </div>
-      <p class="nota">Si en algún momento no sabés qué toca: <span class="mono">/empezar</span>. Antes de que el Programador empiece a tocar código: <span class="mono">/save-point</span>. Para refrescar este tablero: <span class="mono">/dashboard</span>.</p>
+
+    <div class="pipeline">
+      <span class="cmd hecho">/icp</span><span class="flecha">→</span>
+      <span class="cmd hecho">/solucion</span><span class="flecha">→</span>
+      <span class="cmd hecho">/prd</span><span class="flecha">→</span>
+      <span class="cmd hecho">/arquitectura</span><span class="flecha">→</span>
+      <span class="cmd hecho">/roadmap</span><span class="flecha">→</span>
+      <span class="cmd hecho">/specs</span><span class="flecha">→</span>
+      <span class="cmd actual">/implementar</span><span class="flecha">→</span>
+      <span class="cmd futuro">/deploy</span>
     </div>
+    <p class="nota"><span class="mono">/implementar</span> sigue resaltado porque el último milestone todavía no está cerrado formalmente: espera tu confirmación. Con eso, el paso siguiente del método pasa a ser <span class="mono">/deploy</span>.</p>
+
+    <div class="roles">
+      <div class="rol"><b>Vos</b><span>Decidís el alcance, respondés las preguntas y probás cada milestone. Nada se cierra sin tu visto bueno.</span></div>
+      <div class="rol"><b>Analista de Producto</b><span>Bajó la idea al PRD: tres milestones y una lista de lo que queda afuera.</span></div>
+      <div class="rol"><b>Arquitecto</b><span>Eligió el stack, el modelo de datos y cómo se guardan las claves.</span></div>
+      <div class="rol"><b>Diseñador de Producto</b><span>Propuso el recorrido y la marca. Su revisión de "que no parezca de IA" todavía no se corrió.</span></div>
+      <div class="rol"><b>Planificador</b><span>Partió los tres milestones en 9 piezas chicas y ordenadas, con su ficha cada una.</span></div>
+      <div class="rol"><b>Programador</b><span>Construyó las 9 piezas, una por vez, con el test escrito antes del código.</span></div>
+      <div class="rol"><b>DevOps</b><span>Todavía no entró en escena: es quien corre el control previo a publicar.</span></div>
+    </div>
+
+    <div class="card" style="margin-top:22px;">
+      <p class="eyebrow">Las reglas innegociables</p>
+      <ul class="checks" style="margin-top:10px;">
+        <li><span class="estado hecho"></span><span><strong>#1</strong> — Nadie ve los datos de otro. Implementada: todo cuelga de la organización, y una dirección escrita a mano hacia otra organización se trata como inexistente.</span></li>
+        <li><span class="estado hecho"></span><span><strong>#2</strong> — Las claves nunca en el código. Implementada: las cuatro viven en tu archivo <span class="mono">.env</span>, fuera del repositorio, y un test lo vigila.</span></li>
+        <li><span class="estado"></span><span><strong>#3</strong> — Techo de gasto antes de gastar. No aplica: ReleaseView no consume IA ni servicios pagos por uso.</span></li>
+        <li><span class="estado"></span><span><strong>#4</strong> — Aprobación humana para acciones hacia afuera. No aplica todavía: la app no manda mails ni cobra; la lista se baja como archivo y la compartís vos.</span></li>
+        <li><span class="estado hecho"></span><span><strong>#5</strong> — Terminado = las 3 verificaciones en verde. Cumplida en las 9 piezas, y vuelta a correr hoy: 208 tests, typecheck y linter pasando.</span></li>
+      </ul>
+    </div>
+
     <div class="card" style="margin-top:12px;">
-      <h3>Quién hizo qué</h3>
-      <div class="roles">
-        <div class="rol"><b>Investigador de ICP</b><span>Definió el perfil ICP-01: PM/PO/líder técnico con clientes en versiones divergentes.</span></div>
-        <div class="rol"><b>Arquitecto de Soluciones</b><span>Definió qué es ReleaseView, su promesa y el modelo de cobro por organización.</span></div>
-        <div class="rol"><b>Analista de Producto</b><span>Convirtió todo eso en un MVP de 3 milestones, con riesgos y su límite.</span></div>
-        <div class="rol"><b>Arquitecto</b><span>Fijó el stack, el modelo de datos y las 6 reglas/documentos técnicos.</span></div>
-        <div class="rol"><b>Diseñador de Producto</b><span>Propuso el recorrido de usuario y la marca — a la espera de tu validación.</span></div>
-        <div class="rol"><b>Vos</b><span>Decidiste multi-tenant desde el arranque, el portón compartido y el historial de versión.</span></div>
-      </div>
-      <p class="nota" style="margin-top:10px;">Programador y DevOps todavía no entraron en escena — arrancan después de <span class="mono">/roadmap</span> y <span class="mono">/specs</span>.</p>
-    </div>
-    <div class="grid-2 mt">
-      <div class="card">
-        <h3>Las reglas que cuidan el proyecto</h3>
-        <ul class="checks">
-          <li><span class="estado medio"></span><span><strong>#1</strong> Aislamiento de datos por organización — diseñada en <span class="mono">modelo-de-datos.md</span>, sin código todavía que la aplique</span></li>
-          <li><span class="estado medio"></span><span><strong>#2</strong> Claves fuera del código — diseñada en <span class="mono">secretos.md</span>, sin código todavía</span></li>
-          <li><span class="estado"></span><span><strong>#3</strong> Techo de gasto antes de gastar — no aplica, ReleaseView no consume IA</span></li>
-          <li><span class="estado"></span><span><strong>#4</strong> Aprobación humana en efectos hacia afuera — no aplica en el MVP, sin integraciones externas</span></li>
-          <li><span class="estado"></span><span><strong>#5</strong> Terminado = 3 verificaciones en verde — pendiente, todavía no hay código que verificar</span></li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Últimas decisiones registradas</h3>
-        <div class="tabla-scroll"><table>
-          <tr><th>Cuándo</th><th>Qué se decidió</th></tr>
-          <tr><td class="fecha">16-sep</td><td>Se cierran las 2 preguntas abiertas del PRD; se suma historial simple de versión con fecha.</td></tr>
-          <tr><td class="fecha">15-sep</td><td>Stack Next.js + Supabase, portón compartido (una contraseña, sin cuentas individuales).</td></tr>
-          <tr><td class="fecha">14-sep</td><td>Modelo de datos preparado para multi-tenant desde el arranque.</td></tr>
-          <tr><td class="fecha">9-sep</td><td>MVP con carga manual (sin integración automática) y sin login individual.</td></tr>
-        </table></div>
-        <p class="nota" style="margin-top:8px;">Registro completo con porqués: <span class="mono">DECISIONS.md</span>.</p>
+      <p class="eyebrow">Últimas decisiones</p>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Qué se decidió</th></tr></thead>
+          <tbody>
+            <tr><td class="fecha">05 oct</td><td>Convivir con 9 advertencias de seguridad del andamiaje inicial: se analizaron una por una y ninguna es alcanzable en esta app. Arreglarlas automáticamente rompía cosas que funcionan. Se revisan antes de publicar.</td></tr>
+            <tr><td class="fecha">05 oct</td><td>Tailwind CSS como herramienta de estilos, con los colores de la marca declarados una sola vez — para que el espaciado no se desalinee entre pantallas y la app no parezca un prototipo.</td></tr>
+            <tr><td class="fecha">05 oct</td><td>Completar la marca con bordes y estados que faltaban, y corregir dos colores que no alcanzaban el mínimo de contraste para ser legibles.</td></tr>
+            <tr><td class="fecha">05 oct</td><td>"Cerrar sesión" no se construye todavía: se evalúa en <span class="mono">/deploy</span>, cuando la app esté en una dirección pública.</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="siguiente"><button class="btn" data-ir="avisos">Ver los avisos →</button></div>
+    <div class="siguiente"><button class="btn primario" data-ir="avisos">Ver los avisos →</button></div>
   </section>
 
   <!-- ================= AVISOS ================= -->
   <section class="panel" id="p-avisos" role="tabpanel" aria-labelledby="tab-avisos">
     <div class="panel-head">
-      <h2>Cosas que conviene mirar</h2>
-      <p class="sub">Solo lo vigente. Lo ámbar espera una acción tuya; lo rojo/azul es contexto; lo verde ya está resuelto.</p>
+      <h2>Lo que hay que tener en cuenta</h2>
+      <p class="sub">Solo lo vigente. En ámbar, lo que necesita una acción tuya; en rojo o gris, contexto para que no te sorprenda.</p>
     </div>
     <div class="avisos">
-      <div class="card aviso"><span class="quien">Te toca a vos · orden</span><h3>Nada quedó commiteado todavía</h3><p>El último commit es del 31 de agosto. Desde entonces se sumaron 8 documentos (ICP, Solución, PRD completo y toda la arquitectura) sin guardar en git. Si querés, decime "commiteá esto" y lo guardo con un mensaje claro antes de seguir a <span class="mono">/roadmap</span>.</p></div>
-      <div class="card aviso"><span class="quien">Te toca a vos · validación</span><h3>La paleta y el tono de marca.md son una propuesta, no algo que ya aprobaste</h3><p>El Diseñador de Producto la armó a partir del ICP, pero nadie te la mostró todavía para que la apruebes o pidas cambios. Conviene revisar <span class="mono">docs/arquitectura/marca.md</span> antes de que el Programador empiece a construir pantallas con esos colores.</p></div>
-      <div class="card aviso info"><span class="quien">Contexto · pausa entre sesiones</span><h3>Hubo 5 días sin actividad entre el PRD y la Arquitectura</h3><p>Del 9 al 14 de septiembre no hubo trabajo en el proyecto — normal entre sesiones, no es un bloqueo del sistema.</p></div>
-      <div class="card aviso info"><span class="quien">Contexto · ICP</span><h3>El ICP tiene 3 supuestos marcados a validar</h3><p><span class="mono">docs/icp.md</span> deja anotado qué falta confirmar con más casos reales: si consultora y empresa de software son el mismo perfil, el nivel de consciencia real del cliente, y si el patrón se repite fuera de tu propia experiencia (hoy N=1).</p></div>
-      <div class="card aviso ok"><span class="quien">Resuelto</span><h3>La arquitectura no dejó preguntas abiertas</h3><p>Las 2 preguntas pendientes del PRD (cadencia de cambios e historial de versión) se cerraron el 16 de septiembre — el plan puede arrancar con <span class="mono">/roadmap</span> sin bloqueos.</p></div>
+      <div class="card aviso"><span class="quien">Para vos · bloquea el cierre</span><h3>Probá la app y confirmá</h3><p>Está levantada en <strong>http://localhost:3000</strong>. Es lo único que falta para que el MVP quede demostrado de punta a punta. Con tu confirmación archivo el plan de M3 y tildo la condición en el PRD.</p></div>
+
+      <div class="card aviso"><span class="quien">Para vos · verificación pendiente</span><h3>El clic de "Exportar CSV" nunca se vio funcionar</h3><p>El contenido del archivo está probado al detalle: separador, acentos, escapado, todo con tests. Pero la descarga en sí no se pudo verificar: el navegador automático de esta máquina cancela cualquier descarga, incluso una de prueba sin nada de la app. No es que se haya visto fallar — es que no se pudo comprobar. <strong>Hacé el clic de verdad y confirmá que el archivo baja y abre bien en tu Excel.</strong></p></div>
+
+      <div class="card aviso"><span class="quien">Para vos · desde septiembre</span><h3>La paleta y el tono siguen sin tu validación</h3><p>La marca se aplicó en todas las pantallas, pero nunca la revisaste. Si algo no te cierra, mejor decirlo ahora: cambiarlo cuesta más con las 9 piezas construidas que cuando era solo un documento.</p></div>
+
+      <div class="card aviso info"><span class="quien">Contexto · se decide en /deploy</span><h3>No hay forma de cerrar sesión</h3><p>Una vez que entrás con la contraseña, la única salida es borrar la cookie del navegador o esperar 30 días. Se decidió a propósito dejarlo para cuando la app esté en una dirección pública, que es cuando empieza a importar.</p></div>
+
+      <div class="card aviso info"><span class="quien">Contexto · revisar antes de publicar</span><h3>9 advertencias de seguridad del andamiaje inicial</h3><p>Vienen de dependencias que trajo el instalador, no de código propio. Se analizaron una por una y ninguna es alcanzable en esta app; arreglarlas automáticamente rompía cosas verificadas. Se vuelven a revisar antes de <span class="mono">/deploy</span>.</p></div>
+
+      <div class="card aviso info"><span class="quien">Contexto · teórico con un solo usuario</span><h3>Dos features con el mismo nombre no están bloqueados en la base</h3><p>El código los rechaza, pero la base de datos no tiene el candado puesto. Con una sola persona cargando a mano es un escenario teórico; si alguna vez entran datos de varias fuentes a la vez, hay que agregarlo.</p></div>
+
+      <div class="card aviso info"><span class="quien">Contexto · detalle de diseño</span><h3>Falta un color neutro en la marca</h3><p>Los estados "lo tiene" y "todavía no" tienen su color; el tercero, "Próximamente", usa un gris que estaba pensado para otra cosa. Funciona y se ve bien, pero no es un color elegido para eso.</p></div>
+
+      <div class="card aviso ok"><span class="quien">Resuelto</span><h3>M1 y M2 probados por vos y archivados</h3><p>Los dos primeros milestones pasaron por tu prueba y sus planes ya están en la carpeta de archivados. El recorrido de carga y las dos consultas funcionan.</p></div>
+
+      <div class="card aviso ok"><span class="quien">Resuelto</span><h3>Todo commiteado y verificado hoy</h3><p>No hay trabajo sin guardar: el último commit es <span class="mono">19d0353</span> y la verificación completa (208 tests, typecheck y linter) se corrió hoy y pasó.</p></div>
     </div>
     <div class="siguiente"><button class="btn" data-ir="resumen">← Volver al resumen</button></div>
   </section>
 
   <footer>
-    Fuente del estado: no hay plan activo todavía (<span class="mono">docs/sdd/roadmaps/active/</span> vacío — el próximo paso es <span class="mono">/roadmap</span>) + <span class="mono">docs/prd.md</span>, <span class="mono">docs/arquitectura/</span>, <span class="mono">DECISIONS.md</span> y los registros de sesiones de Claude Code.
+    Fuente del estado: la tabla del plan activo (<span class="mono">docs/sdd/roadmaps/active/m3-lista-de-release.md</span>) + <span class="mono">docs/prd.md</span>, <span class="mono">docs/arquitectura/</span>, <span class="mono">PROGRESS.md</span>, <span class="mono">DECISIONS.md</span> y los registros de sesiones de Claude Code.
     Para actualizar este tablero: <span class="mono">/dashboard</span>.
   </footer>
 </main>
