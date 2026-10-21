@@ -8,22 +8,20 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
   `docs/sdd/roadmaps/archive/` y sus condiciones en `docs/prd.md` §3 están tildadas. El
   recorrido completo del PRD §2 —cargar → consultar → armar la lista de
   release— corre de verdad.
-- **Verificación completa:** `npm run check` (typecheck + tests + linter). Última corrida en verde:
-  2026-10-21, **208 tests en 10 archivos**. La de integración va aparte: `npm run test:integracion` (levanta su propio `next dev`).
+- **Las dos verificaciones en verde (2026-10-21):** `npm run check` → **219 tests en 11 archivos**;
+  `npm run test:integracion` → **146 tests en 13 archivos**. Desde M4-00 la de integración corre
+  contra una **base de prueba aparte**, no contra la real.
 - **Plan activo: `docs/sdd/roadmaps/active/m4-salida-y-encabezado.md`** (M4 · Salir de la app y
-  volver a Inicio). **Tres piezas:** M4-00 ⬜ (base de prueba aparte, bloquea a las otras dos),
-  M4-01 🔵 (código hecho y commiteado en `3bedde8`, no cierra hasta que la suite esté verde),
-  M4-02 ⬜ (el logout).
-- **BLOQUEADO esperando al owner:** M4-00 necesita un **segundo proyecto de Supabase** y las dos
-  variables `DATABASE_URL_TEST` / `DIRECT_URL_TEST` en `.env`. Hasta que estén, el builder no
-  puede verificar la pieza. Ver `docs/sdd/specs/M4-00-base-de-prueba-aparte.md` y
-  `docs/arquitectura/secretos.md` § Las dos de prueba.
-- **`npm run test:integracion` está en ROJO: 13 fallas, 2 archivos** (`pantalla-de-lista-de-release`
-  y `pantalla-de-por-feature`). **No es una regresión de M4:** los tests de pantalla corren contra
-  la base real y afirman conteos absolutos sobre ella; se desajustaron cuando el owner cargó sus 3
-  clientes al probar M3. Diagnóstico completo y las 4 alternativas evaluadas en `DECISIONS.md`
-  (2026-10-21). M4-00 lo arregla, y el criterio #6 de su ficha exige que esas 13 se pongan en
-  verde **sin editar una sola aserción**.
+  volver a Inicio). **Tres piezas:** M4-00 ✅ (base de prueba aparte), M4-01 ✅ (el nombre del
+  encabezado lleva a Inicio), **M4-02 ⬜ (el logout — la única que queda).**
+- **Ya no hay bloqueo:** el owner creó el segundo proyecto de Supabase el 2026-10-21 y `.env`
+  tiene `DATABASE_URL_TEST` / `DIRECT_URL_TEST`. En una máquina nueva hay que correr una vez
+  `npm run db:migrate:test` y `npm run db:seed:test`; ver `docs/arquitectura/secretos.md`
+  § Las dos de prueba.
+- **Las 13 fallas de la integración están resueltas** (M4-00). Corrían contra la base real del
+  owner y afirmaban conteos absolutos sobre ella; se desajustaron cuando él cargó sus 3 clientes
+  al probar M3. Se pusieron en verde **sin editar una sola aserción** (`git diff` vacío en los dos
+  archivos, criterio #6). Las 4 alternativas evaluadas, en `DECISIONS.md` (2026-10-21).
 - **Lección que costó caro: correr SIEMPRE las dos verificaciones antes de archivar un plan.** M3
   se cerró con `npm run check` en verde y sin correr `npm run test:integracion`, que ya estaba en
   rojo en ese momento. `npm run check` sola no alcanza.

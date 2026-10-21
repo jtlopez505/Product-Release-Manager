@@ -91,8 +91,8 @@ Sin preguntas abiertas que bloqueen.
 
 | ID | Pieza | Estado | Depende de | Ficha |
 |---|---|---|---|---|
-| M4-00 | Base de prueba aparte para la integración (desbloquea a las otras dos) | ⬜ pendiente | — | `docs/sdd/specs/M4-00-base-de-prueba-aparte.md` |
-| M4-01 | El nombre "ReleaseView" del encabezado lleva a Inicio | 🔵 en curso (código hecho, no cierra hasta M4-00) | M4-00 | `docs/sdd/specs/M4-01-nombre-que-lleva-a-inicio.md` |
+| M4-00 | Base de prueba aparte para la integración (desbloquea a las otras dos) | ✅ terminada | — | `docs/sdd/specs/M4-00-base-de-prueba-aparte.md` |
+| M4-01 | El nombre "ReleaseView" del encabezado lleva a Inicio | ✅ terminada | M4-00 | `docs/sdd/specs/M4-01-nombre-que-lleva-a-inicio.md` |
 | M4-02 | Cerrar sesión: el botón, el endpoint y el aviso al volver al portón | ⬜ pendiente | M4-00, M4-01 | `docs/sdd/specs/M4-02-cerrar-sesion.md` |
 
 **Por qué este orden:** **M4-00 va primero porque bloquea a las otras dos.** Apareció a mitad

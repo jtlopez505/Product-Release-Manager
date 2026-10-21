@@ -9,11 +9,12 @@ Stack: Next.js (App Router) + Supabase (Postgres) + Prisma, desplegado en Vercel
 - Instalar: `npm install`
 - Levantar en dev: `npm run dev` (la app queda en `http://localhost:3000`)
 - **Verificación completa: `npm run check`** (typecheck + tests + linter)
-- Integración (necesita la base real de Supabase): `npm run test:integracion`
+- Integración (corre contra una **base de prueba aparte**, no contra la real): `npm run test:integracion`
+  — en una máquina nueva, una sola vez: `npm run db:migrate:test` y `npm run db:seed:test`
 - Base de datos: `npm run db:migrate` (migrar) · `npm run db:seed` (sembrar) · `npm run db:studio` (ver datos)
 
 Las claves van en `.env` en la raíz (NO `.env.local`: el CLI de Prisma solo lee `.env`). Son
-cuatro — ver [`docs/arquitectura/secretos.md`](docs/arquitectura/secretos.md).
+cuatro para la app, más dos solo para la suite de integración — ver [`docs/arquitectura/secretos.md`](docs/arquitectura/secretos.md).
 
 ## Las reglas del proyecto
 Las reglas innegociables, numeradas y citables por `#<n>`, viven en `docs/sdd/constitucion.md`.
