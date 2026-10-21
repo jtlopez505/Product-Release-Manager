@@ -5,22 +5,25 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 
 - **El MVP está cerrado y demostrado de punta a punta.** El owner probó M3 el 2026-10-21 y confirmó
   que la descarga del CSV baja y abre bien en su Excel. Los tres planes (M1, M2, M3) están en
-  `docs/sdd/roadmaps/archive/`; `active/` está vacío. Todas las condiciones de `docs/prd.md` §3
-  están tildadas. El recorrido completo del PRD §2 —cargar → consultar → armar la lista de
+  `docs/sdd/roadmaps/archive/` y sus condiciones en `docs/prd.md` §3 están tildadas. El
+  recorrido completo del PRD §2 —cargar → consultar → armar la lista de
   release— corre de verdad.
 - **Verificación completa:** `npm run check` (typecheck + tests + linter). Última corrida en verde:
   2026-10-21, **208 tests en 10 archivos**. La de integración va aparte:
   `npm run test:integracion` (necesita la base real y levanta su propio `next dev`).
-- **Próximo paso: `/deploy`.** No hay plan activo ni pieza pendiente — lo que sigue en el método es
-  publicar. `/deploy` corre el control "listo para publicar" (deploy-engineer + ux-reviewer en
-  paralelo) y ejecuta el deploy real con el OK del owner. Incluye el chequeo de costo; si se quiere
-  la foto del costo antes y por separado, es `/costo`.
+- **Plan activo: `docs/sdd/roadmaps/active/m4-salida-y-encabezado.md`** (M4 · Salir de la app y
+  volver a Inicio). Dos piezas, las dos ⬜ pendientes. **Próximo paso: `/implementar M4-01`.**
+  M4 lo pidió el owner el 2026-10-21 y no estaba en el PRD: se agregó como milestone en
+  `docs/prd.md` §3 antes de planear, y el límite del logout (no revoca sesiones ya copiadas) quedó
+  en §5. Las decisiones del cómo están en `docs/arquitectura/auth-y-permisos.md` § Cómo se sale y
+  en `user-flow.md` §0/§1.
+- **`/deploy` va después de M4**, no antes: las dos piezas de M4 son justamente para que la app se
+  pueda dejar en una URL pública.
 
 ## Lo que `/deploy` tiene que resolver (decidido que se evalúa ahí, no antes)
 
-- **No hay forma de cerrar sesión.** La única salida es borrar la cookie o esperar los 30 días.
-  Decidido en 2026-10-05: se evalúa recién en `/deploy`, cuando la app esté en una URL pública —
-  y ahí es donde importa de verdad.
+- ~~No hay forma de cerrar sesión.~~ **Dejó de ser pendiente de `/deploy`: lo pidió el owner y
+  es M4-02.** Se construye antes de publicar, no se evalúa después.
 - **Las 9 vulnerabilidades *high* del scaffold.** Analizadas y toleradas (ver `DECISIONS.md`,
   2026-10-05: ninguna es alcanzable en esta app). El compromiso fue revisarlas antes de publicar.
 - **La paleta y el tono de `marca.md` siguen siendo una propuesta sin validar por el owner.** La app

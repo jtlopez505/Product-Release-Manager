@@ -20,6 +20,25 @@ querer — es la decisión que tomaste al confirmar "contraseña compartida simp
 contraseña, la tipea una vez, y desde ahí navega libre por la app durante su sesión (no se lo
 vuelve a pedir en cada clic).
 
+## Cómo se sale (M4)
+
+El portón tuvo entrada desde el día 1 pero nunca tuvo salida: la única forma de cerrar la sesión
+era borrar la cookie a mano o esperar los ~30 días. M4 agrega **"Cerrar sesión"** en el encabezado.
+
+**Qué hace:** borra la cookie de sesión de ese navegador y devuelve a `/ingresar`. Para volver a
+entrar hay que tipear la contraseña otra vez.
+
+**Qué NO hace, y es importante:** no revoca nada. La firma es stateless (no hay tabla de
+sesiones), así que un token que ya fue copiado a otro navegador **sigue valiendo hasta que
+vence**. Cerrar sesión resuelve "me levanto de la máquina y no quiero dejar la app abierta", no
+"se filtró el link, cortá el acceso". Lo segundo está fuera de alcance y anotado en
+[`docs/prd.md`](../prd.md) §5; necesitaría tabla de sesiones o rotar `SESSION_SECRET`.
+
+**Dónde está el control:** en la barra de navegación, que no está en todas las pantallas. No
+aparece en el portón (no hay sesión que cerrar) ni en los formularios de alta/edición de cliente
+—de donde se sale con "Cancelar", que pregunta antes de descartar lo tipeado—. Es la misma regla
+que ya seguían las pestañas, no una excepción nueva.
+
 ## Permisos
 
 No hay roles ni diferencias de permisos en el MVP: cualquiera que pase el portón puede cargar,
@@ -45,4 +64,11 @@ stateless.
 cookie válida, redirige a `/ingresar`.
 - No hay tabla `User` en el modelo de datos (ver [`modelo-de-datos.md`](modelo-de-datos.md)) —
 cuando se migre a Supabase Auth, ahí sí se suma.
-
+- **Salida (M4):** endpoint propio `POST /api/salir` que borra la cookie de sesión y responde 303
+a `/ingresar`. Es **POST y no un link GET** a propósito: un logout por GET lo dispara cualquier
+prefetch o `<img>` de una página y te saca sin que lo hayas pedido. Se sirve con un `<form
+method="post">`, así funciona sin JS — el mismo criterio que el endpoint de ingreso.
+- **No va en `RUTAS_PUBLICAS`:** solo cierra sesión quien tiene una. Si ya venció, el portón de
+`proxy.ts` redirige a `/ingresar` y limpia la cookie por su cuenta, que es el mismo resultado.
+- **No se agrega tabla de sesiones.** La firma sigue siendo stateless; ver arriba qué implica eso
+para la revocación.

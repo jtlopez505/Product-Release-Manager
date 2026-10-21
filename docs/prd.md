@@ -55,6 +55,15 @@ Si eso corre de punta a punta **una vez** — con datos cargados a mano, sin int
 - [x] Se puede filtrar los clientes que corresponden a la próxima versión o feature a desplegar.
 - [x] Esa lista se puede ver u exportar lista para compartir con el equipo.
 
+### M4 — Salir de la app y volver a Inicio
+
+**Objetivo:** que quien usa el panel pueda cerrar su sesión cuando se levanta de la máquina, y que el nombre del encabezado lo lleve a Inicio desde cualquier pantalla.
+**Por qué cuarto:** el recorrido de valor ya está completo (M1-M3); estas dos son lo que falta para que la app se pueda dejar en una URL pública y usar sin fricción. La salida es la contracara del portón, que hasta ahora solo tenía entrada; el link del encabezado es la convención que cualquiera espera y que hoy no está.
+
+**Está terminado cuando:**
+- [ ] Se puede cerrar sesión desde la app: al hacerlo se vuelve a la pantalla de ingreso, y una ruta protegida ya no se ve sin volver a tipear la contraseña.
+- [ ] El nombre "ReleaseView" del encabezado lleva a Inicio desde cualquier pantalla que tenga la barra de navegación.
+
 ## 4. Riesgos, con su límite aceptado
 
 | # | Riesgo | Hasta dónde se tolera / qué se hace al cruzarlo |
@@ -67,6 +76,7 @@ Si eso corre de punta a punta **una vez** — con datos cargados a mano, sin int
 
 - Integración automática con Azure DevOps/Jira (ver riesgo #1 — se suma en un milestone posterior si la carga manual no aguanta).
 - Login individual y permisos por rol.
+- **Revocar sesiones ya abiertas en otros navegadores o dispositivos.** El "Cerrar sesión" de M4 cierra la sesión del navegador donde se usa — borra su cookie. Un token que ya fue copiado a otra parte sigue valiendo hasta vencer, porque la firma es stateless y no hay tabla de sesiones (ver `docs/arquitectura/auth-y-permisos.md`). Revocar de verdad necesita una tabla de sesiones o rotar `SESSION_SECRET`; se evalúa si alguna vez se migra a login individual.
 - Notificaciones automáticas a clientes sobre su estado o próximos despliegues.
 - Historial operativo completo de despliegues (quién lo hizo, notas de release, tickets asociados) — el MVP guarda automáticamente el cambio de versión con fecha (ver M1), pero no un registro de despliegue detallado.
 - Soporte para otras herramientas de tracking distintas de Azure DevOps/Jira.

@@ -16,6 +16,9 @@ Portón compartido, no cuentas individuales (ver [`auth-y-permisos.md`](auth-y-p
 pantalla simple con un solo campo (contraseña) y un botón "Entrar". Al validar, redirige a Inicio
 y no vuelve a pedirla durante la sesión.
 
+Se sale con **"Cerrar sesión"** (§1, M4), que devuelve a esta misma pantalla con un aviso de que
+la sesión se cerró — así no se confunde con "se venció" ni con "nunca entraste".
+
 ## 1. Inicio — lista de clientes
 
 Lo primero que se ve al entrar: la lista de clientes cargados, con su versión activa visible en
@@ -26,6 +29,13 @@ Navegación de nivel superior: tres pestañas — **"Por cliente"** (esta vista)
 (§4) / **"Lista de release"** (§5) — cambiar de ángulo de consulta es un clic. La tercera llega
 con M3: la lista de release no tiene otra entrada posible y es el momento de mayor uso del ICP,
 así que va en el mismo nivel que las otras dos.
+
+En el mismo encabezado, a la izquierda, el nombre **"ReleaseView"** lleva a Inicio desde
+cualquier pantalla que tenga esta barra (M4) — es la convención que cualquiera espera de un
+encabezado. La pestaña "Por cliente" no se va: sigue siendo la que marca dónde estás parado.
+A la derecha, **"Cerrar sesión"** (M4, ver [`auth-y-permisos.md`](auth-y-permisos.md)): un clic,
+sin confirmación — volver a entrar es tipear la contraseña, así que un clic por error cuesta poco
+y un diálogo de confirmación en cada salida cuesta más.
 
 - **Estado vacío** (sin clientes todavía): "Todavía no cargaste ningún cliente." + el botón
 "+ Agregar cliente" como única acción.
@@ -105,6 +115,7 @@ Ingresar (contraseña compartida)
       → Vista de cliente → Editar → guarda cambios                                    [M1]
   → Por feature → elegir feature → clientes con / sin ese feature                     [M2]
   → Armar lista de release → filtrar por versión o feature → vista previa → exportar  [M3]
+  → Cerrar sesión → vuelve a Ingresar                                                [M4]
 ```
 
 ## Decisiones que resuelven los supuestos del borrador original
