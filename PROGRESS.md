@@ -8,12 +8,13 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
   `docs/sdd/roadmaps/archive/` y sus condiciones en `docs/prd.md` §3 están tildadas. El
   recorrido completo del PRD §2 —cargar → consultar → armar la lista de
   release— corre de verdad.
-- **Las dos verificaciones en verde (2026-10-21):** `npm run check` → **219 tests en 11 archivos**;
-  `npm run test:integracion` → **146 tests en 13 archivos**. Desde M4-00 la de integración corre
+- **Las dos verificaciones en verde (2026-10-21):** `npm run check` → **225 tests en 11 archivos**;
+  `npm run test:integracion` → **162 tests en 13 archivos**. Desde M4-00 la de integración corre
   contra una **base de prueba aparte**, no contra la real.
 - **Plan activo: `docs/sdd/roadmaps/active/m4-salida-y-encabezado.md`** (M4 · Salir de la app y
-  volver a Inicio). **Tres piezas:** M4-00 ✅ (base de prueba aparte), M4-01 ✅ (el nombre del
-  encabezado lleva a Inicio), **M4-02 ⬜ (el logout — la única que queda).**
+  volver a Inicio). **Las tres piezas en ✅:** M4-00 (base de prueba aparte), M4-01 (el nombre del
+  encabezado lleva a Inicio) y M4-02 (cerrar sesión). **Falta solo el «probalo vos» del owner**
+  para tildar las dos condiciones del PRD §3 · M4 y archivar el plan.
 - **Ya no hay bloqueo:** el owner creó el segundo proyecto de Supabase el 2026-10-21 y `.env`
   tiene `DATABASE_URL_TEST` / `DIRECT_URL_TEST`. En una máquina nueva hay que correr una vez
   `npm run db:migrate:test` y `npm run db:seed:test`; ver `docs/arquitectura/secretos.md`

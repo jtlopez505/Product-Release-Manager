@@ -148,6 +148,12 @@ describe("rutaEsPublica", () => {
     expect(rutaEsPublica("/api/sesion")).toBe(true);
   });
 
+  it("cerrar sesión NO es público: solo cierra sesión quien tiene una (M4-02)", () => {
+    // Decisión de auth-y-permisos.md § Cómo se sale: sin sesión, el portón redirige a
+    // `/ingresar` y el endpoint ni se ejecuta — mismo resultado, sin agujero.
+    expect(rutaEsPublica("/api/salir")).toBe(false);
+  });
+
   it("todo el resto de la app está protegido", () => {
     expect(rutaEsPublica("/")).toBe(false);
     expect(rutaEsPublica("/clientes")).toBe(false);

@@ -188,3 +188,224 @@ describe("criterio #5 · cookie inválida o vencida vuelve a pedir la contraseñ
     );
   });
 });
+
+/**
+ * La salida (M4-02). Hasta acá este archivo probaba que se entra y que sin sesión no se ve
+ * nada; de acá en adelante, que se **sale**: el endpoint `POST /api/salir`, el efecto real
+ * sobre una ruta protegida y los dos caminos que no tienen que funcionar (GET y sin sesión).
+ *
+ * El criterio #4 de la ficha es el que cierra la condición del PRD y por eso **no se da por
+ * bueno mirando el `Set-Cookie`**: se simula lo que hace el navegador con esa cabecera
+ * (`aplicarSetCookie`) y después se vuelve a pedir `/` con las cookies que quedaron.
+ */
+
+/** Una jarra de cookies: nombre → valor, como la que mantiene el navegador para este host. */
+type Jarra = Map<string, string>;
+
+/**
+ * Lo que haría el navegador con los `Set-Cookie` de una respuesta: guarda las cookies nuevas
+ * y **borra** las que vienen vencidas (`Max-Age=0` o `expires` en el pasado). Es la pieza que
+ * convierte "la cabecera dice que la expira" en "la cookie ya no se manda".
+ */
+function aplicarSetCookie(jarra: Jarra, respuesta: Response): Jarra {
+  for (const cruda of respuesta.headers.getSetCookie()) {
+    const [par, ...atributos] = cruda.split(";").map((parte) => parte.trim());
+    const corte = par.indexOf("=");
+    const nombre = corte === -1 ? par : par.slice(0, corte);
+    const valor = corte === -1 ? "" : par.slice(corte + 1);
+
+    const maxAge = atributos.find((atributo) => /^max-age=/i.test(atributo));
+    const expires = atributos.find((atributo) => /^expires=/i.test(atributo));
+    const vencida =
+      (maxAge !== undefined && Number(maxAge.split("=")[1]) <= 0) ||
+      (expires !== undefined && Date.parse(expires.slice("expires=".length)) <= Date.now());
+
+    if (vencida) {
+      jarra.delete(nombre);
+    } else {
+      jarra.set(nombre, valor);
+    }
+  }
+  return jarra;
+}
+
+function encabezadoDeCookies(jarra: Jarra): string {
+  return [...jarra].map(([nombre, valor]) => `${nombre}=${valor}`).join("; ");
+}
+
+/** Entra con la contraseña real (del entorno, regla #2) y devuelve la jarra con la sesión. */
+async function jarraConSesion(): Promise<Jarra> {
+  const ingreso = await intentarIngresar(requireEnv("APP_PASSWORD"));
+  const jarra = aplicarSetCookie(new Map(), ingreso);
+  if (!jarra.has(NOMBRE_COOKIE_SESION)) {
+    throw new Error(
+      `El endpoint de ingreso no dejó cookie de sesión (estado ${ingreso.status}): sin eso ` +
+        `no hay sesión que cerrar.`,
+    );
+  }
+  return jarra;
+}
+
+async function salir(jarra: Jarra): Promise<Response> {
+  return fetch(`${BASE}/api/salir`, {
+    method: "POST",
+    redirect: "manual",
+    headers: { cookie: encabezadoDeCookies(jarra) },
+  });
+}
+
+async function htmlDe(ruta: string, jarra: Jarra): Promise<string> {
+  const respuesta = await fetch(`${BASE}${ruta}`, {
+    redirect: "manual",
+    headers: { cookie: encabezadoDeCookies(jarra) },
+  });
+  expect(respuesta.status, `se esperaba ver ${ruta} con sesión`).toBe(200);
+  return respuesta.text();
+}
+
+describe("M4-02 · criterios #2 y #3 · POST /api/salir borra la cookie y vuelve al portón", () => {
+  it("responde 303 a /ingresar?salio=1", async () => {
+    const respuesta = await salir(await jarraConSesion());
+    expect(respuesta.status).toBe(303);
+
+    const destino = new URL(respuesta.headers.get("location") ?? "", BASE);
+    expect(destino.pathname).toBe("/ingresar");
+    expect(destino.searchParams.get("salio")).toBe("1");
+  });
+
+  it("su Set-Cookie expira la cookie de sesión con el mismo path que la original", async () => {
+    const respuesta = await salir(await jarraConSesion());
+    const cookie = cookieDeSesionEnRespuesta(respuesta);
+
+    expect(cookie).toBeDefined();
+    // Si el `path` no coincide con el de la original, el navegador deja la vieja viva.
+    expect(cookie).toMatch(/Path=\//i);
+    expect(cookie).toMatch(/HttpOnly/i);
+    expect(cookie).toMatch(/Max-Age=0|Expires=/i);
+  });
+});
+
+describe("M4-02 · criterio #4 · después de salir, una ruta protegida ya no se ve", () => {
+  it("entrar → / da 200 → salir → / redirige a /ingresar (el efecto, no la cabecera)", async () => {
+    const jarra = await jarraConSesion();
+
+    const conSesion = await pedir("/", encabezadoDeCookies(jarra));
+    expect(conSesion.status).toBe(200);
+
+    const salida = await salir(jarra);
+    expect(salida.status).toBe(303);
+    aplicarSetCookie(jarra, salida);
+
+    // El navegador ya descartó la cookie vencida: esto es lo que mandaría en el próximo GET.
+    const despues = await pedir("/", encabezadoDeCookies(jarra));
+    expect([302, 303, 307, 308]).toContain(despues.status);
+    expect(new URL(despues.headers.get("location") ?? "", BASE).pathname).toBe("/ingresar");
+  });
+
+  it("tampoco se ve otra ruta protegida: la sesión se cerró, no se mudó", async () => {
+    const jarra = await jarraConSesion();
+    aplicarSetCookie(jarra, await salir(jarra));
+
+    const respuesta = await pedir("/lista-de-release", encabezadoDeCookies(jarra));
+    expect([302, 303, 307, 308]).toContain(respuesta.status);
+    expect(new URL(respuesta.headers.get("location") ?? "", BASE).pathname).toBe("/ingresar");
+  });
+});
+
+describe("M4-02 · criterio #7 · no se puede cerrar sesión por GET", () => {
+  it("GET /api/salir responde 405 y no toca ninguna cookie", async () => {
+    const jarra = await jarraConSesion();
+    const respuesta = await pedir("/api/salir", encabezadoDeCookies(jarra));
+
+    expect(respuesta.status).toBe(405);
+    expect(respuesta.headers.getSetCookie()).toEqual([]);
+  });
+
+  it("y la sesión sigue viva: el GET no sacó a nadie", async () => {
+    const jarra = await jarraConSesion();
+    await pedir("/api/salir", encabezadoDeCookies(jarra));
+
+    const respuesta = await pedir("/", encabezadoDeCookies(jarra));
+    expect(respuesta.status).toBe(200);
+  });
+});
+
+describe("M4-02 · criterio #8 · el endpoint no es público", () => {
+  it("POST /api/salir sin sesión lo intercepta el portón: redirige, no revienta", async () => {
+    const respuesta = await fetch(`${BASE}/api/salir`, { method: "POST", redirect: "manual" });
+    expect([302, 303, 307, 308]).toContain(respuesta.status);
+
+    const destino = new URL(respuesta.headers.get("location") ?? "", BASE);
+    expect(destino.pathname).toBe("/ingresar");
+    // Quien responde es el portón, no el endpoint: si alguien agregara `/api/salir` a
+    // `RUTAS_PUBLICAS`, acá llegaría el 303 del endpoint (`?salio=1` y su `Set-Cookie`) y
+    // esta prueba se pondría en rojo. Es el guardián de esa decisión.
+    expect(destino.searchParams.get("salio")).toBeNull();
+    expect(respuesta.headers.getSetCookie()).toEqual([]);
+  });
+
+  it("con una cookie inválida tampoco responde 500", async () => {
+    const respuesta = await fetch(`${BASE}/api/salir`, {
+      method: "POST",
+      redirect: "manual",
+      headers: { cookie: `${NOMBRE_COOKIE_SESION}=v1.9999999999999.firma-falsa` },
+    });
+    expect(respuesta.status).toBeLessThan(500);
+    expect([302, 303, 307, 308]).toContain(respuesta.status);
+  });
+});
+
+describe("M4-02 · criterio #1 · el control está en toda pantalla con barra", () => {
+  for (const ruta of ["/", "/por-feature", "/lista-de-release"] as const) {
+    it(`${ruta} trae el formulario POST a /api/salir con el botón "Cerrar sesión"`, async () => {
+      const cuerpo = await htmlDe(ruta, await jarraConSesion());
+      const formulario = /<form[^>]*action="\/api\/salir"[\s\S]*?<\/form>/.exec(cuerpo)?.[0];
+
+      expect(formulario, `no hay <form action="/api/salir"> en ${ruta}`).toBeDefined();
+      expect(formulario).toMatch(/method="post"/i);
+      expect(formulario).toMatch(/<button[^>]*>Cerrar sesión<\/button>/);
+      // Que el control sea clickeable se ve en el tinte de marca.md, el mismo del nombre.
+      expect(formulario).toContain("hover:bg-hover");
+    });
+  }
+});
+
+describe("M4-02 · criterio #9 · no aparece donde la barra no está", () => {
+  it("/ingresar no ofrece cerrar una sesión que no existe", async () => {
+    const respuesta = await fetch(`${BASE}/ingresar`, { redirect: "manual" });
+    const cuerpo = await respuesta.text();
+
+    expect(respuesta.status).toBe(200);
+    expect(cuerpo).not.toContain("/api/salir");
+    expect(cuerpo).not.toContain("Cerrar sesión");
+  });
+
+  it("los formularios de cliente siguen saliendo por Cancelar, sin barra", async () => {
+    const cuerpo = await htmlDe("/clientes/nuevo", await jarraConSesion());
+    expect(cuerpo).not.toContain("/api/salir");
+    expect(cuerpo).toContain("Cancelar");
+  });
+});
+
+describe("M4-02 · criterio #5 · al volver al portón se entiende qué pasó", () => {
+  it("/ingresar?salio=1 avisa 'Cerraste sesión.' y no habla de contraseña incorrecta", async () => {
+    const respuesta = await fetch(`${BASE}/ingresar?salio=1`, { redirect: "manual" });
+    const cuerpo = await respuesta.text();
+
+    expect(respuesta.status).toBe(200);
+    expect(cuerpo).toContain("Cerraste sesión.");
+    expect(cuerpo).not.toContain("Contraseña incorrecta");
+  });
+
+  it("sin el parámetro, el portón no inventa el aviso", async () => {
+    const respuesta = await fetch(`${BASE}/ingresar`, { redirect: "manual" });
+    expect(await respuesta.text()).not.toContain("Cerraste sesión.");
+  });
+
+  it("el aviso de salida y el de credencial son independientes", async () => {
+    const respuesta = await fetch(`${BASE}/ingresar?error=credencial`, { redirect: "manual" });
+    const cuerpo = await respuesta.text();
+    expect(cuerpo).toContain("Contraseña incorrecta");
+    expect(cuerpo).not.toContain("Cerraste sesión.");
+  });
+});

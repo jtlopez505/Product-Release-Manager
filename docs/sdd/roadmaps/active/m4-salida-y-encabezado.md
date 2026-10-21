@@ -93,7 +93,7 @@ Sin preguntas abiertas que bloqueen.
 |---|---|---|---|---|
 | M4-00 | Base de prueba aparte para la integración (desbloquea a las otras dos) | ✅ terminada | — | `docs/sdd/specs/M4-00-base-de-prueba-aparte.md` |
 | M4-01 | El nombre "ReleaseView" del encabezado lleva a Inicio | ✅ terminada | M4-00 | `docs/sdd/specs/M4-01-nombre-que-lleva-a-inicio.md` |
-| M4-02 | Cerrar sesión: el botón, el endpoint y el aviso al volver al portón | ⬜ pendiente | M4-00, M4-01 | `docs/sdd/specs/M4-02-cerrar-sesion.md` |
+| M4-02 | Cerrar sesión: el botón, el endpoint y el aviso al volver al portón | ✅ terminada | M4-00, M4-01 | `docs/sdd/specs/M4-02-cerrar-sesion.md` |
 
 **Por qué este orden:** **M4-00 va primero porque bloquea a las otras dos.** Apareció a mitad
 del milestone: al construir M4-01 se descubrió que `npm run test:integracion` cierra en rojo —13
@@ -116,7 +116,7 @@ recién movido para cambiar una línea.
   en vez de esconderla para que no parezca que el milestone creció de alcance sin registro.
 
 ## 6. Cuándo está terminado el milestone
-- [ ] Todas las filas de la tabla en ✅ (cada una con sus 3 verificaciones en verde, regla #5).
+- [x] Todas las filas de la tabla en ✅ (cada una con sus 3 verificaciones en verde, regla #5).
 - [ ] Las condiciones del milestone en `docs/prd.md` se cumplen y se pueden demostrar.
 - [ ] **El owner lo probó con sus ojos:** el agente le dejó la app levantada y el link servido,
       y él confirmó que lo que ve está bien.

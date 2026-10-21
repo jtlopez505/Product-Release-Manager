@@ -384,6 +384,49 @@ describe("el encabezado de la Vista de cliente y la navegación", () => {
 });
 
 /**
+ * El control de salida del encabezado (M4-02). Lo que se chequea acá es lo que se decide en
+ * el archivo y no se puede leer del markup servido: que sea un **formulario POST** y no un
+ * link (un logout por GET lo dispara cualquier prefetch o `<img>` y saca al usuario sin que
+ * lo pida — `auth-y-permisos.md` § Cómo se sale), y que el tinte sea el que M4-01 ya fijó
+ * para lo clickeable de esta barra en vez de uno nuevo. Que el formulario llegue al
+ * navegador lo prueba la integración, no esto.
+ */
+describe("el botón de cerrar sesión del encabezado (M4-02)", () => {
+  /** El bloque de clases del control de salida, para no mirar las del nombre ni las pestañas. */
+  // `\r?\n` porque los archivos del repo están en CRLF: con `\n` pelado esto no engancha nada
+  // y el test pasaría comparando contra un string vacío.
+  const CLASES_DE_SALIR =
+    /const CLASES_DE_SALIR =([\s\S]*?);\r?\n/.exec(NAVEGACION)?.[1] ?? "";
+
+  it("es un <form method=\"post\"> a /api/salir, nunca un link GET", () => {
+    expect(NAVEGACION).toMatch(/action="\/api\/salir"/);
+    expect(NAVEGACION).toMatch(/method="post"/);
+    expect(NAVEGACION).not.toMatch(/href="\/api\/salir"/);
+  });
+
+  it("el control es un <button type=\"submit\">, así funciona sin JS (criterio #6)", () => {
+    expect(NAVEGACION).toMatch(/type="submit"/);
+    expect(NAVEGACION).not.toMatch(/onClick/);
+  });
+
+  it("dice \"Cerrar sesión\" con todas las letras: la acción se nombra, no se dibuja", () => {
+    expect(NAVEGACION).toContain("Cerrar sesión");
+  });
+
+  it("reusa el tinte de control clickeable que fijó M4-01 (un solo tinte, marca.md)", () => {
+    expect(CLASES_DE_SALIR).toContain("hover:bg-hover");
+    expect(CLASES_DE_SALIR).toContain("active:bg-seleccionado");
+  });
+
+  it("no se atenúa ni se inventa un estado: el envío es una navegación normal del navegador", () => {
+    // Sin esto, un `CLASES_DE_SALIR` vacío (constante renombrada) dejaría pasar la negación.
+    expect(CLASES_DE_SALIR.length).toBeGreaterThan(0);
+    expect(CLASES_DE_SALIR).not.toMatch(/opacity/);
+    expect(NAVEGACION).not.toMatch(/aria-busy/);
+  });
+});
+
+/**
  * La consulta por feature (M2-01) contra las reglas de `marca.md` que le tocan. Las dos
  * listas reusan `TablaDeClientes` tal cual (ya cubierta arriba) y el chip de estado reusa
  * `ChipDeEstado` de `tabla-de-features.tsx` (también cubierto); lo que se agrega acá es el

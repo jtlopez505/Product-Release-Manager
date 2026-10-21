@@ -54,6 +54,14 @@ const CLASES_DEL_NOMBRE =
   "-mx-2 rounded-md px-2 py-1 text-sm font-semibold tracking-tight " +
   "transition-[background-color] duration-[120ms] ease-out hover:bg-hover active:bg-seleccionado";
 
+/* "Cerrar sesión" (M4-02): mismo tinte de control secundario que las pestañas inactivas y el
+   nombre — un solo tratamiento para todo lo clickeable de esta barra (marca.md). Va en texto
+   secundario porque es la salida, no el camino principal. El margen negativo compensa el
+   padding del tinte para que el texto quede alineado con el borde del contenedor. */
+const CLASES_DE_SALIR =
+  "-mr-3 rounded-md px-3 py-1.5 text-sm font-medium text-texto-secundario " +
+  "transition-[background-color] duration-[120ms] ease-out hover:bg-hover active:bg-seleccionado";
+
 export function Navegacion({ actual }: { actual: SeccionActual }): React.ReactElement {
   return (
     <header className="border-b border-borde-marcado bg-superficie">
@@ -80,6 +88,19 @@ export function Navegacion({ actual }: { actual: SeccionActual }): React.ReactEl
             );
           })}
         </nav>
+
+        {/* La salida va a la derecha, separada de las pestañas: no es un lugar más donde ir.
+            Es un `<form method="post">` y no un link porque un logout por GET lo dispara
+            cualquier prefetch o `<img>` y saca al usuario sin que lo pida
+            (auth-y-permisos.md § Cómo se sale). Al ser un submit nativo, también funciona
+            sin JS, y el envío es una navegación normal del navegador: sin spinner y sin
+            deshabilitar el botón, la pantalla se reemplaza. Sin confirmación: volver a
+            entrar es tipear la contraseña (decidido en el plan de M4). */}
+        <form action="/api/salir" method="post" className="ml-auto">
+          <button type="submit" className={CLASES_DE_SALIR}>
+            Cerrar sesión
+          </button>
+        </form>
       </div>
     </header>
   );
