@@ -3,7 +3,7 @@
 > **Este documento manda sobre el *qué*: qué construimos, en qué orden, y qué significa
 > «terminado».** El *cómo* técnico vive en `docs/arquitectura/` (un documento por tema) y no se decide acá.
 >
-> **Última revisión:** `2026-09-15`
+> **Última revisión:** `2026-10-21`
 
 ---
 
@@ -52,8 +52,8 @@ Si eso corre de punta a punta **una vez** — con datos cargados a mano, sin int
 **Por qué tercero:** cierra el recorrido completo — es el momento de mayor dolor (el día de release) y necesita los datos ya cargados y consultables de M1/M2.
 
 **Está terminado cuando:**
-- [ ] Se puede filtrar los clientes que corresponden a la próxima versión o feature a desplegar.
-- [ ] Esa lista se puede ver u exportar lista para compartir con el equipo.
+- [x] Se puede filtrar los clientes que corresponden a la próxima versión o feature a desplegar.
+- [x] Esa lista se puede ver u exportar lista para compartir con el equipo.
 
 ## 4. Riesgos, con su límite aceptado
 
