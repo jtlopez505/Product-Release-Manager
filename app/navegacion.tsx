@@ -18,6 +18,10 @@ import Link from "next/link";
  * `user-flow.md` §5): va en el mismo nivel que las otras dos porque la lista de release no
  * tiene otra entrada posible y es el momento de mayor uso del ICP.
  *
+ * Desde M4-01 el nombre de la app es la vuelta a casa: lleva a Inicio desde cualquier
+ * pantalla que tenga esta barra (`user-flow.md` §1). La pestaña "Por cliente" no se va — el
+ * nombre es la salida rápida, la pestaña es la que marca dónde estás parado.
+ *
  * No está en `app/layout.tsx` a propósito: el portón (`/ingresar`) no tiene navegación —
  * todavía no se entró — y los formularios de cliente tampoco, porque salir de ahí por un
  * link costaría lo tipeado (ver `formulario-de-cliente.tsx`: la salida es "Cancelar", que
@@ -42,11 +46,25 @@ const CLASES_DE_PESTANA =
 const CLASES_ACTIVA = "bg-seleccionado text-primario";
 const CLASES_INACTIVA = "text-texto-secundario hover:bg-hover active:bg-seleccionado";
 
+/* El nombre de la app lleva a Inicio (M4-01, user-flow.md §1). Ahora que hay clic
+   corresponde el hover, y es el mismo tinte de control secundario que las pestañas
+   inactivas — un solo tinte para todo lo clickeable (marca.md). El padding le da cuerpo al
+   tinte y el margen negativo lo compensa, así el nombre queda alineado donde estaba. */
+const CLASES_DEL_NOMBRE =
+  "-mx-2 rounded-md px-2 py-1 text-sm font-semibold tracking-tight " +
+  "transition-[background-color] duration-[120ms] ease-out hover:bg-hover active:bg-seleccionado";
+
 export function Navegacion({ actual }: { actual: SeccionActual }): React.ReactElement {
   return (
     <header className="border-b border-borde-marcado bg-superficie">
       <div className="mx-auto flex h-12 w-full max-w-4xl items-center gap-6 px-6">
-        <span className="text-sm font-semibold tracking-tight">ReleaseView</span>
+        {/* Sin `aria-current`: "dónde estás parado" lo marca la pestaña, y en Inicio el
+            nombre apunta al mismo lugar que "Por cliente" — ponérselo a los dos anunciaría
+            dos páginas actuales en el mismo encabezado. El nombre es la vuelta a casa; la
+            pestaña es la que ubica. */}
+        <Link href="/" className={CLASES_DEL_NOMBRE}>
+          ReleaseView
+        </Link>
         <nav aria-label="Secciones" className="flex items-center gap-1">
           {SECCIONES.map(({ seccion, etiqueta, destino }) => {
             const activa = seccion === actual;
