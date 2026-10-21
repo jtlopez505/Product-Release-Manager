@@ -9,16 +9,25 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
   recorrido completo del PRD §2 —cargar → consultar → armar la lista de
   release— corre de verdad.
 - **Verificación completa:** `npm run check` (typecheck + tests + linter). Última corrida en verde:
-  2026-10-21, **208 tests en 10 archivos**. La de integración va aparte:
-  `npm run test:integracion` (necesita la base real y levanta su propio `next dev`).
+  2026-10-21, **208 tests en 10 archivos**. La de integración va aparte: `npm run test:integracion` (levanta su propio `next dev`).
 - **Plan activo: `docs/sdd/roadmaps/active/m4-salida-y-encabezado.md`** (M4 · Salir de la app y
-  volver a Inicio). Dos piezas, las dos ⬜ pendientes. **Próximo paso: `/implementar M4-01`.**
-  M4 lo pidió el owner el 2026-10-21 y no estaba en el PRD: se agregó como milestone en
-  `docs/prd.md` §3 antes de planear, y el límite del logout (no revoca sesiones ya copiadas) quedó
-  en §5. Las decisiones del cómo están en `docs/arquitectura/auth-y-permisos.md` § Cómo se sale y
-  en `user-flow.md` §0/§1.
-- **`/deploy` va después de M4**, no antes: las dos piezas de M4 son justamente para que la app se
-  pueda dejar en una URL pública.
+  volver a Inicio). **Tres piezas:** M4-00 ⬜ (base de prueba aparte, bloquea a las otras dos),
+  M4-01 🔵 (código hecho y commiteado en `3bedde8`, no cierra hasta que la suite esté verde),
+  M4-02 ⬜ (el logout).
+- **BLOQUEADO esperando al owner:** M4-00 necesita un **segundo proyecto de Supabase** y las dos
+  variables `DATABASE_URL_TEST` / `DIRECT_URL_TEST` en `.env`. Hasta que estén, el builder no
+  puede verificar la pieza. Ver `docs/sdd/specs/M4-00-base-de-prueba-aparte.md` y
+  `docs/arquitectura/secretos.md` § Las dos de prueba.
+- **`npm run test:integracion` está en ROJO: 13 fallas, 2 archivos** (`pantalla-de-lista-de-release`
+  y `pantalla-de-por-feature`). **No es una regresión de M4:** los tests de pantalla corren contra
+  la base real y afirman conteos absolutos sobre ella; se desajustaron cuando el owner cargó sus 3
+  clientes al probar M3. Diagnóstico completo y las 4 alternativas evaluadas en `DECISIONS.md`
+  (2026-10-21). M4-00 lo arregla, y el criterio #6 de su ficha exige que esas 13 se pongan en
+  verde **sin editar una sola aserción**.
+- **Lección que costó caro: correr SIEMPRE las dos verificaciones antes de archivar un plan.** M3
+  se cerró con `npm run check` en verde y sin correr `npm run test:integracion`, que ya estaba en
+  rojo en ese momento. `npm run check` sola no alcanza.
+- **`/deploy` va después de M4.**
 
 ## Lo que `/deploy` tiene que resolver (decidido que se evalúa ahí, no antes)
 
@@ -43,8 +52,9 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 
 ## Ojo con (cosas de esta máquina y de este proyecto)
 
-- **Las claves van en `.env`, no en `.env.local`.** Son cuatro: `DATABASE_URL`, `DIRECT_URL`,
-  `APP_PASSWORD`, `SESSION_SECRET`.
+- **Las claves van en `.env`, no en `.env.local`.** Cuatro para la app: `DATABASE_URL`,
+  `DIRECT_URL`, `APP_PASSWORD`, `SESSION_SECRET`. Desde M4-00, dos más solo para la integración:
+  `DATABASE_URL_TEST`, `DIRECT_URL_TEST` (no van en `CLAVES_OBLIGATORIAS` — la app no las necesita).
 - **Prisma 7:** `url`/`directUrl` no van en `schema.prisma`. Están en `prisma.config.ts`
   (migraciones) y `lib/prisma.ts` (la app).
 - **Estilos:** Tailwind con los tokens de `marca.md` en `app/globals.css`. Ningún hex suelto;

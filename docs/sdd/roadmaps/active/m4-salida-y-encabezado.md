@@ -91,10 +91,16 @@ Sin preguntas abiertas que bloqueen.
 
 | ID | Pieza | Estado | Depende de | Ficha |
 |---|---|---|---|---|
-| M4-01 | El nombre "ReleaseView" del encabezado lleva a Inicio | ⬜ pendiente | — | `docs/sdd/specs/M4-01-nombre-que-lleva-a-inicio.md` |
-| M4-02 | Cerrar sesión: el botón, el endpoint y el aviso al volver al portón | ⬜ pendiente | M4-01 | `docs/sdd/specs/M4-02-cerrar-sesion.md` |
+| M4-00 | Base de prueba aparte para la integración (desbloquea a las otras dos) | ⬜ pendiente | — | `docs/sdd/specs/M4-00-base-de-prueba-aparte.md` |
+| M4-01 | El nombre "ReleaseView" del encabezado lleva a Inicio | 🔵 en curso (código hecho, no cierra hasta M4-00) | M4-00 | `docs/sdd/specs/M4-01-nombre-que-lleva-a-inicio.md` |
+| M4-02 | Cerrar sesión: el botón, el endpoint y el aviso al volver al portón | ⬜ pendiente | M4-00, M4-01 | `docs/sdd/specs/M4-02-cerrar-sesion.md` |
 
-**Por qué este orden:** las dos tocan el mismo archivo (`app/navegacion.tsx`), así que van en
+**Por qué este orden:** **M4-00 va primero porque bloquea a las otras dos.** Apareció a mitad
+del milestone: al construir M4-01 se descubrió que `npm run test:integracion` cierra en rojo —13
+fallas— porque los tests de pantalla corren contra la base real del owner y afirman conteos
+absolutos sobre ella; cuando el owner cargó sus 3 clientes en el "probalo vos" de M3, se
+desajustaron. Mientras la suite esté en rojo, la regla #5 no se puede cumplir y **ninguna pieza
+puede darse por terminada**, por ajena que sea la falla. Las otras dos tocan el mismo archivo (`app/navegacion.tsx`), así que van en
 fila y no en paralelo. Primero la chica, que es la que convierte el nombre en un control
 clickeable y fija cómo se ve un elemento interactivo en esa barra; el botón de salir se apoya en
 ese tratamiento en vez de inventar el suyo. Al revés, M4-01 tendría que entrar a un encabezado
@@ -105,6 +111,9 @@ recién movido para cambiar una línea.
   protegida ya no se ve sin volver a tipear la contraseña" → M4-02.
 - "El nombre «ReleaseView» del encabezado lleva a Inicio desde cualquier pantalla que tenga la
   barra de navegación" → M4-01.
+- **M4-00 no cubre ninguna condición del PRD, y es a propósito.** No es una funcionalidad del
+  producto: es la condición para que la verificación 2 pueda volver a estar en verde. Se anota acá
+  en vez de esconderla para que no parezca que el milestone creció de alcance sin registro.
 
 ## 6. Cuándo está terminado el milestone
 - [ ] Todas las filas de la tabla en ✅ (cada una con sus 3 verificaciones en verde, regla #5).
