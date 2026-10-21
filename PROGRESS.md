@@ -3,35 +3,25 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 
 # Dónde retomar
 
-- **El MVP está cerrado y demostrado de punta a punta.** El owner probó M3 el 2026-10-21 y confirmó
-  que la descarga del CSV baja y abre bien en su Excel. Los tres planes (M1, M2, M3) están en
-  `docs/sdd/roadmaps/archive/` y sus condiciones en `docs/prd.md` §3 están tildadas. El
-  recorrido completo del PRD §2 —cargar → consultar → armar la lista de
-  release— corre de verdad.
+- **El MVP y M4 están cerrados y probados por el owner (2026-10-21).** Cuatro planes archivados
+  (M1, M2, M3, M4) en `docs/sdd/roadmaps/archive/`; todas las condiciones de `docs/prd.md` §3
+  tildadas. No hay plan activo. El recorrido completo corre de verdad: cargar → consultar → armar
+  la lista de release → salir. El owner probó M4 a mano: el nombre del encabezado lleva a Inicio,
+  "Cerrar sesión" vuelve al portón con el aviso, y una ruta protegida pide la contraseña de nuevo.
 - **Las dos verificaciones en verde (2026-10-21):** `npm run check` → **225 tests en 11 archivos**;
-  `npm run test:integracion` → **162 tests en 13 archivos**. Desde M4-00 la de integración corre
-  contra una **base de prueba aparte**, no contra la real.
-- **Plan activo: `docs/sdd/roadmaps/active/m4-salida-y-encabezado.md`** (M4 · Salir de la app y
-  volver a Inicio). **Las tres piezas en ✅:** M4-00 (base de prueba aparte), M4-01 (el nombre del
-  encabezado lleva a Inicio) y M4-02 (cerrar sesión). **Falta solo el «probalo vos» del owner**
-  para tildar las dos condiciones del PRD §3 · M4 y archivar el plan.
-- **Ya no hay bloqueo:** el owner creó el segundo proyecto de Supabase el 2026-10-21 y `.env`
-  tiene `DATABASE_URL_TEST` / `DIRECT_URL_TEST`. En una máquina nueva hay que correr una vez
-  `npm run db:migrate:test` y `npm run db:seed:test`; ver `docs/arquitectura/secretos.md`
-  § Las dos de prueba.
-- **Las 13 fallas de la integración están resueltas** (M4-00). Corrían contra la base real del
-  owner y afirmaban conteos absolutos sobre ella; se desajustaron cuando él cargó sus 3 clientes
-  al probar M3. Se pusieron en verde **sin editar una sola aserción** (`git diff` vacío en los dos
-  archivos, criterio #6). Las 4 alternativas evaluadas, en `DECISIONS.md` (2026-10-21).
-- **Lección que costó caro: correr SIEMPRE las dos verificaciones antes de archivar un plan.** M3
-  se cerró con `npm run check` en verde y sin correr `npm run test:integracion`, que ya estaba en
-  rojo en ese momento. `npm run check` sola no alcanza.
-- **`/deploy` va después de M4.**
+  `npm run test:integracion` → **162 tests en 13 archivos**. La de integración corre contra una
+  **base de prueba aparte** (M4-00), no contra la del owner. En una máquina nueva: una vez
+  `npm run db:migrate:test` y `npm run db:seed:test` (ver `docs/arquitectura/secretos.md`
+  § Las dos de prueba). **Cada migración nueva hay que correrla en las dos bases** (`DECISIONS.md`).
+- **Correr SIEMPRE las dos verificaciones antes de archivar un plan.** M3 se cerró con solo
+  `npm run check` y la integración ya estaba en rojo. M4 se cerró con las dos, corridas por mí y
+  no solo reportadas por el builder.
+- **Siguiente paso: `/deploy`.** Es lo único que queda entre la app y una URL pública.
+- **Cerrar sesión NO revoca** un token ya copiado a otro lado (firma stateless, sin tabla de
+  sesiones). Resuelve "me levanto de la máquina", no "se filtró el link". Está en `docs/prd.md` §5.
 
 ## Lo que `/deploy` tiene que resolver (decidido que se evalúa ahí, no antes)
 
-- ~~No hay forma de cerrar sesión.~~ **Dejó de ser pendiente de `/deploy`: lo pidió el owner y
-  es M4-02.** Se construye antes de publicar, no se evalúa después.
 - **Las 9 vulnerabilidades *high* del scaffold.** Analizadas y toleradas (ver `DECISIONS.md`,
   2026-10-05: ninguna es alcanzable en esta app). El compromiso fue revisarlas antes de publicar.
 - **La paleta y el tono de `marca.md` siguen siendo una propuesta sin validar por el owner.** La app

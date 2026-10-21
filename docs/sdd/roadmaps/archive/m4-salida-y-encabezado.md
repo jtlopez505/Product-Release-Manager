@@ -117,7 +117,7 @@ recién movido para cambiar una línea.
 
 ## 6. Cuándo está terminado el milestone
 - [x] Todas las filas de la tabla en ✅ (cada una con sus 3 verificaciones en verde, regla #5).
-- [ ] Las condiciones del milestone en `docs/prd.md` se cumplen y se pueden demostrar.
-- [ ] **El owner lo probó con sus ojos:** el agente le dejó la app levantada y el link servido,
+- [x] Las condiciones del milestone en `docs/prd.md` se cumplen y se pueden demostrar.
+- [x] **El owner lo probó con sus ojos:** el agente le dejó la app levantada y el link servido,
       y él confirmó que lo que ve está bien.
-- [ ] Este plan movido a `docs/sdd/roadmaps/archive/`.
+- [x] Este plan movido a `docs/sdd/roadmaps/archive/`.

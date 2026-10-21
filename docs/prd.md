@@ -61,8 +61,8 @@ Si eso corre de punta a punta **una vez** — con datos cargados a mano, sin int
 **Por qué cuarto:** el recorrido de valor ya está completo (M1-M3); estas dos son lo que falta para que la app se pueda dejar en una URL pública y usar sin fricción. La salida es la contracara del portón, que hasta ahora solo tenía entrada; el link del encabezado es la convención que cualquiera espera y que hoy no está.
 
 **Está terminado cuando:**
-- [ ] Se puede cerrar sesión desde la app: al hacerlo se vuelve a la pantalla de ingreso, y una ruta protegida ya no se ve sin volver a tipear la contraseña.
-- [ ] El nombre "ReleaseView" del encabezado lleva a Inicio desde cualquier pantalla que tenga la barra de navegación.
+- [x] Se puede cerrar sesión desde la app: al hacerlo se vuelve a la pantalla de ingreso, y una ruta protegida ya no se ve sin volver a tipear la contraseña.
+- [x] El nombre "ReleaseView" del encabezado lleva a Inicio desde cualquier pantalla que tenga la barra de navegación.
 
 ## 4. Riesgos, con su límite aceptado
 
