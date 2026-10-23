@@ -16,13 +16,13 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 - **Correr SIEMPRE las dos verificaciones antes de archivar un plan.** M3 se cerró con solo
   `npm run check` y la integración ya estaba en rojo. M4 se cerró con las dos, corridas por mí y
   no solo reportadas por el builder.
-- **`/deploy` corrió el 2026-10-23 y dio NO-GO; los dos bloqueos están resueltos, falta repetir el
-  control.** Nada se publicó. (1) `next` subió de 16.3.8 a **16.4.3** (había una crítica; el DoS de
-  Server Actions sí aplicaba). Verificado: check 225/225, integración 162/162 corrida sola, build OK;
-  `npm audit` quedó en 6 *high* sin críticas (ver `DECISIONS.md`, 2026-10-23). (2) Existe
-  `docs/arquitectura/costos.md`: **recomendado Vercel Pro ~US$20/mes + Supabase Free**; rango US$0–~55.
-  **Vercel Hobby es solo uso no comercial**, así que el "$0" de `stack.md` era incorrecto (corregido).
-  **Siguiente: volver a correr `/deploy` y, con GO, pedir el OK del owner antes de publicar.**
+- **`/deploy` dio GO el 2026-10-23 y el owner autorizó el push.** Los 45 commits están en GitHub
+  (`origin/main` al día, repo público). **Falta que el owner conecte el repo en Vercel** (Add New →
+  Project → importar `Product-Release-Manager`), cargue las cuatro claves de la app para Production y
+  Build (`DATABASE_URL` en 6543, `DIRECT_URL` en 5432, `APP_PASSWORD`, `SESSION_SECRET`; **no** las
+  `_TEST`) y haga el primer deploy. Después: confirmar que `/ingresar` da 200 y las demás rutas
+  redirigen. Decidido: piloto en Vercel Hobby + Supabase Free, US$0 (`DECISIONS.md`, 2026-10-23).
+  **Después de que responda: `/instalar-sentry`** (pieza propia, no antes del primer deploy).
 - **Diseño: LISTO PARA PUBLICAR** (auditor, 2026-10-23). Pulido posterior sin bloquear: el encabezado y
   `/features` se desbordan a 390 px; las sub-pestañas de Lista de release repiten el gris de las
   pestañas principales.
