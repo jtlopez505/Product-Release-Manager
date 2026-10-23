@@ -39,9 +39,8 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 
 - **Las 9 vulnerabilidades *high* del scaffold.** Analizadas y toleradas (ver `DECISIONS.md`,
   2026-10-05: ninguna es alcanzable en esta app). El compromiso fue revisarlas antes de publicar.
-- **La paleta y el tono de `marca.md` siguen siendo una propuesta sin validar por el owner.** La app
-  entera está construida con esos tokens; si los cambia, es un cambio de tokens en
-  `app/globals.css`, no de pantallas.
+- ~~La paleta y el tono de `marca.md` sin validar.~~ **Validados por el owner el 2026-10-23: se
+  quedan como están.** Si algún día los cambia, es un cambio de tokens en `app/globals.css`.
 
 ## Deuda chica, anotada y no urgente
 

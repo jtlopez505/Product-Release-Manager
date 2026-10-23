@@ -60,7 +60,12 @@ recomendaría, US$20.**
 
 ## Para decidir
 
-Lo único que te toca elegir es **qué plan de Vercel**. Mi lectura: **Pro (US$20)** es el
+**Decidido el 2026-10-23 por el owner: Vercel Hobby (US$0) + Supabase Free, como piloto.** Se
+asume sabiendo que Hobby es de uso no comercial (advertencia 1); si el piloto pasa a ser la
+herramienta de trabajo del equipo, hay que pasar a Pro. El resto de esta sección es lo que se
+había recomendado antes de esa decisión.
+
+Lo único que te tocaba elegir era **qué plan de Vercel**. Mi lectura: **Pro (US$20)** es el
 escenario honesto para un panel de trabajo, y Supabase **Free** alcanza al principio si aceptás
 que puede dormirse tras una semana sin uso. Si ese corte te preocupa, el salto es +US$25.
 
