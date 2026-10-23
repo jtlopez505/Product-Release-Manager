@@ -16,7 +16,23 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 - **Correr SIEMPRE las dos verificaciones antes de archivar un plan.** M3 se cerró con solo
   `npm run check` y la integración ya estaba en rojo. M4 se cerró con las dos, corridas por mí y
   no solo reportadas por el builder.
-- **Siguiente paso: `/deploy`.** Es lo único que queda entre la app y una URL pública.
+- **`/deploy` corrió el 2026-10-23 y dio NO-GO. Nada se publicó.** Dos bloqueos:
+  1. **`next@16.3.8` tiene una vulnerabilidad CRÍTICA** (`npm audit`: afecta 16.0.0–16.4.0; el arreglo
+     es `next@16.4.3`, fuera del pin exacto). De sus 3 avisos, 2 no son alcanzables (la app no usa
+     `next/image` ni `use cache`), pero el **DoS de Server Actions sí aplica**: la app las usa en
+     `app/clientes/acciones.ts` y `app/features/acciones.ts`, y `/ingresar` es pública. Hay que subir
+     `next` y `eslint-config-next`, repetir las dos verificaciones y el build, y dejar la revisión en
+     `DECISIONS.md`. El análisis del 2026-10-05 (9 high) quedó viejo: hoy son 6 high + 1 crítica.
+  2. **Falta `docs/arquitectura/costos.md`** → correr `/costo`.
+- **Diseño: LISTO PARA PUBLICAR** (auditor, 2026-10-23). Pulido posterior sin bloquear: el encabezado y
+  `/features` se desbordan a 390 px; las sub-pestañas de Lista de release repiten el gris de las
+  pestañas principales.
+- **Lo que falta y es del owner:** decidir si "Cliente 004" (creado por él el 2026-10-21) queda en la
+  lista; validar la paleta de `marca.md`; hacer `git push` (main está 42 commits adelante de origin);
+  cargar las 4 variables en Vercel (Production **y** Build) y **no** las `_TEST`.
+- **Ojo:** la integración falló una vez por timeout de arranque de `next dev` cuando corrió a la vez
+  que el auditor de diseño (dos servidores y un Chrome en la misma máquina). Aislada pasó 162/162.
+  `/deploy` despacha los dos controles en paralelo; si vuelve a pasar, correr la integración sola.
 - **Cerrar sesión NO revoca** un token ya copiado a otro lado (firma stateless, sin tabla de
   sesiones). Resuelve "me levanto de la máquina", no "se filtró el link". Está en `docs/prd.md` §5.
 
