@@ -42,11 +42,10 @@
 
 ## Costo
 
-El número concreto (con supuestos de uso) lo calcula `/costo` y queda en `costos.md`. En llano
-por ahora: con el volumen del MVP (uso interno, pocos usuarios, sin integraciones externas
-corriendo todavía), tanto Vercel como Supabase se mantienen dentro de sus planes gratuitos — el
-costo esperado en esta etapa es **$0/mes**, hasta que el uso crezca lo suficiente como para pedir
-un plan pago.
+El número concreto, con supuestos, está en [`costos.md`](costos.md). En llano: no hay costo por
+uso (sin IA ni servicios por llamada), solo el de dónde vive. **Vercel Hobby (gratis) es solo para
+uso personal no comercial**, así que para un panel de trabajo el escenario honesto es **Vercel Pro
+(~US$20/mes)** con Supabase Free — rango total de US$0 a ~US$55 según los planes.
 
 ## Anexo técnico
 

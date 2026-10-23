@@ -16,14 +16,13 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
 - **Correr SIEMPRE las dos verificaciones antes de archivar un plan.** M3 se cerró con solo
   `npm run check` y la integración ya estaba en rojo. M4 se cerró con las dos, corridas por mí y
   no solo reportadas por el builder.
-- **`/deploy` corrió el 2026-10-23 y dio NO-GO. Nada se publicó.** Dos bloqueos:
-  1. **`next@16.3.8` tiene una vulnerabilidad CRÍTICA** (`npm audit`: afecta 16.0.0–16.4.0; el arreglo
-     es `next@16.4.3`, fuera del pin exacto). De sus 3 avisos, 2 no son alcanzables (la app no usa
-     `next/image` ni `use cache`), pero el **DoS de Server Actions sí aplica**: la app las usa en
-     `app/clientes/acciones.ts` y `app/features/acciones.ts`, y `/ingresar` es pública. Hay que subir
-     `next` y `eslint-config-next`, repetir las dos verificaciones y el build, y dejar la revisión en
-     `DECISIONS.md`. El análisis del 2026-10-05 (9 high) quedó viejo: hoy son 6 high + 1 crítica.
-  2. **Falta `docs/arquitectura/costos.md`** → correr `/costo`.
+- **`/deploy` corrió el 2026-10-23 y dio NO-GO; los dos bloqueos están resueltos, falta repetir el
+  control.** Nada se publicó. (1) `next` subió de 16.3.8 a **16.4.3** (había una crítica; el DoS de
+  Server Actions sí aplicaba). Verificado: check 225/225, integración 162/162 corrida sola, build OK;
+  `npm audit` quedó en 6 *high* sin críticas (ver `DECISIONS.md`, 2026-10-23). (2) Existe
+  `docs/arquitectura/costos.md`: **recomendado Vercel Pro ~US$20/mes + Supabase Free**; rango US$0–~55.
+  **Vercel Hobby es solo uso no comercial**, así que el "$0" de `stack.md` era incorrecto (corregido).
+  **Siguiente: volver a correr `/deploy` y, con GO, pedir el OK del owner antes de publicar.**
 - **Diseño: LISTO PARA PUBLICAR** (auditor, 2026-10-23). Pulido posterior sin bloquear: el encabezado y
   `/features` se desbordan a 390 px; las sub-pestañas de Lista de release repiten el gris de las
   pestañas principales.

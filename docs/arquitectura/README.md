@@ -16,7 +16,7 @@
 | Integraciones con IA + techo de gasto | *no aplica — ReleaseView no consume ningún modelo de IA; gestiona productos que pueden ser agentes de IA, pero eso no requiere que la app misma llame a un LLM* | #3 |
 | Integraciones con otros sistemas | *no aplica en el MVP — la integración con Azure DevOps/Jira está explícitamente fuera de alcance del MVP (`docs/prd.md` §5); se crea este doc cuando se construya* | #4 |
 | Autenticación y permisos | [`auth-y-permisos.md`](auth-y-permisos.md) — portón compartido (una contraseña), sin cuentas individuales | — |
-| Costo mensual estimado *(lo escribe `/costo`)* | `costos.md` | — |
+| Costo mensual estimado | [`costos.md`](costos.md) | — |
 | Monitoreo de errores — Sentry *(si se instala, `/instalar-sentry`)* | `sentry.md` | — |
 | Analítica de producto — PostHog *(si se instala, `/instalar-posthog`)* | `posthog.md` | — |
 
