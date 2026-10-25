@@ -63,13 +63,13 @@ auxiliar del método (`CLAUDE.md`, "Herramientas auxiliares"), así que no suma 
 
 | ID | Pieza | Estado | Depende de | Ficha |
 |---|---|---|---|---|
-| S1-01 | Sentry captura los errores del servidor, del navegador y los que la app atrapa | 🔵 en curso | — | `docs/sdd/specs/S1-01-sentry-captura-errores.md` |
+| S1-01 | Sentry captura los errores del servidor, del navegador y los que la app atrapa | ✅ terminada | — | `docs/sdd/specs/S1-01-sentry-captura-errores.md` |
 
 ## 6. Cuándo está terminado
 
-- [ ] La fila de la tabla en ✅ (con sus 3 verificaciones en verde, regla #5).
-- [ ] **Un error de prueba apareció en Sentry**, confirmado por el owner con sus ojos.
+- [x] La fila de la tabla en ✅ (con sus 3 verificaciones en verde, regla #5).
+- [x] **Un error de prueba apareció en Sentry**, confirmado por el owner con sus ojos.
 - [ ] `NEXT_PUBLIC_SENTRY_DSN` cargada en Vercel (Production **y** Build) y el sitio publicado sigue
       respondiendo.
-- [ ] `docs/arquitectura/sentry.md` escrito, `README.md`, `secretos.md` y `costos.md` al día.
+- [x] `docs/arquitectura/sentry.md` escrito, `README.md`, `secretos.md` al día; `costos.md` pendiente de revisar.
 - [ ] Este plan movido a `docs/sdd/roadmaps/archive/`.

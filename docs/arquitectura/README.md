@@ -17,7 +17,7 @@
 | Integraciones con otros sistemas | *no aplica en el MVP — la integración con Azure DevOps/Jira está explícitamente fuera de alcance del MVP (`docs/prd.md` §5); se crea este doc cuando se construya* | #4 |
 | Autenticación y permisos | [`auth-y-permisos.md`](auth-y-permisos.md) — portón compartido (una contraseña), sin cuentas individuales | — |
 | Costo mensual estimado | [`costos.md`](costos.md) | — |
-| Monitoreo de errores — Sentry *(si se instala, `/instalar-sentry`)* | `sentry.md` | — |
+| Monitoreo de errores — Sentry | [`sentry.md`](sentry.md) | — |
 | Analítica de producto — PostHog *(si se instala, `/instalar-posthog`)* | `posthog.md` | — |
 
 *(`/arquitectura` actualiza esta tabla al escribir: los condicionales que no aplican quedan

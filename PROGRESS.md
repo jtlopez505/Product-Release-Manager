@@ -27,9 +27,7 @@ El estado pieza por pieza NO va acá: vive en la tabla del plan (docs/sdd/roadma
   como *Secret*: **no se pueden ver después de guardarlas**, así que la forma de arreglarlo es
   sobrescribirlas. Se resolvió poniendo el valor en el portapapeles desde `.env` (sin imprimirlo) y
   pegándolo, luego Redeploy. **Si vuelve a pasar, no hay que inspeccionar: sobrescribir.**
-- **Siguiente: `/instalar-sentry`** (pieza propia, ahora que hay URL). Idea chica aparte: que
-  `lib/env.ts` valide que `DATABASE_URL` empiece con `postgres(ql)://`, para que un valor roto
-  falle al arrancar con un mensaje claro y no con «no se pudo cargar».
+- **S1-01 (Sentry) construida y verificada (2026-10-24):** el evento de prueba llegó al panel del owner. **Falta cargar `NEXT_PUBLIC_SENTRY_DSN` en Vercel (Production y Build), redeploy y confirmar que el sitio responde**; recién ahí se archiva `s1-monitoreo-de-errores.md`. Idea chica aparte: que `lib/env.ts` valide que `DATABASE_URL` empiece con `postgres(ql)://`, para que un valor roto falle al arrancar con un mensaje claro.
 - **Si el piloto pasa a ser uso real de trabajo: subir a Vercel Pro** (Hobby es no comercial).
 - **Diseño: LISTO PARA PUBLICAR** (auditor, 2026-10-23). Pulido posterior sin bloquear: el encabezado y
   `/features` se desbordan a 390 px; las sub-pestañas de Lista de release repiten el gris de las

@@ -42,6 +42,7 @@ recomendaría, US$20.**
 
 - **IA, mails, pagos, almacenamiento de archivos, colas, jobs:** no existen en el producto (ver
   `stack.md`, "Sin colas, sin jobs en background"). La exportación a CSV se arma en el navegador.
+- **Sentry (monitoreo de errores), mientras se quede en el plan gratuito Developer:** incluye unos 5.000 errores por mes (verificar en *Settings → Subscription*; la prueba de 14 días de un plan pago vence sola). Sobra para 1 o 2 personas. No se activa gasto adicional; si se pasa de la cuota, Sentry deja de recibir eventos, no cobra solo. Ver `sentry.md`.
 - **Los usuarios de la app.** En Vercel se paga por quien **despliega**, no por quien usa la
   aplicación. Si entra una segunda persona solo a consultar, no suma costo. Un segundo
   desarrollador que haga deploys sumaría ~US$20/mes.
@@ -55,6 +56,7 @@ recomendaría, US$20.**
 |---|---|
 | Se suma otra persona que despliega | +~US$20/mes por cada una (Vercel) |
 | La base crece más allá de lo que incluye el plan | Hoy imposible: son filas de texto, unas pocas centenas de clientes. Se vería en el panel de Supabase mucho antes |
+| Un error en bucle gasta la cuota de Sentry | Se pierden los eventos del resto del mes; mirar el panel el primer mes. Pasar a un plan pago de Sentry sería una decisión nueva |
 | Se agrega IA (por ejemplo, redactar notas de release) | Aparece un costo **variable** y la regla #3 pasa a aplicar: hay que fijar un techo antes de escribir la primera línea |
 | Se pasa a login individual con Supabase Auth | Entra dentro de Supabase; el costo se mueve por usuarios activos, no por clientes |
 
