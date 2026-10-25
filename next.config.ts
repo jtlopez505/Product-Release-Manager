@@ -1,3 +1,4 @@
+import { withSentryConfig } from "@sentry/nextjs/config";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -6,4 +7,11 @@ const nextConfig: NextConfig = {
   agentRules: false,
 };
 
-export default nextConfig;
+// Sentry sin token: no se suben source maps, no se manda la telemetría propia del build y no se
+// agrega ninguna ruta (sin túnel), así el portón de proxy.ts queda como está.
+export default withSentryConfig(nextConfig, {
+  telemetry: false,
+  silent: true,
+  sourcemaps: { disable: true },
+  release: { create: false },
+});

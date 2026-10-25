@@ -63,7 +63,7 @@ auxiliar del método (`CLAUDE.md`, "Herramientas auxiliares"), así que no suma 
 
 | ID | Pieza | Estado | Depende de | Ficha |
 |---|---|---|---|---|
-| S1-01 | Sentry captura los errores del servidor, del navegador y los que la app atrapa | ⬜ pendiente | — | `docs/sdd/specs/S1-01-sentry-captura-errores.md` |
+| S1-01 | Sentry captura los errores del servidor, del navegador y los que la app atrapa | 🔵 en curso | — | `docs/sdd/specs/S1-01-sentry-captura-errores.md` |
 
 ## 6. Cuándo está terminado
 

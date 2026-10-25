@@ -40,6 +40,15 @@ la suite **corta nombrándola** y no corre nada — nunca cae de vuelta a la bas
 porque eso daría una sensación de aislamiento sin tenerlo. Y si es **igual** a `DATABASE_URL`,
 también corta: protege contra pegar la connection string de producción por error.
 
+## Una opcional: el monitoreo de errores
+
+| Clave | Para qué | De dónde sale |
+|---|---|---|
+| `NEXT_PUBLIC_SENTRY_DSN` | Dónde manda Sentry los errores de la app. **Opcional**: sin ella Sentry queda apagado y la app anda igual | Sentry → el proyecto Next.js → Settings → Client Keys (DSN). En Vercel va en Production **y** Build (es `NEXT_PUBLIC_`: se incrusta al construir) |
+
+**No va en `CLAVES_OBLIGATORIAS`** de `lib/env.ts`: la app arranca sin ella. El DSN solo puede
+enviar eventos, no leer nada, pero igual vive solo en el entorno (regla #2).
+
 ## Regla #2
 
 **Ninguna clave va en el código ni en el repo, nunca.** Todas salen de variables de entorno. Si
